@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*Material Design font icons*/
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(assets/fonts/MaterialIcons-Regular.ttf); /* For IE6-8 */
+    src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url(assets/fonts/MaterialIcons-Regular.ttf) format('truetype');
+  }
+
+/*----------------App fonts-------------------------*/
+  @font-face {
+    font-family: Josefin Sans;
+    font-weight: bold;
+    src: url(assets//fonts/Josefin_Sans/JosefinSans-Bold.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: Josefin Sans;
+    font-weight: normal;
+    src: url(assets//fonts/Josefin_Sans/JosefinSans-Medium.ttf) format("truetype");
+}
