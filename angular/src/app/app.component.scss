@@ -25,7 +25,7 @@
     font-family: Josefin Sans;
     font-style: normal;
     font-weight: bold;
-    color: $primary-purple;
+    color: white;
     font-size: 15px;
 }
 
@@ -44,7 +44,61 @@ mat-sidenav-container {
     right: 0;
 }
 
-mat-list-item.active {
-    background-color: $primary-purple;
-    font-weight: bold!important;
-  }
+mat-sidenav {
+    display: flex;
+    flex-direction: column;
+}
+
+div.side-nav-menu{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+div.side-menu-item:active,
+div.side-menu-item:hover {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 50px;
+    width: 100%;
+    height: 36px;
+    background-color: $primary-pink;
+
+    p {
+        font-family: Josefin Sans;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px;
+        padding-top: 5px;
+        color: white;
+    }
+
+    mat-icon {
+        color: white;
+    }
+}
+
+div.side-menu-item {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 50px;
+    width: 100%;
+    height: 36px;
+ 
+    p {
+        font-family: Josefin Sans;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px;
+        padding-top: 5px;
+        color: $primary-grey;
+    }
+
+    mat-icon {
+        color: $primary-grey;
+    }
+
+    
+}

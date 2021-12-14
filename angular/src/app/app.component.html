@@ -1,4 +1,3 @@
-
 <!-- app top nar bar-->
 <div class="nav-bar-root">
   <div class="nav-bar-menu">
@@ -10,12 +9,12 @@
 <!--App side nav and content-->
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened position="start">
-    <mat-nav-list>
-       <mat-list-item>
-         <mat-icon>home</mat-icon>
-         <a [routerLink]="" routerLinkActive="active" matLine>Home</a>
-       </mat-list-item>
-    </mat-nav-list>
+    <div class="side-nav-menu">
+      <div class="side-menu-item" routerLink="">
+        <mat-icon class="md-24">home</mat-icon>
+        <p class="side-menu-item-text">Home</p>
+      </div>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     main contain
