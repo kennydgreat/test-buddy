@@ -10,15 +10,15 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" opened position="start">
     <div class="side-nav-menu">
-      <div class="side-menu-item" routerLink="">
-        <mat-icon class="md-24">home</mat-icon>
-        <p class="side-menu-item-text">Home</p>
+      <!--Home-->
+      <div class="side-menu-item" routerLink="/home" routerLinkActive="side-menu-item-active" (isActiveChange)="homeNavMenuItemOnActiveChange($event)">
+        <mat-icon [ngClass]="this.homeSideNavIconClass">home</mat-icon>
+        <p [ngClass]="this.homeSideNavTextClass">Home</p>
       </div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    main contain
-    <!-- Routing based on the module that opened (popup/options/tab) -->
+    <!-- Main Content -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

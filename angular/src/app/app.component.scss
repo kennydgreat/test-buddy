@@ -32,6 +32,7 @@
 /*setting the size ofthe side menu*/
 mat-sidenav {
     width: 200px;
+    height: 100%;
     background-color: #f4f3f3;
 }
 
@@ -49,56 +50,57 @@ mat-sidenav {
     flex-direction: column;
 }
 
-div.side-nav-menu{
+div.side-nav-menu {
     margin-top: 100px;
     display: flex;
     flex-direction: column;
 }
 
-div.side-menu-item:active,
-div.side-menu-item:hover {
-    display: flex;
-    align-items: center;
-    column-gap: 10px;
-    padding-left: 50px;
-    width: 100%;
-    height: 36px;
-    background-color: $primary-pink;
-
-    p {
-        font-family: Josefin Sans;
-        font-size: 18px;
-        font-weight: bold;
-        margin: 0px;
-        padding-top: 5px;
-        color: white;
-    }
-
-    mat-icon {
-        color: white;
-    }
-}
 
 div.side-menu-item {
     display: flex;
     align-items: center;
     column-gap: 10px;
     padding-left: 50px;
-    width: 100%;
     height: 36px;
- 
-    p {
-        font-family: Josefin Sans;
-        font-size: 18px;
-        font-weight: bold;
-        margin: 0px;
-        padding-top: 5px;
-        color: $primary-grey;
-    }
 
-    mat-icon {
-        color: $primary-grey;
+    &:hover, &:active  {
+        background-color: $primary-pink;
     }
+}
 
-    
+div.side-menu-item-active{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 50px;
+    height: 36px;
+    background-color: $primary-pink;
+}
+
+p.side-menu-item {
+    font-family: Josefin Sans;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 5px;
+    color: $primary-grey;
+}
+
+p.side-menu-item-active {
+    font-family: Josefin Sans;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 5px;
+    color: white;
+}
+
+
+mat-icon.side-menu-item {
+    color: $primary-grey;
+}
+
+mat-icon.side-menu-item-active {
+    color: white;
 }
