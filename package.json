@@ -40,6 +40,7 @@
     "@angular/compiler-cli": "^13.0.2",
     "@angular/language-service": "^13.0.2",
     "@types/chrome": "0.0.141",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^12.12.32",
     "awesome-typescript-loader": "^5.2.1",
     "bestzip": "^2.1.7",

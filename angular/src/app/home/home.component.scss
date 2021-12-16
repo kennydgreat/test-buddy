@@ -12,6 +12,8 @@ div.view-root{
         display: flex;
         flex-wrap: wrap;
         padding: 15px;
+        column-gap: 17px;
+        row-gap: 15px;
         border-radius: 15px;
         background-color: $unit-background-gray;
     }
@@ -22,6 +24,12 @@ div.view-root{
         margin: 0px;
         font-weight: bold;
         color: $primary-grey;
+    }
+
+    button{
+        position: fixed;
+        right: 80px;
+        bottom: 80px;
     }
 }
 

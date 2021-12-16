@@ -90,7 +90,9 @@ $my-theme: mat.define-light-theme((
 //------------important colors---------------
 $primary-purple : map-get($map: $md-myprimarypalette, $key: 500);
 $primary-pink: map-get($map: $md-myprimarypalette, $key: A700);
+$primary-orange: map-get($map: $md-mysecondarypalette, $key: 500);
 $primary-grey : #707070;
 
 // Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($my-theme);
+@include mat.button-theme($my-theme);
