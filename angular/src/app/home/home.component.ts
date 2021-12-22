@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Unit } from '../ngrx-store/models/unit';
+import { selectUnits, UnitsState } from '../ngrx-store/units.state';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  //units stream
+  units$: Observable<Unit[]>
+  constructor(private store: Store<UnitsState>) {
+    //connect units stream to units from units state
+    this.units$ = this.store.select(selectUnits);
+   }
 
   ngOnInit(): void {
   }
