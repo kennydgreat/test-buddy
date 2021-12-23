@@ -1,0 +1,14 @@
+<div id="View Root" class="view-root">
+
+    <p id="Units Heading">Units</p>
+
+    <div id="Unit List" *ngFor="let unit  of this.units$ | async">
+        <app-units-list-item [unit]="unit"></app-units-list-item>
+        
+       
+    </div>
+
+    <button id="create-unit-button" mat-fab color="primary" aria-label="create a unit">
+        <mat-icon class="md-24">add</mat-icon>
+      </button>
+</div>

@@ -1,0 +1,116 @@
+@import "../theme.scss";
+
+div.view-root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    width: fit-content;
+    padding: 15px;
+    background-color: white;
+    border-radius: 13px;
+
+    div.name-and-concepts-number {
+        display: flex;
+        width: 213px;
+        flex-direction: column;
+        row-gap: 7px;
+
+        p.concept-name {
+            font-family: Josefin Sans;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 0px;
+            color: $primary-grey;
+        }
+
+        p.concepts-number {
+            font-family: Josefin Sans;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0px;
+            color: $primary-grey;
+        }
+    }
+
+    div.button-tray {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        column-gap: 20px;
+
+        div {
+            display: flex;
+            align-items: center;
+            column-gap: 5px;
+
+            mat-icon {
+                width: 15px;
+                height: 15px;
+                padding: 0px;
+                margin: 0px;
+
+                //color varaitions
+                &.edit-icon {
+                    color: $primary-grey;
+                }
+
+                &.study-icon {
+                    color: $primary-orange;
+                }
+
+                &.delete-icon {
+                    color: #b12d2d;
+                }
+            }
+
+            p {
+                font-family: Roboto;
+                margin: 0px;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 14px;
+                line-height: 15px;
+
+                &.edit {
+                    color: $primary-grey;
+                }
+
+                &.study {
+                    color: $primary-orange;
+                }
+
+                &.delete {
+                    color: #b12d2d;
+                }
+            }
+        }
+    }
+
+    div.take-test {
+        display: flex;
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
+        column-gap: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        background-color: $primary-pink;
+        border-radius: 20px;
+
+        mat-icon {
+            color: white;
+            height: 18px;
+            width: 18px;
+        }
+
+        p {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 0px;
+            margin: 0px;
+            color: white;
+        }
+    }
+}

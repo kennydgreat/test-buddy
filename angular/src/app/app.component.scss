@@ -1,0 +1,106 @@
+@import "./theme.scss";
+
+.nav-bar-root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    left: 0;
+    width: 100%; /* Full width */
+}
+
+.nav-bar-menu {
+    display: flex;
+    /* so the menu items will wrap on smaller screen*/
+    flex-wrap: wrap;
+    column-gap: 100px;
+    overflow: hidden;
+    padding: 10px 20px 10px 20px; /*top right bottom left*/
+    background-color: $primary-purple;
+    width: 100%;
+}
+
+.app-name {
+    font-family: Josefin Sans;
+    font-style: normal;
+    font-weight: bold;
+    color: white;
+    font-size: 15px;
+}
+
+/*setting the size ofthe side menu*/
+mat-sidenav {
+    width: 200px;
+    height: 100%;
+    background-color: #f4f3f3;
+}
+
+mat-sidenav-container {
+    margin-top: 35px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-sidenav {
+    display: flex;
+    flex-direction: column;
+}
+
+div.side-nav-menu {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+div.side-menu-item {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 50px;
+    height: 36px;
+
+    &:hover, &:active  {
+        background-color: $primary-pink;
+    }
+}
+
+div.side-menu-item-active{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-left: 50px;
+    height: 36px;
+    background-color: $primary-pink;
+}
+
+p.side-menu-item {
+    font-family: Josefin Sans;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 5px;
+    color: $primary-grey;
+}
+
+p.side-menu-item-active {
+    font-family: Josefin Sans;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px;
+    padding-top: 5px;
+    color: white;
+}
+
+
+mat-icon.side-menu-item {
+    color: $primary-grey;
+}
+
+mat-icon.side-menu-item-active {
+    color: white;
+}
