@@ -2,19 +2,9 @@
 
     <p id="Units Heading">Units</p>
 
-    <div id="Unit List">
+    <div id="Unit List" *ngFor="let unit  of this.units$ | async">
+        <app-units-list-item [unit]="unit"></app-units-list-item>
         
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-        <app-units-list-item></app-units-list-item>
-
        
     </div>
 

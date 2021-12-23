@@ -5,6 +5,10 @@ export interface UnitsState {
     units : Unit[]
 }
 
+export interface AppState {
+    units: UnitsState
+}
+
 // initial state
 
 export const initialState : UnitsState = {
@@ -12,4 +16,4 @@ export const initialState : UnitsState = {
 }
 
 // units selector
-export const selectUnits = createSelector((state: UnitsState) => state, (state: UnitsState) => state.units );
+export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => units.units );

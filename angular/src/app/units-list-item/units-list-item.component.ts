@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Unit } from '../ngrx-store/models/unit';
 
 @Component({
   selector: 'app-units-list-item',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnitsListItemComponent implements OnInit {
 
+  @Input() unit: Unit
   constructor() { }
 
   ngOnInit(): void {
