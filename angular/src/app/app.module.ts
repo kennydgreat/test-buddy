@@ -12,7 +12,7 @@ import { UnitsListItemComponent } from './units-list-item/units-list-item.compon
 import { StoreModule } from '@ngrx/store';
 import { unitsReducer } from './ngrx-store/unit.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { AppDataEffects } from './ngrx-store/data-effects';
+import { AppDataEffects } from './ngrx-store/app-data-effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 
