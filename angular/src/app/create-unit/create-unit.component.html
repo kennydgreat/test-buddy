@@ -1,0 +1,17 @@
+<div id="root-view" class="view-root">
+    <div class="details-panel">
+        <p class="page-title">Create a Unit</p>
+
+        <p class="field-labels">Name</p>
+        <textarea class="name-field" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4">
+        </textarea>
+        <p class="field-labels">Description</p>
+        <textarea class="description-field" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="8" [cdkAutosizeMaxRows]="12">
+        </textarea>
+    </div>
+    <div class="concept-map">
+        <div class="close-button">
+            <mat-icon (click)="closeDialog()" class="md-24 edit-icon">close</mat-icon>
+        </div>
+    </div>
+</div>

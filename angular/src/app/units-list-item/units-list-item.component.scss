@@ -18,7 +18,7 @@ div.view-root {
         p.concept-name {
             font-family: Josefin Sans;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             margin: 0px;
             color: $primary-grey;
         }
@@ -26,7 +26,7 @@ div.view-root {
         p.concepts-number {
             font-family: Josefin Sans;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
             margin: 0px;
             color: $primary-grey;
         }
@@ -42,6 +42,7 @@ div.view-root {
             display: flex;
             align-items: center;
             column-gap: 5px;
+            cursor: pointer;
 
             mat-icon {
                 width: 15px;
@@ -55,7 +56,7 @@ div.view-root {
                 }
 
                 &.study-icon {
-                    color: $primary-orange;
+                    color: $accent-orange;
                 }
 
                 &.delete-icon {
@@ -76,7 +77,7 @@ div.view-root {
                 }
 
                 &.study {
-                    color: $primary-orange;
+                    color: $accent-orange;
                 }
 
                 &.delete {
@@ -96,6 +97,7 @@ div.view-root {
         padding-bottom: 5px;
         background-color: $primary-pink;
         border-radius: 20px;
+        cursor: pointer;
 
         mat-icon {
             color: white;

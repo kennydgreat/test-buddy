@@ -15,10 +15,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppDataEffects } from './ngrx-store/app-data-effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CreateUnitComponent } from './create-unit/create-unit.component';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent],
-  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, StoreModule.forRoot({units: unitsReducer}), EffectsModule.forRoot([AppDataEffects]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent],
+  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, StoreModule.forRoot({units: unitsReducer}), EffectsModule.forRoot([AppDataEffects]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -37,7 +37,7 @@ mat-sidenav {
 }
 
 mat-sidenav-container {
-    margin-top: 35px;
+    margin-top: $top-bar-height;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -63,6 +63,7 @@ div.side-menu-item {
     column-gap: 10px;
     padding-left: 50px;
     height: 36px;
+    cursor: pointer;
 
     &:hover, &:active  {
         background-color: $primary-pink;

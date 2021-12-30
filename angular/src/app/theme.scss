@@ -28,8 +28,8 @@ $md-myprimarypalette: (
     200 : #d19bda,
     300 : #be73cb,
     400 : #b055bf,
-    500 : #a237b4,
-    600 : #9a31ad,
+    500 : #D358E7,
+    600 : #a237b4,
     700 : #902aa4,
     800 : #86239c,
     900 : #75168c,
@@ -88,11 +88,15 @@ $my-theme: mat.define-light-theme((
 ));
 
 //------------important colors---------------
-$primary-purple : map-get($map: $md-myprimarypalette, $key: 500);
-$primary-pink: map-get($map: $md-myprimarypalette, $key: A700);
-$primary-orange: map-get($map: $md-mysecondarypalette, $key: 500);
+$primary-purple : map-get($map: $md-myprimarypalette, $key: 600);
+$primary-pink: map-get($map: $md-myprimarypalette, $key: 500);
+$accent-orange: map-get($map: $md-mysecondarypalette, $key: 500);
 $primary-grey : #707070;
+
+//---other varaibles
+$top-bar-height: 35px;
 
 // Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($my-theme);
 @include mat.button-theme($my-theme);
+
