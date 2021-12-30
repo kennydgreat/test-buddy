@@ -70,7 +70,7 @@ div.view-root {
         }
     }
 
-    div.concept-map{
+    div.concept-map {
         display: flex;
         flex-direction: column;
         padding-left: 45px;
@@ -78,7 +78,7 @@ div.view-root {
         padding-right: 20px;
         width: 100%;
 
-        div.close-button{
+        div.close-button {
             display: flex;
             justify-content: flex-end;
             width: 100%;
@@ -87,7 +87,14 @@ div.view-root {
                 cursor: pointer;
             }
         }
+
+        button.add-concept-button {
+            position: fixed;
+            right: 80px;
+            bottom: 80px;
+            mat-icon {
+                color: white;
+            }
+        }
     }
 }
-
-

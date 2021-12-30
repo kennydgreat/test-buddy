@@ -3,15 +3,19 @@
         <p class="page-title">Create a Unit</p>
 
         <p class="field-labels">Name</p>
-        <textarea class="name-field" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4">
+        <textarea class="name-field"  [(ngModel)]="unit.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4">
         </textarea>
         <p class="field-labels">Description</p>
-        <textarea class="description-field" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="8" [cdkAutosizeMaxRows]="12">
+        <textarea class="description-field" [(ngModel)]="unit.description" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="8" [cdkAutosizeMaxRows]="12">
         </textarea>
     </div>
     <div class="concept-map">
         <div class="close-button">
             <mat-icon (click)="closeDialog()" class="md-24 edit-icon">close</mat-icon>
         </div>
+        <button id="add-concept-button" class="add-concept-button" mat-mini-fab color="primary" (click)="addConcept()" aria-label="create a unit" >
+            <mat-icon class="md-24">add</mat-icon>
+          </button>
+          <app-concept-viewer *ngFor="let concept of unit.concepts" [concept]="concept"></app-concept-viewer>
     </div>
 </div>

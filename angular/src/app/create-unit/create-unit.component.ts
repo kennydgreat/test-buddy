@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ConceptHelper } from '../ngrx-store/concept-helper';
+import { Unit } from '../ngrx-store/models/unit';
+import { UnitHelper } from '../ngrx-store/unit-helper';
 
 @Component({
   selector: 'app-create-unit',
@@ -8,7 +11,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateUnitComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>) { }
+  unit: Unit
+  unitHelper: UnitHelper = new UnitHelper();
+  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>) {
+    this.unit = this.unitHelper.createNewUnit();
+   }
 
   ngOnInit(): void {
   }
@@ -16,6 +23,11 @@ export class CreateUnitComponent implements OnInit {
   // closes dialog using injected dialog ref 
   closeDialog(){
     this.dialogRef.close();
+  }
+
+  //adding a concept
+  addConcept(){
+    this.unit.concepts.push(this.unitHelper.createNewRootConcept());
   }
 
 }

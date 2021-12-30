@@ -1,5 +1,6 @@
 
 export interface Concept {
+    id: string;
     name: string;
     parent: Concept | undefined;
     hasOrderedSubconcepts: boolean
