@@ -5,6 +5,7 @@ import { exhaustMap, map } from "rxjs/operators";
 import { AppDataService } from "../units-service/app-data.service";
 import { Unit } from "./models/unit";
 import { getUnitsSuccess } from "./unit.reducer";
+import { UnitDictionary } from "./units.state";
 
 //responsible for listening for data retrivial actions, completing request using service and firing the right action to the store when done.
 @Injectable()
@@ -26,7 +27,7 @@ export class AppDataEffects{
         
             map(
                 // dispatch getUnitsSuccess action when service observable done, passing returned units
-               ( units: Unit[]) => getUnitsSuccess({units}))
+               ( units: UnitDictionary) => getUnitsSuccess({units}))
         ))
     ));
 

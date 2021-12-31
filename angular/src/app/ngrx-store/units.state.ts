@@ -1,8 +1,11 @@
 import { createSelector } from "@ngrx/store";
 import { Unit } from "./models/unit";
 
+export interface UnitDictionary {
+    [key: string]: Unit;
+}
 export interface UnitsState {
-    units : Unit[]
+    units : UnitDictionary
 }
 
 export interface AppState {
@@ -12,8 +15,8 @@ export interface AppState {
 // initial state
 
 export const initialState : UnitsState = {
-    units: []
+    units: {}
 }
 
 // units selector
-export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => units.units );
+export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => Object.values(units.units) );
