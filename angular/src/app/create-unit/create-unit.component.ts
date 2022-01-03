@@ -1,11 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard-changes-dialog.component';
 import { ConceptHelper } from '../ngrx-store/concept-helper';
 import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
-import { conceptAdded } from '../ngrx-store/unit.reducer';
+import { conceptAdded, deleteUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/units.state';
 
 @Component({
@@ -31,7 +32,7 @@ export class CreateUnitComponent implements OnInit {
 
   unit: Unit
   unitHelper: UnitHelper = new UnitHelper();
-  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>) {
+  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog) {
     this.unit = this.unitHelper.createNewUnit();
    }
 
@@ -40,7 +41,19 @@ export class CreateUnitComponent implements OnInit {
 
   // closes dialog using injected dialog ref 
   closeDialog(){
-    this.dialogRef.close();
+    // open discard changes dialog
+    const discardChangesdialogRef = this.discardChangesDialog.open(DiscardChangesDialogComponent);
+
+    //on close button call button
+    discardChangesdialogRef.afterClosed().subscribe((discardChanges: boolean) => {
+      if(discardChanges){
+
+        // delete unit 
+        this.store.dispatch(deleteUnit({id: this.unit.id}));
+        // close the dialog
+        this.dialogRef.close();
+      }
+    });
   }
 
   //adding a concept

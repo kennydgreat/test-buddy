@@ -10,6 +10,8 @@ export const getUnitsSuccess = createAction('units/getunitsSuccess', props<{unit
 // This action is to unit (or the unit's changes if it already exist) in the store
 export const conceptAdded = createAction('units/conceptAdded', props<{unit: Unit}>());
 
+export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
+
 //------------Units state Reducer---------------
 
 const _unitsReducer = createReducer(initialState, 
@@ -28,6 +30,13 @@ const _unitsReducer = createReducer(initialState,
     newState.units[action.unit.id] = action.unit;
     return newState;
    }),
+   on(deleteUnit, (state, action) =>{
+       //delete unit with id
+       var newState = {...state};
+       newState.units = {...state.units};
+       delete newState.units[action.id] ;
+       return newState
+   })
     );
 
    

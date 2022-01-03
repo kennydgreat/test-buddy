@@ -1,0 +1,14 @@
+<div id="view-root" class="view-root">
+    <p class="title">Discard unsaved changes?</p>
+    <div id="buttons-tray" class="button-tray">
+        <div (click)="cancel()" id="cancel-button">
+            <mat-icon  class="material-icons.md-18 cancel-icon">cancel</mat-icon>
+            <p class="cancel">Cancel</p>
+        </div>
+
+        <div (click)="discardChanges()" id="discard-button">
+            <mat-icon class="material-icons.md-18 discard-icon">delete</mat-icon>
+            <p class="discard">Discard</p>
+        </div>
+    </div>
+</div>

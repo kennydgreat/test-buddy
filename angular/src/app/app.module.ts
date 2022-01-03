@@ -20,10 +20,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { CreateUnitComponent } from './create-unit/create-unit.component';
 import {MatInputModule} from '@angular/material/input';
 import { ConceptViewerComponent } from './concept-viewer/concept-viewer.component';
+import { DiscardChangesDialogComponent } from './discard-changes-dialog/discard-changes-dialog.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, StoreModule.forRoot({units: unitsReducer}), EffectsModule.forRoot([AppDataEffects]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,68 @@
+@import '../theme.scss';
+
+div.view-root {
+    display: flex;
+    flex-direction: column;
+    row-gap: 38px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+
+    p.title {
+        font-family: Josefin Sans;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        width: 100%;
+        line-height: 20px;
+        text-align: center;
+        margin: 0px;
+        color: $primary-grey;
+    }
+
+    div.button-tray {
+        display: flex;
+        column-gap: 86px;
+
+        div{
+            display: flex;
+            align-items: flex-end;
+            width: fit-content;
+            column-gap: 10px;
+            cursor: pointer;
+
+
+            mat-icon {
+    
+                //color variations
+                &.cancel-icon {
+                    color: #a6a6a6;
+                }
+    
+                &.discard-icon {
+                    color: #b12d2d;
+                }
+            }
+    
+            p {
+                font-family: Josefin Sans;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 18px;
+                margin: 0px;
+                padding: 0px;
+    
+                &.cancel {
+                    color: #a6a6a6;
+                }
+    
+                &.discard {
+                    color: #b12d2d;
+                }
+            }
+        }
+
+        
+    }
+}
