@@ -6,7 +6,7 @@ export class ConceptHelper{
     createNewConcept(parent: Concept | undefined): Concept{
         return {
             id : timeStampUUID(),
-            name: "",
+            name: "Testing this thing baby come on",
             parent: parent ,
             hasOrderedSubconcepts: false,
             subconcepts: [],

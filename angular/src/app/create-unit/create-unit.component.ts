@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -10,7 +11,21 @@ import { AppState } from '../ngrx-store/units.state';
 @Component({
   selector: 'app-create-unit',
   templateUrl: './create-unit.component.html',
-  styleUrls: ['./create-unit.component.scss']
+  styleUrls: ['./create-unit.component.scss'],
+  animations:[
+    // the animation for added root concepts, the view is fades in
+    trigger('scaleUpRightEnter', [
+      // the transition for inserted concept viewer, which makes the view fade in
+      transition(':enter', [
+        style({
+          opacity: 0,
+        }),
+        animate('100ms', style({
+          opacity: 1,
+        }))
+      ])
+    ])
+  ]
 })
 export class CreateUnitComponent implements OnInit {
 

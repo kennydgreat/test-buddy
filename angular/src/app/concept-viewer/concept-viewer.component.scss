@@ -1,0 +1,78 @@
+@import "../theme.scss";
+
+div.view-root {
+    display: flex;
+
+    div.concept-card-default {
+        display: flex;
+        flex-direction: column;
+        row-gap: 4px;
+        align-items: center;
+        padding: 7px;
+        padding-bottom: 5px;
+        background: #e8e8e8;
+        border-radius: 11px;
+
+        div.concept-name-and-connect-point {
+            display: flex;
+            row-gap: 2px;
+            align-items: center;
+            column-gap: 7px;
+
+            div.concept-name {
+                display: flex;
+                padding: 5px;
+                padding-left: 7px;
+                padding-bottom: 3px;
+                width: 126px;
+                align-items: center;
+                background-color: white;
+                border-radius: 5px;
+
+                p.concept-name {
+                    margin: 0px;
+                    font-family: Josefin Sans;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 12px;
+                    line-height: 11px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+
+                    color: $primary-grey;
+                }
+            }
+
+            div.connection-point{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0px;
+                height: 17px;
+                width: 17px;
+                border-radius: 50%;
+                background-color: white;
+            }
+            
+            mat-icon{
+                font-size: 11px;
+                width: 12px;
+                height: 12px;
+                color: $primary-pink;
+            }
+        }
+
+        div.ellipsis{
+            display: flex;
+            column-gap: 2px;
+
+            div{
+                height: 2px;
+                width: 2px;
+                background-color: $primary-grey;
+                border-radius: 50%;
+            }
+        }
+    }
+}
