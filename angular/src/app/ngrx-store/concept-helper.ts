@@ -16,4 +16,21 @@ export class ConceptHelper{
             numberOfSubConcpetsWithSubconcepts: 0
         };
     }
+    // determines if a concept holds no data
+    isConceptEmpty(concept: Concept): boolean{
+        // check that the name and definition
+        if (concept.name.length > 0 || concept.definition.length > 0){
+            //either or both not empty
+            return false;
+        }
+        // check the concept's subconcepts
+        for(var i = 0; i < concept.subconcepts.length; i++){
+            if (!this.isConceptEmpty(concept.subconcepts[i])){
+                // the current is not empty so the parent concept is not empty
+                return false; 
+            }
+        }
+
+       return true;
+    }
 }

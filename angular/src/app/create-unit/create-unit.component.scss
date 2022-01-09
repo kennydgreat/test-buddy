@@ -69,6 +69,44 @@ div.view-root {
             color: #707070;
             outline: none;
         }
+
+        div.done-button-div{
+            display: flex;
+            justify-content: center;
+
+            div.done-button {
+                display: flex;
+                column-gap: 10px;
+                width: fit-content;
+                background-color: $primary-pink;
+                border-radius: 5px;
+                justify-content: center;
+                align-items: center;
+                margin-top: 40px;
+                padding: 5px;
+                padding-left: 30px;
+                padding-right: 30px;
+                cursor: pointer;
+    
+                mat-icon {
+                    font-size: 24px;
+                    color: white;
+                    height: 24px;
+                    width: 24px;
+                }
+    
+                p {
+                    font-family: Roboto;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 14px;
+                    line-height: 16px;
+                    margin: 0px;
+                    padding: 0px;
+                    color: white;
+                }
+            }
+        }
     }
 
     div.concept-map {

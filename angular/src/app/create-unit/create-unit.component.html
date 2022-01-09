@@ -1,21 +1,36 @@
 <div id="root-view" class="view-root">
-    <div class="details-panel">
-        <p class="page-title">Create a Unit</p>
+    <div id="details-panel" class="details-panel">
+        <p id="page-title" class="page-title">Create a Unit</p>
 
-        <p class="field-labels">Name</p>
-        <textarea class="name-field"  [(ngModel)]="unit.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4">
+        <p id="unit-name-label" class="field-labels">Name</p>
+        <textarea id="unit-name-field" class="name-field"  [(ngModel)]="unit.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (change)="unitDetailsChange()">
         </textarea>
-        <p class="field-labels">Description</p>
-        <textarea class="description-field" [(ngModel)]="unit.description" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="8" [cdkAutosizeMaxRows]="12">
+
+
+        <p id="unit-description-label" class="field-labels">Description</p>
+        <textarea id="unit-description-field" class="description-field" [(ngModel)]="unit.description" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="8" [cdkAutosizeMaxRows]="12" (change)="unitDetailsChange()">
         </textarea>
+
+        <div id="done-button-div" class="done-button-div">
+            <div id="done-button" class="done-button" (click)="done()">
+                <mat-icon>
+                    done
+                </mat-icon>
+                <p>
+                    Done
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="concept-map">
-        <div class="close-button">
+    <div id="concept-map" class="concept-map">
+        <div id="close-button-div" class="close-button">
             <mat-icon (click)="closeDialog()" class="md-24 edit-icon">close</mat-icon>
         </div>
+
         <button id="add-concept-button" class="add-concept-button" mat-mini-fab color="primary" (click)="addConcept()" aria-label="create a unit" >
             <mat-icon class="md-24">add</mat-icon>
           </button>
+
           <!-- animation "scaleUpRightEnter" is triggered anything a app-concept-viewer is added to the dom, trigger name and ngFor combine to make this happen-->
           <app-concept-viewer @scaleUpRightEnter *ngFor="let concept of unit.concepts" [concept]="concept"></app-concept-viewer>
     </div>

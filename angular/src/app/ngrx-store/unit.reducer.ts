@@ -7,10 +7,11 @@ import { initialState, UnitDictionary, UnitsState } from "./units.state";
 // This action is triggered by AppDataServer when units is retrieved from localstorage
 export const getUnitsSuccess = createAction('units/getunitsSuccess', props<{units: UnitDictionary}>());
 
-// This action is to unit (or the unit's changes if it already exist) in the store
-export const conceptAdded = createAction('units/conceptAdded', props<{unit: Unit}>());
+// This action triggers the unit to the updated in store
+export const updateUnit = createAction('units/updateUnit', props<{unit: Unit}>());
 
 export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
+
 
 //------------Units state Reducer---------------
 
@@ -23,7 +24,7 @@ const _unitsReducer = createReducer(initialState,
         newState.units = action.units;
         return newState;
     }),
-   on(conceptAdded, (state, action) =>{
+   on(updateUnit, (state, action) =>{
     // update unit or add it to units dictionary
     var newState = {...state};
     newState.units = {...state.units};
