@@ -1,97 +1,104 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 @include mat.core();
 
-
 //------------Palettes-------------------------
 
-$myprimary-contrast : (
-    50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #ffffff,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
+$myprimary-contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
 );
 
 $md-myprimarypalette: (
-    50 : #f4e7f6,
-    100 : #e3c3e9,
-    200 : #d19bda,
-    300 : #be73cb,
-    400 : #b055bf,
-    500 : #D358E7,
-    600 : #a237b4,
-    700 : #902aa4,
-    800 : #86239c,
-    900 : #75168c,
-    A100 : #f2c2ff,
-    A200 : #e78fff,
-    A400 : #dc5cff,
-    A700 : #D358E7,
-    contrast: $myprimary-contrast
-
+    50: #f4e7f6,
+    100: #e3c3e9,
+    200: #d19bda,
+    300: #be73cb,
+    400: #b055bf,
+    500: #d358e7,
+    600: #a237b4,
+    700: #902aa4,
+    800: #86239c,
+    900: #75168c,
+    A100: #f2c2ff,
+    A200: #e78fff,
+    A400: #dc5cff,
+    A700: #d358e7,
+    contrast: $myprimary-contrast,
 );
-
 
 $md-mysecondarypalette: (
-    50 : #fff0e0,
-    100 : #ffdab3,
-    200 : #ffc180,
-    300 : #ffa84d,
-    400 : #ff9626,
-    500 : #ff8300,
-    600 : #ff7b00,
-    700 : #ff7000,
-    800 : #ff6600,
-    900 : #ff5300,
-    A100 : #ffffff,
-    A200 : #fff6f2,
-    A400 : #ffd0bf,
-    A700 : #ffbda6,
+    50: #fff0e0,
+    100: #ffdab3,
+    200: #ffc180,
+    300: #ffa84d,
+    400: #ff9626,
+    500: #ff8300,
+    600: #ff7b00,
+    700: #ff7000,
+    800: #ff6600,
+    900: #ff5300,
+    A100: #ffffff,
+    A200: #fff6f2,
+    A400: #ffd0bf,
+    A700: #ffbda6,
     contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #000000,
-        600 : #000000,
-        700 : #000000,
-        800 : #000000,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
+        50: #000000,
+        100: #000000,
+        200: #000000,
+        300: #000000,
+        400: #000000,
+        500: #000000,
+        600: #000000,
+        700: #000000,
+        800: #000000,
+        900: #ffffff,
+        A100: #000000,
+        A200: #000000,
+        A400: #000000,
+        A700: #000000,
+    ),
 );
 
-
-$my-primary: mat.define-palette($md-myprimarypalette, 500, 300,900);
+$my-primary: mat.define-palette($md-myprimarypalette, 500, 300, 900);
 $my-accent: mat.define-palette($md-mysecondarypalette, 500, 300, 900);
 
 //----------Themes----------------------------
-$my-theme: mat.define-light-theme((
- color: (
-   primary: $my-primary,
-   accent: $my-accent,
- )
-));
+$my-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $my-primary,
+            accent: $my-accent,
+        ),
+    )
+);
 
 //------------important colors---------------
-$primary-purple : map-get($map: $md-myprimarypalette, $key: 600);
-$primary-pink: map-get($map: $md-myprimarypalette, $key: 500);
-$accent-orange: map-get($map: $md-mysecondarypalette, $key: 500);
-$primary-grey : #707070;
+$primary-purple: map-get(
+    $map: $md-myprimarypalette,
+    $key: 600,
+);
+$primary-pink: map-get(
+    $map: $md-myprimarypalette,
+    $key: 500,
+);
+$accent-orange: map-get(
+    $map: $md-mysecondarypalette,
+    $key: 500,
+);
+$primary-grey: #707070;
 
 //---other varaibles
 $top-bar-height: 35px;
@@ -99,4 +106,5 @@ $top-bar-height: 35px;
 // Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($my-theme);
 @include mat.button-theme($my-theme);
+
 

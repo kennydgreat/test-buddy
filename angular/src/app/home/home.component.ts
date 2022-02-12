@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-data-file-view.component';
 import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppDataEffects } from '../ngrx-store/app-data-effects';
 import { Unit } from '../ngrx-store/models/unit';
@@ -19,19 +20,20 @@ export class HomeComponent implements OnInit {
   units: Unit[]
 
   
-  constructor(private store: Store<AppState>, public createUnitDialog: MatDialog) {
+  constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog) {
     //connect units stream to units from units state
     this.units$ = this.store.select(selectUnitsList);
    }
 
   ngOnInit(): void {
     //dispatchs action to get units from storage
-    this.store.dispatch(AppDataEffects.getUnitsFromStorage());
+    //this.store.dispatch(AppDataEffects.getUnitsFromStorage());
+    this.openChooseDataFileDialog();
   }
 
   //opens the create unit dialog
-  openDialog(): void{
-    const dialogRef = this.createUnitDialog.open(CreateUnitComponent,{
+  openCreateUnitDialog(): void{
+    const createUnitdialogRef = this.createUnitDialog.open(CreateUnitComponent,{
       // to make dialog full-screen
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -41,6 +43,10 @@ export class HomeComponent implements OnInit {
       panelClass: 'full-screen-dialog'
     });
 
+  }
+
+  openChooseDataFileDialog(): void{
+    const chooseDataFileDialogRef = this.choseDataFileDialog.open(ChooseDataFileViewComponent);
   }
 
 }
