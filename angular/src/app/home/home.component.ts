@@ -7,6 +7,7 @@ import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppDataEffects } from '../ngrx-store/app-data-effects';
 import { Unit } from '../ngrx-store/models/unit';
 import { AppState, selectUnits as selectUnitsList, UnitsState } from '../ngrx-store/units.state';
+import { AppDataService } from '../units-service/app-data.service';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +21,10 @@ export class HomeComponent implements OnInit {
   units: Unit[]
 
   
-  constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog) {
+  constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog, public appDataService: AppDataService) {
     //connect units stream to units from units state
     this.units$ = this.store.select(selectUnitsList);
+    
    }
 
   ngOnInit(): void {

@@ -3,7 +3,7 @@
     <p id="Units Heading">Units</p>
 
     <div id="Unit List" >
-        <app-units-list-item *ngFor="let unit  of this.units$ | async" [unit]="unit"></app-units-list-item>
+        <app-units-list-item *ngFor="let unit  of units$ | async" [unit]="unit"></app-units-list-item>
         
        
     </div>

@@ -5,7 +5,7 @@ export interface UnitDictionary {
     [key: string]: Unit;
 }
 export interface UnitsState {
-    units : UnitDictionary
+    unitsDictionary : UnitDictionary
 }
 
 export interface AppState {
@@ -15,8 +15,8 @@ export interface AppState {
 // initial state
 
 export const initialState : UnitsState = {
-    units: {}
+    unitsDictionary: {}
 }
 
 // units selector
-export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => Object.values(units.units) );
+export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => Object.values(units.unitsDictionary) );

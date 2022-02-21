@@ -8,6 +8,7 @@ import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { updateUnit, deleteUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/units.state';
+import { AppDataService } from '../units-service/app-data.service';
 
 @Component({
   selector: 'app-create-unit',
@@ -32,7 +33,7 @@ export class CreateUnitComponent implements OnInit {
 
   unit: Unit
   unitHelper: UnitHelper = new UnitHelper();
-  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog) {
+  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog, private appDataService: AppDataService) {
     this.unit = this.unitHelper.createNewUnit();
    }
 
@@ -70,6 +71,9 @@ export class CreateUnitComponent implements OnInit {
   addConcept(){
     // add new concepts by recreating concept array
     this.unit = this.unitHelper.addNewRootConcept(this.unit);
+//****DELETE AFTER */
+    //this.appDataService.unitsDictionary[this.unit.id] = this.unit;
+
     // save the change in the store by creating a new unit.
     this.store.dispatch(updateUnit({unit: {...this.unit}}));
   }
@@ -88,6 +92,9 @@ export class CreateUnitComponent implements OnInit {
     }else{
       // update unit in store (unit changes should have been in the store anyway, this is to make ensure no changes are lost)
     this.store.dispatch(updateUnit({unit: {...this.unit}}));
+
+    //****DELETE AFTER */
+    //this.appDataService.unitsDictionary[this.unit.id] = this.unit;
     }
 
     // close the dialog

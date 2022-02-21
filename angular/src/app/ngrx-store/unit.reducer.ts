@@ -21,21 +21,21 @@ const _unitsReducer = createReducer(initialState,
     on(getUnitsSuccess, (state, action) =>{
         // update units with units from app data service
         var newState = {...state};
-        newState.units = action.units;
+        newState.unitsDictionary = action.units;
         return newState;
     }),
    on(updateUnit, (state, action) =>{
     // update unit or add it to units dictionary
     var newState = {...state};
-    newState.units = {...state.units};
-    newState.units[action.unit.id] = action.unit;
+    newState.unitsDictionary = {...state.unitsDictionary};
+    newState.unitsDictionary[action.unit.id] = action.unit;
     return newState;
    }),
    on(deleteUnit, (state, action) =>{
        //delete unit with id
        var newState = {...state};
-       newState.units = {...state.units};
-       delete newState.units[action.id] ;
+       newState.unitsDictionary = {...state.unitsDictionary};
+       delete newState.unitsDictionary[action.id] ;
        return newState
    })
     );
