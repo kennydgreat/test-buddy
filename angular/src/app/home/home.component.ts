@@ -42,7 +42,8 @@ export class HomeComponent implements OnInit {
       width: `100%`,
       height: `100%`,
       hasBackdrop: false,
-      panelClass: 'full-screen-dialog'
+      panelClass: 'full-screen-dialog',
+      disableClose: true
     });
 
   }

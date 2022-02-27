@@ -12,6 +12,8 @@ export const updateUnit = createAction('units/updateUnit', props<{unit: Unit}>()
 
 export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
 
+export const updateUnitsWithFileData = createAction('units/updateUnits', props<{units: UnitDictionary}>());
+
 
 //------------Units state Reducer---------------
 
@@ -37,6 +39,12 @@ const _unitsReducer = createReducer(initialState,
        newState.unitsDictionary = {...state.unitsDictionary};
        delete newState.unitsDictionary[action.id] ;
        return newState
+   }),
+   on(updateUnitsWithFileData, (state, action)=>{
+
+        var newState = {...state};
+        newState.unitsDictionary = action.units;
+        return newState
    })
     );
 

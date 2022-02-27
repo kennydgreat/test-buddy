@@ -71,8 +71,6 @@ export class CreateUnitComponent implements OnInit {
   addConcept(){
     // add new concepts by recreating concept array
     this.unit = this.unitHelper.addNewRootConcept(this.unit);
-//****DELETE AFTER */
-    //this.appDataService.unitsDictionary[this.unit.id] = this.unit;
 
     // save the change in the store by creating a new unit.
     this.store.dispatch(updateUnit({unit: {...this.unit}}));

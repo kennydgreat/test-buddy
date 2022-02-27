@@ -6,6 +6,7 @@ import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { AppState, UnitDictionary } from '../ngrx-store/units.state';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
+import { updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +19,11 @@ export class AppDataService {
   
   // App data file handle
   fileHandle: any;
-  unitsDictionary: UnitDictionary = {};
-  // units multicast observable, emits the current units dictionary as an array of units to all observers
-  $units: Subject<Unit[]> = new Subject<Unit[]>();
+  // app state observable
   appData$: Observable<AppState>;
   
   constructor(private store: Store<AppState>) {
-    //Add a unit to the unitDictionary
-    var unit = this.unitHelper.createNewUnit();
-    unit.name = "Subject";
-    this.unitsDictionary[unit.id] = unit;
-    this.$units.next(Object.values(this.unitsDictionary));
-
+    
     // get the app state and subscribe to state changes
     this.appData$ = store.select(state => state);
     this.appData$.subscribe(
@@ -42,21 +36,36 @@ export class AppDataService {
     );
    }
 
-// sets the file Handle 
-setFileHandle = async () => {
+/**
+ * Get file handle for data file
+ * @return {Void} 
+ */
+ async setFileHandle() {
   try{
     [this.fileHandle] = await getFileHandle();
   }
   catch(err){
-    this.reportError("error getting data file handle");
+    this.reportError(`error getting data file handle- > ${err}`);
   }
 }
 
+/**
+ * Get data from file and updates redux store with data
+ * @return {Void} 
+ */
+
+async updateStore() {
+  // set the file handle, this is where user picks file
+  await this.setFileHandle();
+  const appData = await this.getDataFromFile();
+  this.store.dispatch(updateUnitsWithFileData({units: appData.units.unitsDictionary}));
+
+}
 
 /**
  * Saves app data in file
  * @param {AppState} appData
- * @return {Void} Handle to the new file.
+ * @return {Void} 
  */
 
 async saveAppDataInFile(appData: AppState){
@@ -96,6 +105,7 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
 
 }
 
+
   //gets units 
   getUnits(){
     var unit = this.unitHelper.createNewUnit();
@@ -106,52 +116,6 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
       observer.next(units);
     });
 
-  }
-
-  // Units data multicast subscriber function, subscribes an observer to the observable created with this function
-  multicastUnitsSubscriber(){
-    // keep track of each observers
-    const observers : Observer<Unit[]>[] = [];
-
-    // the subscribe function
-    return (observer: Observer<Unit[]>) => {
-      // add observer to the list of observers
-      observers.push(observer);
-
-      if(observers.length === 1){
-        // this the first subscription, create the multicast observer
-
-        const multicastObserver: Observer<Unit[]> = {
-          next(units: Unit[]) {
-            // iterate through the observers and notify all subscriptions
-            observers.forEach(obs => obs.next(units));
-          },
-          error(){},
-          complete(){}
-        };
-        // function that turns units dictionary into  array (exploses units)
-        this.returnUnitsArray(multicastObserver);
-      }
-     
-      // return a subscription object which has a unsubcribe function which removes the observer from the observer array 
-      return {
-        unsubscribe(){
-          observers.splice(observers.indexOf(observer), 1);
-        }
-      }
-
-    }
-    
-  }
-
-  // exposes units dictionary values to observer as  array
-  returnUnitsArray(unitsObserver: Observer<Unit[]>){
-    unitsObserver.next(Object.values(this.unitsDictionary));
-  }
-
-  updateUnit(unit: Unit){
-    this.unitsDictionary[unit.id] = unit;
-  
   }
 
 /**

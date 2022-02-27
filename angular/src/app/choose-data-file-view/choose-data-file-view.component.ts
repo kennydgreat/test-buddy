@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppDataService } from '../units-service/app-data.service';
 
 @Component({
   selector: 'app-choose-data-file-view',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChooseDataFileViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private appDataService: AppDataService) { }
 
   ngOnInit(): void {
+  }
+
+  getFile(){
+    this.appDataService.updateStore();
   }
 
 }

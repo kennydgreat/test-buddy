@@ -40,6 +40,7 @@ export async function getFileHandle() {
   }
   // For Chrome 86 and later...
   if ('showOpenFilePicker' in window) {
+    // options for a json file
     const opts = {
       types: [{
         description: 'Json file',
