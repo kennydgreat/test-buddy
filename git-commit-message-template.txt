@@ -1,8 +1,5 @@
-Story: <link or issue #>
-Subject line (Summarize the change in less than 50 characters)
+Subject (summary of change, 50 characters)
 
-Because:
-- Explain the reasons you made this change
-- Make a new bullet for each reason
-- Each line should be under 72 characters, example below
-- This line is going to be 72 characters soon, okay now it is my friend!!!
+Body (explanation of why, wrap lines manaually at 72 characters)
+
+Issue ticket or Jira Ticket

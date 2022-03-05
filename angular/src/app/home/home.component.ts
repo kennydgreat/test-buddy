@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-data-file-view.component';
 import { CreateUnitComponent } from '../create-unit/create-unit.component';
-import { AppDataEffects } from '../ngrx-store/app-data-effects';
+import { AppState } from '../ngrx-store/app-state';
 import { Unit } from '../ngrx-store/models/unit';
-import { AppState, selectUnits as selectUnitsList, UnitsState } from '../ngrx-store/units.state';
+import { selectUnits as selectUnitsList } from '../ngrx-store/unit-state';
 import { AppDataService } from '../units-service/app-data.service';
 
 @Component({

@@ -1,4 +1,5 @@
 import { createSelector } from "@ngrx/store";
+import { AppState } from "./app-state";
 import { Unit } from "./models/unit";
 
 export interface UnitDictionary {
@@ -6,10 +7,6 @@ export interface UnitDictionary {
 }
 export interface UnitsState {
     unitsDictionary : UnitDictionary
-}
-
-export interface AppState {
-    units: UnitsState
 }
 
 // initial state

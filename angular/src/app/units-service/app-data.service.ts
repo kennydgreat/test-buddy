@@ -4,9 +4,10 @@ import { Observable, Observer, Subject } from 'rxjs';
 import { multicast } from 'rxjs/operators';
 import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
-import { AppState, UnitDictionary } from '../ngrx-store/units.state';
+import { UnitDictionary } from '../ngrx-store/unit-state';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
 import { updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
+import { AppState } from '../ngrx-store/app-state';
 
 @Injectable({
   providedIn: 'root'

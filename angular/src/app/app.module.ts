@@ -22,10 +22,11 @@ import {MatInputModule} from '@angular/material/input';
 import { ConceptViewerComponent } from './concept-viewer/concept-viewer.component';
 import { DiscardChangesDialogComponent } from './discard-changes-dialog/discard-changes-dialog.component';
 import { ChooseDataFileViewComponent } from './choose-data-file-view/choose-data-file-view.component';
+import { ErrorMessageViewerComponent } from './error-message-viewer/error-message-viewer.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, StoreModule.forRoot({units: unitsReducer}), EffectsModule.forRoot([AppDataEffects]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })

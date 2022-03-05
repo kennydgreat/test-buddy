@@ -5,7 +5,7 @@ import { exhaustMap, map } from "rxjs/operators";
 import { AppDataService } from "../units-service/app-data.service";
 import { Unit } from "./models/unit";
 import { getUnitsSuccess } from "./unit.reducer";
-import { UnitDictionary } from "./units.state";
+import { UnitDictionary } from "./unit-state";
 
 //responsible for listening for data retrivial actions, completing request using service and firing the right action to the store when done.
 @Injectable()

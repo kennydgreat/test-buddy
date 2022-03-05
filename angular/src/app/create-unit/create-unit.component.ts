@@ -7,7 +7,7 @@ import { ConceptHelper } from '../ngrx-store/concept-helper';
 import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { updateUnit, deleteUnit } from '../ngrx-store/unit.reducer';
-import { AppState } from '../ngrx-store/units.state';
+import { AppState } from '../ngrx-store/app-state';
 import { AppDataService } from '../units-service/app-data.service';
 
 @Component({
