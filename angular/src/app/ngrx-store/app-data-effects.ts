@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { createAction } from "@ngrx/store";
 import { exhaustMap, map } from "rxjs/operators";
-import { AppDataService } from "../units-service/app-data.service";
+import { AppDataService } from "../app-data-service/app-data.service";
 import { Unit } from "./models/unit";
 import { getUnitsSuccess } from "./unit.reducer";
 import { UnitDictionary } from "./unit-state";

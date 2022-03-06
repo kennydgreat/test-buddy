@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppDataService } from '../units-service/app-data.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AppDataService } from '../app-data-service/app-data.service';
 
 @Component({
   selector: 'app-choose-data-file-view',
@@ -8,13 +9,16 @@ import { AppDataService } from '../units-service/app-data.service';
 })
 export class ChooseDataFileViewComponent implements OnInit {
 
-  constructor(private appDataService: AppDataService) { }
+  constructor(private appDataService: AppDataService, private dialogRef: MatDialogRef<ChooseDataFileViewComponent>) { }
 
   ngOnInit(): void {
   }
 
-  getFile(){
-    this.appDataService.updateStore();
+  async getFile(){
+    //try to update 
+     await this.appDataService.updateStore();
+     this.dialogRef.close();
+     
   }
 
 }

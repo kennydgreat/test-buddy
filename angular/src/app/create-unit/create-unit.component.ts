@@ -8,7 +8,7 @@ import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { updateUnit, deleteUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
-import { AppDataService } from '../units-service/app-data.service';
+import { AppDataService } from '../app-data-service/app-data.service';
 
 @Component({
   selector: 'app-create-unit',

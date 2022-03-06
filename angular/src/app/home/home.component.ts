@@ -6,7 +6,7 @@ import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-dat
 import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppState, selectUnits } from '../ngrx-store/app-state';
 import { Unit } from '../ngrx-store/models/unit';
-import { AppDataService } from '../units-service/app-data.service';
+import { AppDataService } from '../app-data-service/app-data.service';
 
 @Component({
   selector: 'app-home',
