@@ -1,4 +1,5 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
+import { Error } from "./models/error-message";
 import { Unit } from "./models/unit";
 import { initialState, UnitDictionary, UnitsState } from "./unit-state";
 
@@ -12,8 +13,9 @@ export const updateUnit = createAction('units/updateUnit', props<{unit: Unit}>()
 
 export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
 
-export const updateUnitsWithFileData = createAction('units/updateUnits', props<{units: UnitDictionary}>());
+export const updateUnitsWithFileData = createAction('units/updateUnitsWithFileData', props<{units: UnitDictionary}>());
 
+export const reportError = createAction('units/reportError', props<{error: Error}>());
 
 //------------Units state Reducer---------------
 
@@ -45,6 +47,12 @@ const _unitsReducer = createReducer(initialState,
         var newState = {...state};
         newState.unitsDictionary = action.units;
         return newState
+   }), 
+   on(reportError, (state, action) => {
+
+    var newState = {...state};
+    newState.errorDictionary[action.error.time] = action.error;
+    return newState
    })
     );
 

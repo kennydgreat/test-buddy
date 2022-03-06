@@ -23,10 +23,11 @@ import { ConceptViewerComponent } from './concept-viewer/concept-viewer.componen
 import { DiscardChangesDialogComponent } from './discard-changes-dialog/discard-changes-dialog.component';
 import { ChooseDataFileViewComponent } from './choose-data-file-view/choose-data-file-view.component';
 import { ErrorMessageViewerComponent } from './error-message-viewer/error-message-viewer.component';
+import { ErrorMessageViewComponent } from './error-message-view/error-message-view.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, StoreModule.forRoot({units: unitsReducer}), EffectsModule.forRoot([AppDataEffects]), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })

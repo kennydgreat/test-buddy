@@ -1,0 +1,49 @@
+@import "./../theme.scss";
+
+div.view-root{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FCEDE9;
+    column-gap: 20px;
+    mat-icon.error-icon{
+        font-size: 30px;
+        width: 30px;
+        height: 30px;
+        color: #E74C3D;
+    }
+    mat-icon.close-icon{
+        font-size: 15px;
+        width: 15px;
+        height: 15px;
+        color: $primary-grey;
+    }
+
+    div.error-title-and-body{
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+
+        p {
+            width: fit-content;
+            margin: 0px;
+    
+            &.title {
+                font-family: Josefin Sans;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 13px;
+                color: $primary-grey;
+            }
+    
+            &.text {
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 11px;
+                color: $primary-grey;
+            }
+        }
+    }
+}
