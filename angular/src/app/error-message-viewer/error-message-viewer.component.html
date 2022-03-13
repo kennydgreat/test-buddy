@@ -1,5 +1,3 @@
 <div id="view-root" class="view-root">
-    <app-error-message-view></app-error-message-view>
-    <app-error-message-view></app-error-message-view>
-    <app-error-message-view></app-error-message-view>
+    <app-error-message-view *ngFor="let error of errorMessages$ |async" [error]="error"></app-error-message-view>
 </div>

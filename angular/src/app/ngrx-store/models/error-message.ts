@@ -1,8 +1,10 @@
 export interface Error {
-    textError: string;
+    title: string;
+    message: string
     show: boolean;
     time: string;
     actionType: string;
+    id: string;
 }
 
 export interface ErrorDictionary {

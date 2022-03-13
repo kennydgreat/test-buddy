@@ -7,6 +7,7 @@ import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppState, selectUnits } from '../ngrx-store/app-state';
 import { Unit } from '../ngrx-store/models/unit';
 import { AppDataService } from '../app-data-service/app-data.service';
+import { reportError, reportErrorAction } from '../ngrx-store/unit.reducer';
 
 @Component({
   selector: 'app-home',
@@ -49,6 +50,11 @@ export class HomeComponent implements OnInit {
 
   openChooseDataFileDialog(): void{
     const chooseDataFileDialogRef = this.choseDataFileDialog.open(ChooseDataFileViewComponent);
+
+    chooseDataFileDialogRef.afterClosed().subscribe(()=>{
+      this.appDataService.userChooseFileDialogClosed();
+    });
+
   }
 
 }

@@ -10,4 +10,6 @@ export interface AppState {
 export const selectUnits = createSelector((state: AppState) =>state.units, (units: UnitsState) => Object.values(units.unitsDictionary) );
 
 // errorDictionary list selector
-export const selectErrorMessages = createSelector((state: AppState) => state.units.errorDictionary, (errorDict: ErrorDictionary) => Object.values(errorDict));
+export const selectErrorMessages = createSelector((state: AppState) => state.units.errorDictionary, (errorDict: ErrorDictionary) => {
+    return Object.values(errorDict);
+});

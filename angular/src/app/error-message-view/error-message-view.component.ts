@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../ngrx-store/app-state';
+import { Error } from '../ngrx-store/models/error-message';
+import { hideError } from '../ngrx-store/unit.reducer';
 
 @Component({
   selector: 'app-error-message-view',
@@ -6,10 +10,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error-message-view.component.scss']
 })
 export class ErrorMessageViewComponent implements OnInit {
-
-  constructor() { }
+  @Input() error: Error
+  constructor(private store: Store<AppState>) { 
+  }
 
   ngOnInit(): void {
+  }
+
+  hideError(){
+    this.store.dispatch(hideError(this.error.id));
   }
 
 }

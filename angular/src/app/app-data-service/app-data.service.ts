@@ -6,7 +6,7 @@ import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { UnitDictionary } from '../ngrx-store/unit-state';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
-import { updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
+import { reportError, reportErrorAction, updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
 
 @Injectable({
@@ -22,6 +22,9 @@ export class AppDataService {
   fileHandle: any;
   // app state observable
   appData$: Observable<AppState>;
+
+  // flag saying user has tried choosing a json file
+  userChoseFile = false;
   
   constructor(private store: Store<AppState>) {
     
@@ -31,7 +34,10 @@ export class AppDataService {
       {
         // save the data to file 
         next:(data: AppState) =>{
-          this.saveAppDataInFile(data);
+          // check that the user has attempted to pick a file once, this is also the app does not try saving the data till user tried to pick a file
+          if(this.userChoseFile){
+            this.saveAppDataInFile(data);
+          }
         }
       }
     );
@@ -46,7 +52,7 @@ export class AppDataService {
     [this.fileHandle] = await getFileHandle();
   }
   catch(err){
-    this.reportError(`error getting data file handle- > ${err}`);
+    this.showGenericError(`error getting data file handle- > ${err}`);
   }
 }
 
@@ -56,8 +62,12 @@ export class AppDataService {
  */
 
 async updateStore() {
+ 
   // set the file handle, this is where user picks file
   await this.setFileHandle();
+   // this signifies that the user has tried to pick a file
+   this.userChoseFile = true;
+  
   const appData = await this.getDataFromFile();
   this.store.dispatch(updateUnitsWithFileData({units: appData.units.unitsDictionary}));
 
@@ -79,7 +89,7 @@ async saveAppDataInFile(appData: AppState){
     writeFile(this.fileHandle, JSON.stringify(appData));
   }
   catch(err){
-    this.reportError(`Error while trying to save app data on file -> ${err}`);
+    this.showGenericError(`Error while trying to save app data on file -> ${err}`);
   }
 }
 
@@ -100,7 +110,7 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
       return JSON.parse(jsonString as string) as AppState;
     }
     catch(err){
-      this.reportError(`Error while reading app data file -> ${err}`);
+      this.showGenericError(`Error while reading app data file -> ${err}`);
       return undefined;
     }
 
@@ -126,26 +136,48 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
   private async appDataFileReady() : Promise<boolean>{
     if (!this.fileHandle){
       // the file handle is not set,
-      this.reportError("File handle not set!");
+      this.showGenericError("File handle not set!");
+      //tell user choose a data file
+      this.showNoDataFileError();
       return false;
     }
     // check that the handle is of a file and not a directory
     if (this.fileHandle.kind.toLowerCase() !== 'file'){
-      this.reportError(`file handle kind is of "${this.fileHandle.kind}" not file`);
+      //this.logError(`file handle kind is of "${this.fileHandle.kind}" not file`);
+      this.showGenericError(`file handle kind is of "${this.fileHandle.kind}" not file`);
       return false;
     }
 
     // check if app has permission to read from file
     let appHasFileAccess = await verifyPermission(this.fileHandle, true);
     if(!appHasFileAccess){
-      this.reportError("App does not have read permission for app data file!");
+      this.showGenericError("App does not have read permission for app data file!");
       return false;
     }
     return true;
   }
 
-  private reportError(error: string){
-    console.error(`${AppDataService.name}: ${error}`);
+  /**
+   * Dispatches the no data file error
+   */
+  showNoDataFileError(){
+    this.store.dispatch(reportError("No Data File!", `Your user data is currently not being saved. To ensure you don’t lose your data (units, perefences...) go to “${'Settings'.bold()}” and choose a data file.`));
+  }
+  /**
+   * Dipatches a generic error
+   * @param  {string} error error to show
+   */
+  showGenericError(error: string){
+    this.store.dispatch(reportError("Something went wrong!", `${AppDataService.name}: ${error}`));
+  }
+
+  /**
+   * Indicates that user dialog for choosing a file is closed, shows an error if the user did not pick a data file
+   */
+  userChooseFileDialogClosed(){
+    if (!this.userChoseFile){
+      this.showNoDataFileError();
+    }
   }
 
 }

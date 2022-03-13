@@ -2,6 +2,7 @@ import { createAction, createReducer, on, props } from "@ngrx/store";
 import { Error } from "./models/error-message";
 import { Unit } from "./models/unit";
 import { initialState, UnitDictionary, UnitsState } from "./unit-state";
+import { v1 as timeStampUUID } from 'uuid';
 
 //------------Units state Actions----------------
 
@@ -15,7 +16,19 @@ export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>()
 
 export const updateUnitsWithFileData = createAction('units/updateUnitsWithFileData', props<{units: UnitDictionary}>());
 
-export const reportError = createAction('units/reportError', props<{error: Error}>());
+export const reportErrorAction = createAction('units/reportError', props<{title: string, message: string, actionType: string}>());
+
+export const hideErrorAction = createAction('units/hideError', props<{id: string}>()); 
+
+//------------Unit State Action helper functions----------------
+export const reportError = (title: string, message: string) => {
+    return reportErrorAction({title: title, message: message, actionType: ""});
+}
+
+export const hideError = (id: string) => {
+    
+    return hideErrorAction({id: id});
+}
 
 //------------Units state Reducer---------------
 
@@ -48,11 +61,29 @@ const _unitsReducer = createReducer(initialState,
         newState.unitsDictionary = action.units;
         return newState
    }), 
-   on(reportError, (state, action) => {
-
+   // Add an error to the list of errors
+   on(reportErrorAction, (state, action) => {
+    const id = timeStampUUID();
     var newState = {...state};
-    newState.errorDictionary[action.error.time] = action.error;
+    newState.errorDictionary = {...state.errorDictionary};
+    newState.errorDictionary[id] = {
+        id: id,
+        title: action.title,
+        message: action.message,
+        actionType: action.actionType,
+        time: Date(),
+        show: true
+    };
     return newState
+   }),
+   on(hideErrorAction, (state, action) => {
+       var newState = {...state};
+       newState.errorDictionary = {...state.errorDictionary};
+       // get error
+       var error = {...newState.errorDictionary[action.id]};
+       error.show = false;
+       newState.errorDictionary[action.id] = error;
+       return newState;
    })
     );
 
