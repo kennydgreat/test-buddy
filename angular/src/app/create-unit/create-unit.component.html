@@ -30,7 +30,8 @@
         <button id="add-concept-button" class="add-concept-button" mat-mini-fab color="primary" (click)="addConcept()" aria-label="create a unit" >
             <mat-icon class="md-24">add</mat-icon>
           </button>
-
+          <!--Error messages viewer-->
+          <app-error-message-viewer></app-error-message-viewer>
           <!-- animation "scaleUpRightEnter" is triggered anything a app-concept-viewer is added to the dom, trigger name and ngFor combine to make this happen-->
           <app-concept-viewer @scaleUpRightEnter *ngFor="let concept of unit.concepts" [concept]="concept"></app-concept-viewer>
     </div>
