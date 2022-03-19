@@ -12,9 +12,15 @@
   <mat-sidenav mode="side" opened position="start">
     <div class="side-nav-menu">
       <!--Home-->
-      <div class="side-menu-item" routerLink="/home" routerLinkActive="side-menu-item-active" (isActiveChange)="homeNavMenuItemOnActiveChange($event)">
+      <div class="side-menu-item" routerLink="/home" routerLinkActive="side-menu-item-active" (isActiveChange)="changeClassesBasedOnActiveFlag('home', $event)">
         <mat-icon [ngClass]="this.homeSideNavIconClass">home</mat-icon>
         <p [ngClass]="this.homeSideNavTextClass">Home</p>
+      </div>
+
+      <!--Settings-->
+      <div class="side-menu-item" routerLink="/settings" routerLinkActive="side-menu-item-active" (isActiveChange)="changeClassesBasedOnActiveFlag('settings', $event)">
+        <mat-icon [ngClass]="this.settingsSideNavIconClass">settings</mat-icon>
+        <p [ngClass]="this.settingsSideNavTextClass">Settings</p>
       </div>
     </div>
   </mat-sidenav>

@@ -8,27 +8,38 @@ import { Component, ViewEncapsulation } from '@angular/core';
 
 export class AppComponent {
 
-  homeSideNavTextClass: string = ""
+  homeSideNavTextClass: string = "side-menu-item";
 
-  homeSideNavIconClass: string = ""
+  homeSideNavIconClass: string = "side-menu-item";
+
+  settingsSideNavTextClass: string = "side-menu-item";
+
+  settingsSideNavIconClass: string = "side-menu-item";
+
+  INACTIVE_MENU_CLASS = "side-menu-item";
+  ACTIVE_MENU_CLASS = "side-menu-item-active";
 
 
-  changeClassesBasedOnActiveFlag(element: "home" | "", active: boolean){
+  /**
+   * change the class of the menu element passed depending on it's active state
+   * 
+   * @param  {"home"|""} element the nav element to change
+   * @param  {boolean} active whether the element is active or not
+   */
+  changeClassesBasedOnActiveFlag(element: "home" | "settings", active: boolean){
     switch (element){
       case "home": {
-        if(active){
-          this.homeSideNavIconClass = "side-menu-item-active md-24";
-          this.homeSideNavTextClass = "side-menu-item-active";
-        }else{
-          this.homeSideNavIconClass = "side-menu-item md-24";
-          this.homeSideNavTextClass = "side-menu-item";
-        }
+        this.homeSideNavIconClass = active ? this.ACTIVE_MENU_CLASS : this.INACTIVE_MENU_CLASS;
+        this.homeSideNavTextClass = active ? this.ACTIVE_MENU_CLASS : this.INACTIVE_MENU_CLASS;
+        break;
+      }
+      case "settings" :{
+        this.settingsSideNavIconClass = active ? this.ACTIVE_MENU_CLASS : this.INACTIVE_MENU_CLASS;
+        this.settingsSideNavTextClass = active ? this.ACTIVE_MENU_CLASS : this.INACTIVE_MENU_CLASS;
+        break;
       }
     }
   }
 
-  homeNavMenuItemOnActiveChange(active: boolean){
-    this.changeClassesBasedOnActiveFlag("home", active);
-  }
 
 }

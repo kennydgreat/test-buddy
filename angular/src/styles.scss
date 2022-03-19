@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./app/theme.scss";
 
-
 //-----------Overlay styles-----------------
 // for overlay css, used by the app's full-screen overlays (the mat-dialog material component is used for creating overlays)
 .full-screen-dialog .mat-dialog-container {
@@ -11,71 +10,85 @@
   height: 100%;
 }
 
-
-
 /*Material Design font icons*/
 @font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(assets/fonts//Material-Icons/MaterialIconsRound-Regular.otf); /* For IE6-8 */
-    src: local('Material Icons'),
-      local('MaterialIcons-Regular'),
-      url(assets/fonts/Material-Icons/MaterialIconsRound-Regular.otf) format('truetype');
-  }
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url(assets/fonts//Material-Icons/MaterialIconsRound-Regular.otf); /* For IE6-8 */
+  src: local("Material Icons"), local("MaterialIcons-Regular"),
+    url(assets/fonts/Material-Icons/MaterialIconsRound-Regular.otf) format("truetype");
+}
 /*--------CSS rules for material design font icons----------*/
-  .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;  /* Preferred icon size */
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
-  
-    /* Support for all WebKit browsers. */
-    -webkit-font-smoothing: antialiased;
-    /* Support for Safari and Chrome. */
-    text-rendering: optimizeLegibility;
-  
-    /* Support for Firefox. */
-    -moz-osx-font-smoothing: grayscale;
-  
-    /* Support for IE. */
-    font-feature-settings: 'liga';
-  }
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
 
-//Icon sizes 
-.material-icons.md-15 { font-size: 15px; }
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
 
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: "liga";
+}
+
+//Icon sizes
+.material-icons.md-15 {
+  font-size: 15px;
+}
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
 
 /* Rules for using icons as black on a light background. */
-.material-icons.md-dark { color: $primary-grey }
-.material-icons.md-dark.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.material-icons.md-dark {
+  color: $primary-grey;
+}
+.material-icons.md-dark.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
 
 /* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.material-icons.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
 
 /*----------------App fonts-------------------------*/
-  @font-face {
-    font-family: Josefin Sans;
-    font-weight: bold;
-    src: url(assets//fonts/Josefin_Sans/JosefinSans-Bold.ttf) format("truetype");
+@font-face {
+  font-family: Josefin Sans;
+  font-weight: bold;
+  src: url(assets//fonts/Josefin_Sans/JosefinSans-Bold.ttf) format("truetype");
 }
 
 @font-face {
-    font-family: Josefin Sans;
-    font-weight: normal;
-    src: url(assets//fonts/Josefin_Sans/JosefinSans-Medium.ttf) format("truetype");
+  font-family: Josefin Sans;
+  font-weight: normal;
+  src: url(assets//fonts/Josefin_Sans/JosefinSans-Medium.ttf) format("truetype");
 }
 
 @font-face {
@@ -94,17 +107,44 @@
 div.primary-pink-button-and-text {
   border-radius: 5px;
   width: fit-content;
+  height: fit-content;
   padding: 5px;
   padding-left: 30px;
   padding-right: 30px;
   background-color: $primary-pink;
   cursor: pointer;
 
-  p{
-      font-family: Roboto;
-      font-weight: bold;
-      font-size: 13px;
-
-      color: white;
+  p {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 0px;
+    margin: 0px;
+    color: white;
   }
+}
+
+//-------Text Styles ---------//
+p.primary-josefin-sans-title {
+  font-family: Josefin Sans;
+  font-size: 40px;
+  margin: 0px;
+  font-weight: bold;
+  color: $primary-grey;
+}
+
+p.primary-roboto-body {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: $primary-grey;
+}
+
+p.primary-josefin-sans-heading{
+  font-family: Josefin Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  color: $primary-grey;
 }

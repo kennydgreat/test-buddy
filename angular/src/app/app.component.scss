@@ -56,7 +56,6 @@ div.side-nav-menu {
     flex-direction: column;
 }
 
-
 div.side-menu-item {
     display: flex;
     align-items: center;
@@ -65,12 +64,13 @@ div.side-menu-item {
     height: 36px;
     cursor: pointer;
 
-    &:hover, &:active  {
+    &:hover,
+    &:active {
         background-color: $primary-pink;
     }
 }
 
-div.side-menu-item-active{
+div.side-menu-item-active {
     display: flex;
     align-items: center;
     column-gap: 10px;
@@ -97,8 +97,10 @@ p.side-menu-item-active {
     color: white;
 }
 
-
 mat-icon.side-menu-item {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
     color: $primary-grey;
 }
 
