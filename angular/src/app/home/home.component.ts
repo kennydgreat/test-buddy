@@ -28,9 +28,10 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    //dispatchs action to get units from storage
-    //this.store.dispatch(AppDataEffects.getUnitsFromStorage());
-    this.openChooseDataFileDialog();
+    // open choose data file dialog
+    if(!this.appDataService.appHasDataFile()){
+      this.openChooseDataFileDialog();
+    }
   }
 
   //opens the create unit dialog

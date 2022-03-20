@@ -136,9 +136,7 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
   private async appDataFileReady() : Promise<boolean>{
     if (!this.fileHandle){
       // the file handle is not set,
-      this.showGenericError("File handle not set!");
-      //tell user choose a data file
-      this.showNoDataFileError();
+      this.showGenericError("File handle not set! Try choosing file again in \"Settings\".");
       return false;
     }
     // check that the handle is of a file and not a directory
@@ -178,6 +176,13 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
     if (!this.userChoseFile){
       this.showNoDataFileError();
     }
+  }
+  /**
+   * Checks if app has a storage file
+   * @returns boolean
+   */
+  appHasDataFile() : boolean{
+    return (this.fileHandle != undefined);
   }
 
 }
