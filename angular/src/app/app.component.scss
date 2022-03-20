@@ -64,10 +64,22 @@ div.side-menu-item {
     height: 36px;
     cursor: pointer;
 
-    &:hover,
-    &:active {
-        background-color: $primary-pink;
+    p.side-menu-item {
+        font-family: Josefin Sans;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px;
+        padding-top: 5px;
+        color: $primary-grey;
     }
+
+    mat-icon.side-menu-item {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        color: $primary-grey;
+    }
+
 }
 
 div.side-menu-item-active {
@@ -76,34 +88,26 @@ div.side-menu-item-active {
     column-gap: 10px;
     padding-left: 50px;
     height: 36px;
+    cursor: pointer;
     background-color: $primary-pink;
+
+
+    p.side-menu-item {
+        font-family: Josefin Sans;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px;
+        padding-top: 5px;
+        color: white;
+    
+    }
+
+    mat-icon.side-menu-item {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        color: white;
+    }
+
 }
 
-p.side-menu-item {
-    font-family: Josefin Sans;
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0px;
-    padding-top: 5px;
-    color: $primary-grey;
-}
-
-p.side-menu-item-active {
-    font-family: Josefin Sans;
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0px;
-    padding-top: 5px;
-    color: white;
-}
-
-mat-icon.side-menu-item {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-    color: $primary-grey;
-}
-
-mat-icon.side-menu-item-active {
-    color: white;
-}
