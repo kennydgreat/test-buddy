@@ -55,6 +55,10 @@ export class AppDataService {
     this.store.dispatch(updateDataFileName(this.fileHandle.name));
   }
   catch(err){
+    //catches the case where user cancels updating data file when app already has data
+    if (this.fileHandle && (`${err}`).includes("AbortError")){
+      return ;
+    }
     this.showGenericError(`error getting data file handle- > ${err}`);
   }
 }
