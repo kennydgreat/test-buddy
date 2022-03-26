@@ -13,7 +13,7 @@ export interface UnitsState {
 
 // initial state
 
-export const initialState : UnitsState = {
+export const unitInitialState : UnitsState = {
     unitsDictionary: {},
     errorDictionary: {}
 }

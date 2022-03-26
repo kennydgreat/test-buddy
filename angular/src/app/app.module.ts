@@ -24,11 +24,12 @@ import { ChooseDataFileViewComponent } from './choose-data-file-view/choose-data
 import { ErrorMessageViewerComponent } from './error-message-viewer/error-message-viewer.component';
 import { ErrorMessageViewComponent } from './error-message-view/error-message-view.component';
 import { SettingsComponent } from './settings/settings.component';
+import { settingsReducer } from './ngrx-store/settings.reducer';
 
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent],
-  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, StoreModule.forRoot({units: unitsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
+  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

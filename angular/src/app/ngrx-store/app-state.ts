@@ -1,9 +1,11 @@
 import { createSelector } from "@ngrx/store";
 import { ErrorDictionary } from "./models/error-message";
+import { SettingsState } from "./settings.reducer";
 import { UnitsState } from "./unit-state";
 
 export interface AppState {
     units: UnitsState;
+    settings: SettingsState;
 }
 
 // units selector

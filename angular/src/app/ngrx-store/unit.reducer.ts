@@ -1,7 +1,7 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
 import { Error } from "./models/error-message";
 import { Unit } from "./models/unit";
-import { initialState, UnitDictionary, UnitsState } from "./unit-state";
+import { unitInitialState, UnitDictionary, UnitsState } from "./unit-state";
 import { v1 as timeStampUUID } from 'uuid';
 
 //------------Units state Actions----------------
@@ -21,18 +21,21 @@ export const reportErrorAction = createAction('units/reportError', props<{title:
 export const hideErrorAction = createAction('units/hideError', props<{id: string}>()); 
 
 //------------Unit State Action helper functions----------------
-export const reportError = (title: string, message: string) => {
+export function reportError(title: string, message: string) {
     return reportErrorAction({title: title, message: message, actionType: ""});
 }
-
-export const hideError = (id: string) => {
+/**
+ * Returns a call to the hide error action
+ * @param  {string} id id of error to hide
+ */
+export function hideError(id: string) {
     
     return hideErrorAction({id: id});
 }
 
 //------------Units state Reducer---------------
 
-const _unitsReducer = createReducer(initialState, 
+const _unitsReducer = createReducer(unitInitialState, 
 
     
     on(getUnitsSuccess, (state, action) =>{

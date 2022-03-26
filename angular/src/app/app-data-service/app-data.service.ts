@@ -8,6 +8,7 @@ import { UnitDictionary } from '../ngrx-store/unit-state';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
 import { reportError, reportErrorAction, updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
+import { updateDataFileName } from '../ngrx-store/settings.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,8 @@ export class AppDataService {
  async setFileHandle() {
   try{
     [this.fileHandle] = await getFileHandle();
+    // update data file name
+    this.store.dispatch(updateDataFileName(this.fileHandle.name));
   }
   catch(err){
     this.showGenericError(`error getting data file handle- > ${err}`);

@@ -10,9 +10,9 @@
 
             <p class="primary-josefin-sans-heading">File:</p>
 
-            <p id="file-name" class="file-name">“test-buddy-data.json”</p>
+            <p id="file-name" class="file-name">“{{$dataFileName | async}}”</p>
 
-            <div id="choose-button" class="primary-pink-button-and-text">
+            <div id="choose-button" class="primary-pink-button-and-text" (click)="getFile()">
 
                 <p>choose</p>
             </div>
