@@ -1,5 +1,5 @@
-<div class="view-root">
-    <div class="concept-card-default">
+<div class="view-root" (mouseover)="onHover(true)" (mouseleave)="onHover(false)" >
+    <div class="concept-card-default"  *ngIf="!showConceptExpandedCard" >
         <div class="concept-name-and-connect-point">
             <div class="concept-name">
                 <p class="concept-name">{{concept.name}}</p>
@@ -9,12 +9,20 @@
                     circle
                 </mat-icon>
             </div>
-           
+
         </div>
         <div class="ellipsis">
             <div></div>
             <div></div>
             <div></div>
+        </div>
+    </div>
+    <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard" >
+        <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
+            <textarea id="concept-name" class="concept-name" [(ngModel)]="concept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
+            
+            <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="concept.hasOrderedSubconcepts"></mat-slide-toggle>
+
         </div>
     </div>
 </div>

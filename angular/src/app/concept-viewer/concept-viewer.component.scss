@@ -2,16 +2,21 @@
 
 div.view-root {
     display: flex;
+    flex-direction: row;
+    padding: 7px;
+    padding-bottom: 5px;
+    background-color: $light-gray;
+    border-radius: 11px;
+    width: fit-content;
+    margin: 0px;
 
     div.concept-card-default {
         display: flex;
+        width: fit-content;
         flex-direction: column;
         row-gap: 4px;
         align-items: center;
-        padding: 7px;
-        padding-bottom: 5px;
-        background: #e8e8e8;
-        border-radius: 11px;
+        
 
         div.concept-name-and-connect-point {
             display: flex;
@@ -44,7 +49,7 @@ div.view-root {
                 }
             }
 
-            div.connection-point{
+            div.connection-point {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -54,8 +59,8 @@ div.view-root {
                 border-radius: 50%;
                 background-color: white;
             }
-            
-            mat-icon{
+
+            mat-icon {
                 font-size: 11px;
                 width: 12px;
                 height: 12px;
@@ -63,15 +68,38 @@ div.view-root {
             }
         }
 
-        div.ellipsis{
+        div.ellipsis {
             display: flex;
             column-gap: 2px;
 
-            div{
+            div {
                 height: 2px;
                 width: 2px;
                 background-color: $primary-grey;
                 border-radius: 50%;
+            }
+        }
+    }
+
+    div.concept-expanded {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+
+        div.concept-name-and-order-toggle {
+            display: flex;
+            column-gap: 10px;
+            align-items: center;
+
+            textarea.concept-name {
+                display: flex;
+                padding: 5px;
+                padding-left: 7px;
+                padding-bottom: 3px;
+                width: 200px;
+                align-items: center;
+                background-color: white;
+                border-radius: 5px;
             }
         }
     }
