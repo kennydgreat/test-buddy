@@ -9,7 +9,7 @@ export class UnitHelper {
     createNewUnit(): Unit {
         // create unit with a unique id
         const id: string = timeStampUUID();
-        return {
+        return  {
             id: id,
             name: "",
             description: "",

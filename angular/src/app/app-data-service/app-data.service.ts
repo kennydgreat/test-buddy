@@ -6,7 +6,7 @@ import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { UnitDictionary } from '../ngrx-store/unit-state';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
-import { reportError, reportErrorAction, updateUnit, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
+import { reportError, reportErrorAction, updateUnitAction, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
 import { updateDataFileName } from '../ngrx-store/settings.reducer';
 

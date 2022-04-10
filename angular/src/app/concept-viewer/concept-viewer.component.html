@@ -19,9 +19,9 @@
     </div>
     <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard" >
         <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
-            <textarea id="concept-name" class="concept-name" [(ngModel)]="concept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
+            <textarea id="concept-name" class="concept-name" [(ngModel)]="editableConcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
             
-            <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="concept.hasOrderedSubconcepts"></mat-slide-toggle>
+            <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="editableConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
 
         </div>
     </div>

@@ -10,7 +10,7 @@ import { v1 as timeStampUUID } from 'uuid';
 export const getUnitsSuccess = createAction('units/getunitsSuccess', props<{units: UnitDictionary}>());
 
 // This action triggers the unit to the updated in store
-export const updateUnit = createAction('units/updateUnit', props<{unit: Unit}>());
+export const updateUnitAction = createAction('units/updateUnit', props<{unit: Unit}>());
 
 export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
 
@@ -21,6 +21,14 @@ export const reportErrorAction = createAction('units/reportError', props<{title:
 export const hideErrorAction = createAction('units/hideError', props<{id: string}>()); 
 
 //------------Unit State Action helper functions----------------
+/**
+ * update a unit in the store with new unit 
+ * @param  {Unit} unit new unit
+ */
+export function updateUnit(unit: Unit){
+    return updateUnitAction({unit: {...unit}});
+}
+
 export function reportError(title: string, message: string) {
     return reportErrorAction({title: title, message: message, actionType: ""});
 }
@@ -44,7 +52,7 @@ const _unitsReducer = createReducer(unitInitialState,
         newState.unitsDictionary = action.units;
         return newState;
     }),
-   on(updateUnit, (state, action) =>{
+   on(updateUnitAction, (state, action) =>{
     // update unit or add it to units dictionary
     var newState = {...state};
     newState.unitsDictionary = {...state.unitsDictionary};

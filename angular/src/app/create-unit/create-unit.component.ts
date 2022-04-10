@@ -6,7 +6,7 @@ import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard
 import { ConceptHelper } from '../ngrx-store/concept-helper';
 import { Unit } from '../ngrx-store/models/unit';
 import { UnitHelper } from '../ngrx-store/unit-helper';
-import { updateUnit, deleteUnit } from '../ngrx-store/unit.reducer';
+import { updateUnitAction, deleteUnit, updateUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
 import { AppDataService } from '../app-data-service/app-data.service';
 
@@ -73,13 +73,18 @@ export class CreateUnitComponent implements OnInit {
     this.unit = this.unitHelper.addNewRootConcept(this.unit);
 
     // save the change in the store by creating a new unit.
-    this.store.dispatch(updateUnit({unit: {...this.unit}}));
+    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
   }
 
   //saves unit in store 
   unitDetailsChange(){
     // save the change in the store by creating a new unit.
-    this.store.dispatch(updateUnit({unit: {...this.unit}}));
+    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
+  }
+
+  conceptChanged(){
+    //concept changed, update unit in store
+    this.store.dispatch(updateUnit(this.unit));
   }
 
   // user is done
@@ -89,7 +94,7 @@ export class CreateUnitComponent implements OnInit {
       this.store.dispatch(deleteUnit({id: this.unit.id}));
     }else{
       // update unit in store (unit changes should have been in the store anyway, this is to make ensure no changes are lost)
-    this.store.dispatch(updateUnit({unit: {...this.unit}}));
+    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
 
     //****DELETE AFTER */
     //this.appDataService.unitsDictionary[this.unit.id] = this.unit;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Concept } from '../ngrx-store/models/concept';
 
 @Component({
@@ -8,13 +8,18 @@ import { Concept } from '../ngrx-store/models/concept';
 })
 export class ConceptViewerComponent implements OnInit {
 
-  @Input() concept : Concept
+  @Input() statelessConcept : Concept;
+  @Output() conceptChangeEvent = new EventEmitter<void>();
+  // state concept variable that can be safely changed
+  editableConcept : Concept;
   constructor() { }
 
   showConceptExpandedCard = false;
   anInputInfocus = false;
   isHover = false
   ngOnInit(): void {
+    // set the stateful concept to data from statless concept passed in
+    this.editableConcept = {...this.statelessConcept};
   }
   /**
    * sets the onHover varaible and triggers the expand logic 
@@ -28,13 +33,18 @@ export class ConceptViewerComponent implements OnInit {
 
   }
   /**
-   * sets the onFocus varaible and triggers the expand logic
+   * sets the onFocus varaible, triggers the expand logic, change concept and triggers concept change event
    * @param  {boolean} onFocus whether view in focus
    */
   onFocus(onFocus: boolean){
     this.anInputInfocus = onFocus;
     console.log(`onFocus is ${onFocus}`);
     this.setExpandVaraible();
+    if(!onFocus){
+      // this means the user might be done making a change, update stateless concept safely and emit concept change event
+      this.statelessConcept = {...this.editableConcept};
+      this.conceptChangeEvent.emit();
+    }
   }
   /**
    * Logic for expanding concept viewer
@@ -49,6 +59,14 @@ export class ConceptViewerComponent implements OnInit {
         this.showConceptExpandedCard = false;
       }
     }
+  }
+
+  // update concept and triggers concept change event
+  toggleSubconceptOrdered(){
+    // update stateless concept and emit concept change event
+    this.statelessConcept = {...this.editableConcept};
+    this.conceptChangeEvent.emit();
+
   }
 
 }

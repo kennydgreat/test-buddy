@@ -33,6 +33,6 @@
           <!--Error messages viewer-->
           <app-error-message-viewer></app-error-message-viewer>
           <!-- animation "scaleUpRightEnter" is triggered anything a app-concept-viewer is added to the dom, trigger name and ngFor combine to make this happen-->
-          <app-concept-viewer @scaleUpRightEnter *ngFor="let concept of unit.concepts" [concept]="concept"></app-concept-viewer>
+          <app-concept-viewer @scaleUpRightEnter *ngFor="let concept of unit.concepts" [statelessConcept]="concept" (conceptChangeEvent)="conceptChanged()" ></app-concept-viewer>
     </div>
 </div>
