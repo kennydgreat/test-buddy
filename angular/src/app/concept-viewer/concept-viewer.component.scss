@@ -100,6 +100,18 @@ div.view-root {
                 align-items: center;
                 background-color: white;
                 border-radius: 5px;
+                outline: none;
+                border-color: transparent;
+
+                font-family: Josefin Sans;
+                font-style: normal;
+                font-weight: bold;
+                color: $primary-grey;
+                font-size: 12px;
+                
+            }
+            .mat-slide-toggle {
+                transform: scale(0.6);
             }
         }
     }

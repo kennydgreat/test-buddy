@@ -108,4 +108,5 @@ $light-gray: #e8e8e8;
 @include mat.core-theme($my-theme);
 @include mat.button-theme($my-theme);
 
+@include mat.slide-toggle-theme($my-theme);
 
