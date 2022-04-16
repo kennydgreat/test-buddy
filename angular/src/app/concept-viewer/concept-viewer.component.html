@@ -24,5 +24,13 @@
             <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="editableConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
 
         </div>
+        <div id="subconcept-div" class="subconcept-div" *ngFor="let subconcept of editableConcept.subconcepts">
+            
+        </div>
+        <div id="add-sub-concept-button-row" class="add-sub-concept-button-row">
+            <div id="add-sub-concept-button" class="add-sub-concept-button">
+                <mat-icon>add</mat-icon>
+            </div>
+        </div>
     </div>
 </div>
