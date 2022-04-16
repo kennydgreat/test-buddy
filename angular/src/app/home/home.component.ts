@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-data-file-view.component';
 import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppState, selectUnits } from '../ngrx-store/app-state';
-import { Unit } from '../ngrx-store/models/unit';
+import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 import { AppDataService } from '../app-data-service/app-data.service';
 import { reportError, reportErrorAction } from '../ngrx-store/unit.reducer';
 
@@ -17,8 +17,8 @@ import { reportError, reportErrorAction } from '../ngrx-store/unit.reducer';
 export class HomeComponent implements OnInit {
 
   //units stream
-  units$: Observable<Unit[]>
-  units: Unit[]
+  units$: Observable<UnitStateless[]>
+  units: UnitStateless[]
 
   
   constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog, public appDataService: AppDataService) {

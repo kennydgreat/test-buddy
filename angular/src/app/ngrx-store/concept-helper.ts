@@ -1,9 +1,9 @@
-import { Concept } from "./models/concept";
+import { ConceptStateless } from "./models/concept-stateless";
 import { v1 as timeStampUUID } from 'uuid';
 
 
 export class ConceptHelper{
-    createNewConcept(parent: Concept | undefined): Concept{
+    createNewConcept(parent: ConceptStateless | undefined): ConceptStateless{
         return {
             id : timeStampUUID(),
             name: "Testing this thing baby come on",
@@ -17,7 +17,7 @@ export class ConceptHelper{
         };
     }
     // determines if a concept holds no data
-    isConceptEmpty(concept: Concept): boolean{
+    isConceptEmpty(concept: ConceptStateless): boolean{
         // check that the name and definition
         if (concept.name.length > 0 || concept.definition.length > 0){
             //either or both not empty

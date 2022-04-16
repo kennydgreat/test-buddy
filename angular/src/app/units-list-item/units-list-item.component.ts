@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Unit } from '../ngrx-store/models/unit';
+import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 
 @Component({
   selector: 'app-units-list-item',
@@ -8,7 +8,7 @@ import { Unit } from '../ngrx-store/models/unit';
 })
 export class UnitsListItemComponent implements OnInit {
 
-  @Input() unit: Unit
+  @Input() unit: UnitStateless
   constructor() { }
 
   ngOnInit(): void {

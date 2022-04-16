@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Concept } from '../ngrx-store/models/concept';
+import { ConceptStateless } from '../ngrx-store/models/concept-stateless';
 
 @Component({
   selector: 'app-concept-viewer',
@@ -8,10 +8,10 @@ import { Concept } from '../ngrx-store/models/concept';
 })
 export class ConceptViewerComponent implements OnInit {
 
-  @Input() statelessConcept : Concept;
+  @Input() statelessConcept : ConceptStateless;
   @Output() conceptChangeEvent = new EventEmitter<void>();
   // state concept variable that can be safely changed
-  editableConcept : Concept;
+  editableConcept : ConceptStateless;
   constructor() { }
 
   showConceptExpandedCard = false;

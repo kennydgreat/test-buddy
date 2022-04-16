@@ -1,12 +1,12 @@
-import { Unit } from "./models/unit";
-import { v1 as timeStampUUID } from 'uuid';
+import { UnitStateless } from "./models/unit-stateless";
+
 import { ConceptHelper } from "./concept-helper";
-import { Concept } from "./models/concept";
+import { ConceptStateless } from "./models/concept-stateless";
 
 // Object that holds unit specific business functions
 export class UnitHelper {
     concept: ConceptHelper = new ConceptHelper();
-    createNewUnit(): Unit {
+    createNewUnit(): UnitStateless {
         // create unit with a unique id
         const id: string = timeStampUUID();
         return  {
@@ -20,12 +20,12 @@ export class UnitHelper {
         };
     }
 
-    createNewRootConcept(): Concept {
+    createNewRootConcept(): ConceptStateless {
         return this.concept.createNewConcept(undefined);
     }
 
     // Adds a new root conept to unt by creating a new unit, adding the concept and returning the new unit
-    addNewRootConcept(unit: Unit): Unit {
+    addNewRootConcept(unit: UnitStateless): UnitStateless {
         var newUnit = { ...unit };
         // add new root concept
         newUnit.concepts = [...newUnit.concepts, this.createNewRootConcept()]
@@ -36,7 +36,7 @@ export class UnitHelper {
 
 
     //check if the unit has no data
-    isUnitEmtpy(unit: Unit): boolean {
+    isUnitEmtpy(unit: UnitStateless): boolean {
         // the unit's name and description
         if (unit.name.length > 0 || unit.description.length > 0) {
             //either or both not empty

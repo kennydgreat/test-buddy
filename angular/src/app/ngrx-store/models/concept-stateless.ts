@@ -1,10 +1,10 @@
 
-export interface Concept {
+export interface ConceptStateless {
     id: string;
     name: string;
-    parent: Concept | undefined;
+    parent: ConceptStateless | undefined;
     hasOrderedSubconcepts: boolean
-    subconcepts: Array<Concept>;
+    subconcepts: Array<ConceptStateless>;
     definition: string
     index: number;
     numberOfSubconceptsWithDefinition: number;

@@ -1,6 +1,6 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
 import { Error } from "./models/error-message";
-import { Unit } from "./models/unit";
+import { UnitStateless } from "./models/unit-stateless";
 import { unitInitialState, UnitDictionary, UnitsState } from "./unit-state";
 import { v1 as timeStampUUID } from 'uuid';
 
@@ -10,7 +10,7 @@ import { v1 as timeStampUUID } from 'uuid';
 export const getUnitsSuccess = createAction('units/getunitsSuccess', props<{units: UnitDictionary}>());
 
 // This action triggers the unit to the updated in store
-export const updateUnitAction = createAction('units/updateUnit', props<{unit: Unit}>());
+export const updateUnitAction = createAction('units/updateUnit', props<{unit: UnitStateless}>());
 
 export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
 
@@ -23,9 +23,9 @@ export const hideErrorAction = createAction('units/hideError', props<{id: string
 //------------Unit State Action helper functions----------------
 /**
  * update a unit in the store with new unit 
- * @param  {Unit} unit new unit
+ * @param  {UnitStateless} unit new unit
  */
-export function updateUnit(unit: Unit){
+export function updateUnit(unit: UnitStateless){
     return updateUnitAction({unit: {...unit}});
 }
 

@@ -1,10 +1,10 @@
 import { createSelector } from "@ngrx/store";
 import { AppState } from "./app-state";
 import { ErrorDictionary } from "./models/error-message";
-import { Unit } from "./models/unit";
+import { UnitStateless } from "./models/unit-stateless";
 
 export interface UnitDictionary {
-    [key: string]: Unit;
+    [key: string]: UnitStateless;
 }
 export interface UnitsState {
     unitsDictionary : UnitDictionary;

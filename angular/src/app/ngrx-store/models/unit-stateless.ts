@@ -1,10 +1,10 @@
-import { Concept } from "./concept";
+import { ConceptStateless } from "./concept-stateless";
 
-export interface Unit {
+export interface UnitStateless {
   id: string;
   name: string;
   description: string;
-  concepts: Array<Concept>;
+  concepts: Array<ConceptStateless>;
   numOfConcepts: number;
   numOfRootConceptsWithDefiniton: number;
   numOfRootConceptsWithSubconcepts: number;

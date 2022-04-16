@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard-changes-dialog.component';
 import { ConceptHelper } from '../ngrx-store/concept-helper';
-import { Unit } from '../ngrx-store/models/unit';
+import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 import { UnitHelper } from '../ngrx-store/unit-helper';
 import { updateUnitAction, deleteUnit, updateUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
@@ -31,7 +31,7 @@ import { AppDataService } from '../app-data-service/app-data.service';
 })
 export class CreateUnitComponent implements OnInit {
 
-  unit: Unit
+  unit: UnitStateless
   unitHelper: UnitHelper = new UnitHelper();
   constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog, private appDataService: AppDataService) {
     this.unit = this.unitHelper.createNewUnit();
