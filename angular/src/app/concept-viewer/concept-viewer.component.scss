@@ -6,7 +6,7 @@ div.view-root {
     padding: 7px;
     padding-bottom: 5px;
     background-color: $light-gray;
-    border-radius: 11px;
+    border-radius: 12px;
     width: fit-content;
     margin: 0px;
 
@@ -49,23 +49,9 @@ div.view-root {
                 }
             }
 
-            div.connection-point {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 0px;
-                height: 17px;
-                width: 17px;
-                border-radius: 50%;
-                background-color: white;
-            }
+            
 
-            mat-icon {
-                font-size: 11px;
-                width: 12px;
-                height: 12px;
-                color: $primary-pink;
-            }
+           
         }
 
         div.ellipsis {
@@ -81,15 +67,43 @@ div.view-root {
         }
     }
 
+    div.connection-point {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px;
+        height: 17px;
+        width: 17px;
+        border-radius: 50%;
+        background-color: white;
+        
+        mat-icon.connection-point {
+            font-size: 11px;
+            width: 12px;
+            height: 12px;
+            color: $primary-pink;
+        }
+
+        mat-icon.connection-point-subconcept {
+            font-size: 11px;
+            margin-top: 2px;
+            width: 12px;
+            height: 12px;
+            color: $primary-pink;
+        }
+    }
+
     div.concept-expanded {
         display: flex;
         flex-direction: column;
         width: fit-content;
-        row-gap: 1rem;
+        padding-bottom: 0.4rem;
+        row-gap: 0.4rem;
 
         div.concept-name-and-order-toggle {
             display: flex;
             column-gap: 10px;
+            justify-content: space-between;
             align-items: center;
 
             textarea.concept-name {
@@ -116,12 +130,18 @@ div.view-root {
             }
         }
 
-        div.subconcept-div{
+        div.subconcept-div-row{
             display: flex;
-            column-gap: 10px;
+            column-gap: 0.4rem;
             align-items: center;
 
-            textarea.concept-name {
+            mat-icon.delete-button{
+                transform: scale(0.6);
+                color: #95A4A6;
+                cursor: pointer;
+            }
+
+            textarea.sub-concept-name {
                 display: flex;
                 padding: 5px;
                 padding-left: 7px;
@@ -137,9 +157,10 @@ div.view-root {
                 font-style: normal;
                 font-weight: normal;
                 color: $primary-grey;
-                font-size: 10px;
+                font-size: 12px;
                 
             }
+
         }
 
         div.add-sub-concept-button-row{
@@ -155,7 +176,7 @@ div.view-root {
                 background-color: $primary-pink;
                 border-radius: 50%;
 
-                mat-icon{
+                mat-icon.add-button{
                     margin-right: 0.1rem;
                     transform: scale(0.5);
                     color: white;

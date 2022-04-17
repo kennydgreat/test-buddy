@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConceptStateless } from '../ngrx-store/models/concept-stateless';
+import { ConceptStateful } from '../ngrx-store/models/concept-stateful';
 
 @Component({
   selector: 'app-concept-viewer',
@@ -8,18 +8,16 @@ import { ConceptStateless } from '../ngrx-store/models/concept-stateless';
 })
 export class ConceptViewerComponent implements OnInit {
 
-  @Input() statelessConcept : ConceptStateless;
+  @Input() statefulConcept : ConceptStateful;
   @Output() conceptChangeEvent = new EventEmitter<void>();
   // state concept variable that can be safely changed
-  editableConcept : ConceptStateless;
   constructor() { }
 
   showConceptExpandedCard = false;
   anInputInfocus = false;
   isHover = false
   ngOnInit(): void {
-    // set the stateful concept to data from statless concept passed in
-    this.editableConcept = {...this.statelessConcept};
+    
   }
   /**
    * sets the onHover varaible and triggers the expand logic 
@@ -27,7 +25,6 @@ export class ConceptViewerComponent implements OnInit {
    */
   onHover(isHover: boolean){
     this.isHover = isHover;
-    console.log(`isHover is ${isHover}`);
     this.setExpandVaraible();
     
 
@@ -38,11 +35,9 @@ export class ConceptViewerComponent implements OnInit {
    */
   onFocus(onFocus: boolean){
     this.anInputInfocus = onFocus;
-    console.log(`onFocus is ${onFocus}`);
     this.setExpandVaraible();
     if(!onFocus){
       // this means the user might be done making a change, update stateless concept safely and emit concept change event
-      this.statelessConcept = {...this.editableConcept};
       this.conceptChangeEvent.emit();
     }
   }
@@ -63,10 +58,15 @@ export class ConceptViewerComponent implements OnInit {
 
   // update concept and triggers concept change event
   toggleSubconceptOrdered(){
-    // update stateless concept and emit concept change event
-    this.statelessConcept = {...this.editableConcept};
+    // emit concept change event
     this.conceptChangeEvent.emit();
 
+  }
+
+  addSubconcept(){
+    // add a new concept and emit concept change event
+    this.statefulConcept.addsubconcept();
+    this.conceptChangeEvent.emit();
   }
 
 }

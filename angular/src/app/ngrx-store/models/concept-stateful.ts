@@ -11,13 +11,17 @@ export class ConceptStateful {
     index: number;
     numberOfSubconceptsWithDefinition: number;
     numberOfSubConcpetsWithSubconcepts: number ;
-
-    constructor() {
+    /**
+     * Creates a new concept
+     * @param  {ConceptStateful|undefined=undefined} parent the concept parent, if undefined this is a root concept
+     */
+    constructor(parent: ConceptStateful | undefined = undefined) {
         this.id = timeStampUUID();
         this.name = "";
         this.subconcepts = new Array<ConceptStateful>();
         this.hasOrderedSubconcepts = false;
         this.definition = "";
+        this.parent = parent != undefined ? parent : undefined;
         this.index = 0;
         this.numberOfSubconceptsWithDefinition = 0;
         this,this.numberOfSubConcpetsWithSubconcepts = 0;
@@ -74,9 +78,17 @@ export class ConceptStateful {
 
         this.subconcepts.forEach((concept: ConceptStateful, index: number) => {
             var statelessSubConCopy = concept.makeStatelessCopy();
-            statelessCopy.subconcepts.push(statelessCopy);
+            statelessCopy.subconcepts.push(statelessSubConCopy);
         });
 
         return statelessCopy;
+    }
+    /**
+     * Adds a subconcept
+     */
+    addsubconcept(){
+        var subconcept = new ConceptStateful(this.parent);
+        subconcept.index = this.subconcepts.length;
+        this.subconcepts.push(subconcept);     
     }
 }

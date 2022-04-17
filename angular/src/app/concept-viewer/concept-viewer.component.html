@@ -2,10 +2,10 @@
     <div class="concept-card-default"  *ngIf="!showConceptExpandedCard" >
         <div class="concept-name-and-connect-point">
             <div class="concept-name">
-                <p class="concept-name">{{statelessConcept.name}}</p>
+                <p class="concept-name">{{statefulConcept.name}}</p>
             </div>
             <div class="connection-point">
-                <mat-icon>
+                <mat-icon class="connection-point">
                     circle
                 </mat-icon>
             </div>
@@ -19,17 +19,23 @@
     </div>
     <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard" >
         <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
-            <textarea id="concept-name" class="concept-name" [(ngModel)]="editableConcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
+            <textarea id="concept-name" class="concept-name" [(ngModel)]="statefulConcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
             
-            <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="editableConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
+            <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="statefulConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
 
         </div>
-        <div id="subconcept-div" class="subconcept-div" *ngFor="let subconcept of editableConcept.subconcepts">
-            
+        <div id="subconcept-div" class="subconcept-div-row" *ngFor="let subconcept of statefulConcept.subconcepts">
+            <mat-icon class="delete-button">highlight_off</mat-icon>
+            <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)] = "subconcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
+            <div class="connection-point">
+                <mat-icon class="connection-point-subconcept">
+                    circle
+                </mat-icon>
+            </div>
         </div>
         <div id="add-sub-concept-button-row" class="add-sub-concept-button-row">
-            <div id="add-sub-concept-button" class="add-sub-concept-button">
-                <mat-icon>add</mat-icon>
+            <div id="add-sub-concept-button" class="add-sub-concept-button" (click)="addSubconcept()">
+                <mat-icon class="add-button">add</mat-icon>
             </div>
         </div>
     </div>
