@@ -1,11 +1,12 @@
 import { v1 as timeStampUUID } from 'uuid';
+import { ConceptStateless } from './concept-stateless';
 
 export class ConceptStateful {
     id: string;
     name: string;
     parent: ConceptStateful;
     hasOrderedSubconcepts: boolean
-    subConcepts: Array<ConceptStateful>;
+    subconcepts: Array<ConceptStateful>;
     definition: string;
     index: number;
     numberOfSubconceptsWithDefinition: number;
@@ -14,7 +15,7 @@ export class ConceptStateful {
     constructor() {
         this.id = timeStampUUID();
         this.name = "";
-        this.subConcepts = new Array<ConceptStateful>();
+        this.subconcepts = new Array<ConceptStateful>();
         this.hasOrderedSubconcepts = false;
         this.definition = "";
         this.index = 0;
@@ -45,7 +46,7 @@ export class ConceptStateful {
     }
 
     /**
-     * Checks that that concept definition is not empty
+     * Checks that the concept definition is not empty
      * @returns boolean
      */
      hasDefinition(): boolean {
@@ -53,5 +54,29 @@ export class ConceptStateful {
             return false;
         }
         return true;
+    }
+    /**
+     * Makes a stateless copy for the redux store
+     * @returns ConceptStateless 
+     */
+    makeStatelessCopy(): ConceptStateless{
+        var statelessCopy : ConceptStateless = {
+            id: this.id,
+            name: this.name,
+            parent: undefined,
+            hasOrderedSubconcepts: this.hasOrderedSubconcepts,
+            subconcepts: [],
+            definition: this.definition,
+            index: this.index,
+            numberOfSubconceptsWithDefinition: this.numberOfSubconceptsWithDefinition,
+            numberOfSubConcpetsWithSubconcepts: this.numberOfSubConcpetsWithSubconcepts
+        }
+
+        this.subconcepts.forEach((concept: ConceptStateful, index: number) => {
+            var statelessSubConCopy = concept.makeStatelessCopy();
+            statelessCopy.subconcepts.push(statelessCopy);
+        });
+
+        return statelessCopy;
     }
 }

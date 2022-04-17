@@ -1,5 +1,9 @@
 import { ConceptStateful } from "./concept-stateful";
 import { v1 as timeStampUUID } from 'uuid';
+import { UnitStateless } from "./unit-stateless";
+import { Store } from "@ngrx/store";
+import { AppState } from "../app-state";
+import { deleteUnit, updateUnit } from "../unit.reducer";
 export class UnitStateful {
     id: string;
     name: string;
@@ -9,7 +13,7 @@ export class UnitStateful {
     numOfRootConceptsWithDefiniton: number;
     numOfRootConceptsWithSubconcepts: number;
 
-    constructor(){
+    constructor(public store: Store<AppState> | undefined){
         this.id = timeStampUUID();
         this.name = "";
         this.description = "";
@@ -60,5 +64,47 @@ export class UnitStateful {
      */
     hasDescription(): boolean{
         return this.description.length > 0;
+    }
+
+    /**
+     * Make stateless copy of the unit for redux store
+     * @returns UnitStateless
+     */
+    makeStatelessCopy(): UnitStateless{
+        // copy over unit data 
+        var unitStatlessCopy : UnitStateless = {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            concepts: [],
+            numOfConcepts: this.numOfConcepts,
+            numOfRootConceptsWithDefiniton: this.numOfRootConceptsWithDefiniton,
+            numOfRootConceptsWithSubconcepts: this.numOfRootConceptsWithSubconcepts
+        };
+
+        // copy concepts
+        this.concepts.forEach((concept : ConceptStateful, index: number ) => {
+            unitStatlessCopy.concepts.push(concept.makeStatelessCopy());
+        });
+        return unitStatlessCopy;
+    }
+
+    
+    /**
+     * save or update the unit it the redux store
+     */
+    updateUnitInStore(){
+        // this will save or update the unit
+        if (this.store != undefined){
+            this.store.dispatch(updateUnit(this.makeStatelessCopy()))
+        }
+    }
+    /**
+     * Delete unit in redux store
+     */
+    deleteUnitInStore(){
+        if(this.store != undefined){
+            this.store.dispatch(deleteUnit({id: this.id}));
+        }
     }
   }

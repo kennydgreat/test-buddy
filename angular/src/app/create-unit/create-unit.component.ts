@@ -3,12 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard-changes-dialog.component';
-import { ConceptHelper } from '../ngrx-store/concept-helper';
-import { UnitStateless } from '../ngrx-store/models/unit-stateless';
-import { UnitHelper } from '../ngrx-store/unit-helper';
-import { updateUnitAction, deleteUnit, updateUnit } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
 import { AppDataService } from '../app-data-service/app-data.service';
+import { UnitStateful } from '../ngrx-store/models/unit-stateful';
 
 @Component({
   selector: 'app-create-unit',
@@ -31,10 +28,9 @@ import { AppDataService } from '../app-data-service/app-data.service';
 })
 export class CreateUnitComponent implements OnInit {
 
-  unit: UnitStateless
-  unitHelper: UnitHelper = new UnitHelper();
+  unit: UnitStateful
   constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog, private appDataService: AppDataService) {
-    this.unit = this.unitHelper.createNewUnit();
+    this.unit = new UnitStateful(store);
    }
 
   ngOnInit(): void {
@@ -43,10 +39,10 @@ export class CreateUnitComponent implements OnInit {
   // closes dialog using injected dialog ref 
   closeDialog(){
     // check the unit is empty
-    if (this.unitHelper.isUnitEmtpy(this.unit)){
+    if (this.unit.isEmpty()){
 
       // delete unit 
-      this.store.dispatch(deleteUnit({id: this.unit.id}));
+      this.unit.deleteUnitInStore()
       // close the dialog
       this.dialogRef.close();
       return;
@@ -60,7 +56,7 @@ export class CreateUnitComponent implements OnInit {
       if(discardChanges){
 
         // delete unit 
-        this.store.dispatch(deleteUnit({id: this.unit.id}));
+        this.unit.deleteUnitInStore()
         // close the dialog
         this.dialogRef.close();
       }
@@ -69,35 +65,32 @@ export class CreateUnitComponent implements OnInit {
 
   //adding a concept
   addConcept(){
-    // add new concepts by recreating concept array
-    this.unit = this.unitHelper.addNewRootConcept(this.unit);
+    // add a new concept
+    this.unit.addNewRootConcept();
 
-    // save the change in the store by creating a new unit.
-    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
+    // save the change in the store
+    this.unit.updateUnitInStore()
   }
 
   //saves unit in store 
   unitDetailsChange(){
     // save the change in the store by creating a new unit.
-    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
+    this.unit.updateUnitInStore();
   }
 
   conceptChanged(){
     //concept changed, update unit in store
-    this.store.dispatch(updateUnit(this.unit));
+    this.unit.updateUnitInStore();
   }
 
   // user is done
   done(){
-    if (this.unitHelper.isUnitEmtpy(this.unit)){
+    if (this.unit.isEmpty()){
       // delete unit 
-      this.store.dispatch(deleteUnit({id: this.unit.id}));
+      this.unit.deleteUnitInStore();
     }else{
       // update unit in store (unit changes should have been in the store anyway, this is to make ensure no changes are lost)
-    this.store.dispatch(updateUnitAction({unit: {...this.unit}}));
-
-    //****DELETE AFTER */
-    //this.appDataService.unitsDictionary[this.unit.id] = this.unit;
+    this.unit.updateUnitInStore()
     }
 
     // close the dialog

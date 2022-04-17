@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Observer, Subject } from 'rxjs';
-import { multicast } from 'rxjs/operators';
-import { UnitStateless } from '../ngrx-store/models/unit-stateless';
-import { UnitHelper } from '../ngrx-store/unit-helper';
-import { UnitDictionary } from '../ngrx-store/unit-state';
+import { Observable } from 'rxjs';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
-import { reportError, reportErrorAction, updateUnitAction, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
+import { reportError, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
-import { v1 as timeStampUUID } from 'uuid';import { updateDataFileName } from '../ngrx-store/settings.reducer';
+import { updateDataFileName } from '../ngrx-store/settings.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +12,6 @@ import { v1 as timeStampUUID } from 'uuid';import { updateDataFileName } from '.
 
 //Responible for getting and saving app data in local storage
 export class AppDataService {
-  // units helper 
-  unitHelper: UnitHelper = new UnitHelper();
   
   // App data file handle
   fileHandle: any;
@@ -123,18 +117,6 @@ getDataFromFile = async () : Promise<AppState | undefined> => {
 
 }
 
-
-  //gets units 
-  getUnits(){
-    var unit = this.unitHelper.createNewUnit();
-    unit.name = "Subject";
-    var units = {};
-    units[unit.id] = unit;
-    return new Observable<UnitDictionary>( (observer) => {
-      observer.next(units);
-    });
-
-  }
 
 /**
  * checks if app data file ready for reading and writing
