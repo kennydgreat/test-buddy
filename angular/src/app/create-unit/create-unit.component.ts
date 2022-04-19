@@ -29,7 +29,7 @@ import { UnitStateful } from '../ngrx-store/models/unit-stateful';
 export class CreateUnitComponent implements OnInit {
 
   unit: UnitStateful
-  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog, private appDataService: AppDataService) {
+  constructor(public dialogRef: MatDialogRef<CreateUnitComponent>, private store: Store<AppState>, public discardChangesDialog: MatDialog,) {
     this.unit = new UnitStateful(store);
    }
 

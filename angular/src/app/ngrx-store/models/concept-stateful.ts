@@ -92,7 +92,7 @@ export class ConceptStateful {
      * checks that the concept is expanded (has a definition or sub-concepts)
      * @returns boolean
      */
-    isExpanded(): boolean {
+    isExtended(): boolean {
         if (this.hasDefinition()) {
             return true;
         }

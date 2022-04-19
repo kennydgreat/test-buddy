@@ -3,10 +3,7 @@
 div.view-root {
     display: flex;
     flex-direction: row;
-    padding: 7px;
-    padding-bottom: 5px;
-    background-color: $light-gray;
-    border-radius: 12px;
+    column-gap: 4rem;
     width: fit-content;
     margin: 0px;
 
@@ -16,6 +13,10 @@ div.view-root {
         flex-direction: column;
         row-gap: 4px;
         align-items: center;
+        padding: 7px;
+        padding-bottom: 5px;
+        background-color: $light-gray;
+        border-radius: 12px;
         
 
         div.concept-name-and-connect-point {
@@ -97,8 +98,12 @@ div.view-root {
         display: flex;
         flex-direction: column;
         width: fit-content;
+        padding: 7px;
         padding-bottom: 0.4rem;
         row-gap: 0.4rem;
+
+        background-color: $light-gray;
+        border-radius: 12px;
 
         div.concept-name-and-order-toggle {
             display: flex;
@@ -201,5 +206,11 @@ div.view-root {
                 }
             }
         }
+    }
+
+    div.extended-subconcepts{
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.5rem;
     }
 }

@@ -69,4 +69,10 @@ export class ConceptViewerComponent implements OnInit {
     this.conceptChangeEvent.emit();
   }
 
+  extendSubConcept(subconcept: ConceptStateful) {
+    // get the subconcept to extend itself and emit concept change event, this will event will pickup but the unit component futher up. 
+    subconcept.addsubconcept();
+    this.conceptChangeEvent.emit();
+  }
+
 }
