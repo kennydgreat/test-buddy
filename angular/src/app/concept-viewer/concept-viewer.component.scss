@@ -161,6 +161,23 @@ div.view-root {
                 
             }
 
+            div.extend-subconcept-button{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.2rem;
+                height: 1.2rem;
+                background-color: $primary-pink;
+                border-radius: 50%;
+
+                mat-icon.extend-button{
+                    margin-right: 0.1rem;
+                    transform: scale(0.5);
+                    color: white;
+                    cursor: pointer;
+                }
+            }
+
         }
 
         div.add-sub-concept-button-row{

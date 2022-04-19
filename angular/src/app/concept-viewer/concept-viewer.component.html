@@ -27,9 +27,15 @@
         <div id="subconcept-div" class="subconcept-div-row" *ngFor="let subconcept of statefulConcept.subconcepts">
             <mat-icon class="delete-button">highlight_off</mat-icon>
             <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)] = "subconcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
-            <div class="connection-point">
+            <div class="connection-point" *ngIf="subconcept.isExpanded()">
                 <mat-icon class="connection-point-subconcept">
                     circle
+                </mat-icon>
+            </div>
+
+            <div class="extend-subconcept-button" *ngIf="!subconcept.isExpanded()">
+                <mat-icon class="extend-button">
+                    chevron_right
                 </mat-icon>
             </div>
         </div>

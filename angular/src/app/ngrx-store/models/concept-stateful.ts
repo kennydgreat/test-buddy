@@ -54,10 +54,7 @@ export class ConceptStateful {
      * @returns boolean
      */
      hasDefinition(): boolean {
-        if (this.definition.length <= 0) {
-            return false;
-        }
-        return true;
+        return this.definition.length > 0
     }
     /**
      * Makes a stateless copy for the redux store
@@ -91,4 +88,25 @@ export class ConceptStateful {
         subconcept.index = this.subconcepts.length;
         this.subconcepts.push(subconcept);     
     }
+    /**
+     * checks that the concept is expanded (has a definition or sub-concepts)
+     * @returns boolean
+     */
+    isExpanded(): boolean {
+        if (this.hasDefinition()) {
+            return true;
+        }
+        if (this.hasSubconcepts()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Checks that concept has subconcepts
+     * @returns boolean
+     */
+    hasSubconcepts(): boolean {
+        return this.subconcepts.length > 0
+    }
+
 }
