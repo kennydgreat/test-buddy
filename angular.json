@@ -34,7 +34,7 @@
             "styles": [
               "angular/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": ["node_modules/leader-line/leader-line.min.js"]
           },
           "configurations": {
             "production": {

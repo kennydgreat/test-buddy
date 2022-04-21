@@ -84,7 +84,7 @@ export class ConceptStateful {
      * Adds a subconcept
      */
     addsubconcept(){
-        var subconcept = new ConceptStateful(this.parent);
+        var subconcept = new ConceptStateful(this);
         subconcept.index = this.subconcepts.length;
         this.subconcepts.push(subconcept);     
     }
@@ -107,6 +107,13 @@ export class ConceptStateful {
      */
     hasSubconcepts(): boolean {
         return this.subconcepts.length > 0
+    }
+    /**
+     * Turns true if the concept has a parent
+     * @returns boolean
+     */
+    hasParent() : boolean{
+        return this.parent != undefined;
     }
 
 }

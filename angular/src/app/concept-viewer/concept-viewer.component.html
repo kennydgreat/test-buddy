@@ -4,6 +4,11 @@
         <!--The concept's smaller default state-->
         <div class="concept-card-default"  *ngIf="!showConceptExpandedCard" >
             <div class="concept-name-and-connect-point">
+                <div id="{{statefulConcept.id}}" class="connection-point" #connectionPoint *ngIf="statefulConcept.hasParent()">
+                    <mat-icon class="connection-point">
+                        circle
+                    </mat-icon>
+                </div>
                 <div class="concept-name">
                     <p class="concept-name">{{statefulConcept.name}}</p>
                 </div>
@@ -24,6 +29,11 @@
         <!--The concept's bigger extended state-->
         <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard" >
             <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
+                <div id="{{statefulConcept.id}}" class="connection-point" #connectionPoint *ngIf="statefulConcept.hasParent()">
+                    <mat-icon class="connection-point">
+                        circle
+                    </mat-icon>
+                </div>
                 <textarea id="concept-name" class="concept-name" [(ngModel)]="statefulConcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
                 
                 <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="statefulConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
@@ -55,8 +65,8 @@
     <!--The concept's extended subconcepts-->
    <div id="extend-subconcepts" class="extended-subconcepts">
        <!-- extra div is used as two templates can't be used on an element-->
-    <div *ngFor="let subconcept of statefulConcept.subconcepts">
-        <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()" ></app-concept-viewer>
+    <div id="{{subconcept.id}}" #connectionPoint *ngFor="let subconcept of statefulConcept.subconcepts">
+        <app-concept-viewer  [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()" ></app-concept-viewer>
    </div>
    </div>
 </div>
