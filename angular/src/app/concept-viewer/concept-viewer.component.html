@@ -1,10 +1,10 @@
-<div class="view-root"  >
+<div class="view-root {{statefulConcept.isSubconceptExtended() ? 'extended-subconcepts-extended-padding':''}}">
     <!--The current concept and it's different states-->
     <div id="current-concept" (mouseover)="onHover(true)" (mouseleave)="onHover(false)">
         <!--The concept's smaller default state-->
-        <div class="concept-card-default"  *ngIf="!showConceptExpandedCard" >
+        <div class="concept-card-default" *ngIf="!showConceptExpandedCard">
             <div class="concept-name-and-connect-point">
-                <div id="{{statefulConcept.id}}" class="connection-point" #connectionPoint *ngIf="statefulConcept.hasParent()">
+                <div class="connection-point" *ngIf="statefulConcept.hasParent()">
                     <mat-icon class="connection-point">
                         circle
                     </mat-icon>
@@ -12,12 +12,12 @@
                 <div class="concept-name">
                     <p class="concept-name">{{statefulConcept.name}}</p>
                 </div>
-                <div class="connection-point">
+                <div id="{{defaultStateCP_ID}}" class="connection-point default" *ngIf="statefulConcept.isSubconceptExtended()" #connectionPoint>
                     <mat-icon class="connection-point">
                         circle
                     </mat-icon>
                 </div>
-    
+
             </div>
             <div class="ellipsis">
                 <div></div>
@@ -27,28 +27,36 @@
         </div>
 
         <!--The concept's bigger extended state-->
-        <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard" >
+        <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard">
             <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
-                <div id="{{statefulConcept.id}}" class="connection-point" #connectionPoint *ngIf="statefulConcept.hasParent()">
+                <div class="connection-point" *ngIf="statefulConcept.hasParent()">
                     <mat-icon class="connection-point">
                         circle
                     </mat-icon>
                 </div>
-                <textarea id="concept-name" class="concept-name" [(ngModel)]="statefulConcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
-                
-                <mat-slide-toggle id="order-subconcepts-toggle" color="accent"  [(ngModel)]="statefulConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()"></mat-slide-toggle>
-    
+                <textarea id="concept-name" class="concept-name" [(ngModel)]="statefulConcept.name" matInput
+                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
+                    (focusout)="onFocus(false)"></textarea>
+
+                <mat-slide-toggle id="order-subconcepts-toggle" color="accent"
+                    [(ngModel)]="statefulConcept.hasOrderedSubconcepts" (toggleChange)="toggleSubconceptOrdered()">
+                </mat-slide-toggle>
+
             </div>
             <div id="subconcept-div" class="subconcept-div-row" *ngFor="let subconcept of statefulConcept.subconcepts">
                 <mat-icon class="delete-button">highlight_off</mat-icon>
-                <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)] = "subconcept.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)" (focusout)="onFocus(false)" ></textarea>
-                <div class="connection-point" *ngIf="subconcept.isExtended()">
+                <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)]="subconcept.name" matInput
+                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
+                    (focusout)="onFocus(false)"></textarea>
+                <div id="{{expandedStateCP_ID}}" class="connection-point expanded" *ngIf="subconcept.isExtended()"
+                    #connectionPoint>
                     <mat-icon class="connection-point-subconcept">
                         circle
                     </mat-icon>
                 </div>
-    
-                <div class="extend-subconcept-button" *ngIf="!subconcept.isExtended()" (click)="extendSubConcept(subconcept)">
+
+                <div class="extend-subconcept-button" *ngIf="!subconcept.isExtended()"
+                    (click)="extendSubConcept(subconcept)">
                     <mat-icon class="extend-button">
                         chevron_right
                     </mat-icon>
@@ -61,12 +69,18 @@
             </div>
         </div>
     </div>
+    <!-- connection line-->
+    <div class="connection-line" *ngIf="statefulConcept.isSubconceptExtended()">
 
+    </div>
     <!--The concept's extended subconcepts-->
-   <div id="extend-subconcepts" class="extended-subconcepts">
-       <!-- extra div is used as two templates can't be used on an element-->
-    <div id="{{subconcept.id}}" #connectionPoint *ngFor="let subconcept of statefulConcept.subconcepts">
-        <app-concept-viewer  [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()" ></app-concept-viewer>
-   </div>
-   </div>
+    <div id="extend-subconcepts" class="extended-subconcepts">
+        <!-- extra div is used as two templates can't be used on an element-->
+        <div id="{{SUB_CONCEPT_CP_ID}}" #connectionPoint *ngFor="let subconcept of statefulConcept.subconcepts">
+            <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()"></app-concept-viewer>
+
+        </div>
+        
+    </div>
+   
 </div>

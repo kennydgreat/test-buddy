@@ -36,6 +36,14 @@ export class ConceptStateful {
             return false;
         }
 
+        // check subconcepts
+        for (var i = 0; i < this.subconcepts.length; i++){
+            if (!this.subconcepts[i].isConceptEmpty()){
+                // the current subconcept is not empty so the unit not empty
+                return false;
+            }
+        }
+
         return true;
     }
     /**
@@ -80,6 +88,7 @@ export class ConceptStateful {
 
         return statelessCopy;
     }
+
     /**
      * Adds a subconcept
      */
@@ -88,6 +97,7 @@ export class ConceptStateful {
         subconcept.index = this.subconcepts.length;
         this.subconcepts.push(subconcept);     
     }
+
     /**
      * checks that the concept is expanded (has a definition or sub-concepts)
      * @returns boolean
@@ -101,6 +111,7 @@ export class ConceptStateful {
         }
         return false;
     }
+
     /**
      * Checks that concept has subconcepts
      * @returns boolean
@@ -108,12 +119,26 @@ export class ConceptStateful {
     hasSubconcepts(): boolean {
         return this.subconcepts.length > 0
     }
+
     /**
      * Turns true if the concept has a parent
      * @returns boolean
      */
     hasParent() : boolean{
         return this.parent != undefined;
+    }
+    
+    /**
+     * Returns true if there is subconcept that's exteneded
+     * @returns boolean
+     */
+    isSubconceptExtended() : boolean{
+        for(var i = 0; i < this.subconcepts.length; i++){
+            if (this.subconcepts[i].isExtended()){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
