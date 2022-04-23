@@ -12,7 +12,7 @@
                 <div class="concept-name">
                     <p class="concept-name">{{statefulConcept.name}}</p>
                 </div>
-                <div id="{{defaultStateCP_ID}}" class="connection-point default" *ngIf="statefulConcept.isSubconceptExtended()" #connectionPoint>
+                <div class="connection-point default" *ngIf="statefulConcept.isSubconceptExtended()">
                     <mat-icon class="connection-point">
                         circle
                     </mat-icon>
@@ -48,7 +48,7 @@
                 <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)]="subconcept.name" matInput
                     cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
                     (focusout)="onFocus(false)"></textarea>
-                <div id="{{expandedStateCP_ID}}" class="connection-point expanded" *ngIf="subconcept.isExtended()"
+                <div class="connection-point expanded" *ngIf="subconcept.isExtended()"
                     #connectionPoint>
                     <mat-icon class="connection-point-subconcept">
                         circle
@@ -76,7 +76,7 @@
     <!--The concept's extended subconcepts-->
     <div id="extend-subconcepts" class="extended-subconcepts">
         <!-- extra div is used as two templates can't be used on an element-->
-        <div id="{{SUB_CONCEPT_CP_ID}}" #connectionPoint *ngFor="let subconcept of statefulConcept.subconcepts">
+        <div *ngFor="let subconcept of statefulConcept.subconcepts">
             <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()"></app-concept-viewer>
 
         </div>
