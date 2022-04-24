@@ -42,24 +42,37 @@
             </div>
             <div class="definition">
                 <p class="definition-label">Definition</p>
-                <textarea id="concept-definition" class="definition" [(ngModel)]="statefulConcept.definition" cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="7" (focus)="onFocus(true)"
-                (focusout)="onFocus(false)"></textarea>
-            </div>
-            <div id="subconcept-div" class="subconcept-div-row" *ngFor="let subconcept of statefulConcept.subconcepts">
-                <mat-icon class="delete-button">highlight_off</mat-icon>
-                <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)]="subconcept.name" matInput
-                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
+                <textarea id="concept-definition" class="definition" [(ngModel)]="statefulConcept.definition"
+                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="7" (focus)="onFocus(true)"
                     (focusout)="onFocus(false)"></textarea>
-                <div class="connection-point" *ngIf="subconcept.isExtended()">
-                    <div class="connection-point">
-                    </div>
-                </div>
+            </div>
+            <div class="subconcept-rows" cdkDropList [cdkDropListData]="statefulConcept.subconcepts"
+                (cdkDropListDropped)="subconceptsDragDropEvent($event)" >
 
-                <div class="extend-subconcept-button" *ngIf="!subconcept.isExtended()"
-                    (click)="extendSubConcept(subconcept)">
-                    <mat-icon class="extend-button">
-                        chevron_right
-                    </mat-icon>
+                <!--Drag element, cdkDragPrewviewContainer makes sure the item does not lose its styling-->
+                <div id="subconcept-div" class="subconcept-div-row"
+                    *ngFor="let subconcept of statefulConcept.subconcepts; let i = index" cdkDrag cdkDragPreviewContainer="parent" cdkDragLockAxis="y">
+
+                    <!--Drag point, cdkDragHandle makes it the drag handle-->
+                    <mat-icon class="drag-icon" *ngIf="statefulConcept.hasOrderedSubconcepts" cdkDragHandle>drag_indicator</mat-icon>
+
+                    <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)]="subconcept.name" matInput
+                        cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
+                        (focusout)="onFocus(false)"></textarea>
+
+                    <mat-icon class="delete-button">highlight_off</mat-icon>
+
+                    <div class="connection-point" *ngIf="subconcept.isExtended()">
+                        <div class="connection-point">
+                        </div>
+                    </div>
+
+                    <div class="extend-subconcept-button" *ngIf="!subconcept.isExtended()"
+                        (click)="extendSubConcept(subconcept)">
+                        <mat-icon class="extend-button">
+                            chevron_right
+                        </mat-icon>
+                    </div>
                 </div>
             </div>
             <div id="add-sub-concept-button-row" class="add-sub-concept-button-row">
@@ -80,7 +93,7 @@
             <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()"></app-concept-viewer>
 
         </div>
-        
+
     </div>
-   
+
 </div>

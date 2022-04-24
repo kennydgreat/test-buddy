@@ -26,11 +26,12 @@ import { ErrorMessageViewComponent } from './error-message-view/error-message-vi
 import { SettingsComponent } from './settings/settings.component';
 import { settingsReducer } from './ngrx-store/settings.reducer';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent],
-  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
+  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

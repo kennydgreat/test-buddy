@@ -1,3 +1,4 @@
+import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../ngrx-store/app-state';
@@ -89,5 +90,12 @@ export class ConceptViewerComponent implements OnInit {
     this.conceptChangeEvent.emit();
   }
 
+  subconceptsDragDropEvent(event: CdkDragDrop<ConceptStateful[]>){
+    // change the order of the elements
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    //update the stateful concept and emit change
+    this.statefulConcept.subconcepts = event.container.data;
+    this.conceptChangeEvent.emit();
+  }
 
 }
