@@ -3,11 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-data-file-view.component';
-import { CreateUnitComponent } from '../create-unit/create-unit.component';
 import { AppState, selectUnits } from '../ngrx-store/app-state';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 import { AppDataService } from '../app-data-service/app-data.service';
-import { reportError, reportErrorAction } from '../ngrx-store/unit.reducer';
+import { CreateUnitViewComponent } from '../create-unit-view/create-unit-view.component';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +35,7 @@ export class HomeComponent implements OnInit {
 
   //opens the create unit dialog
   openCreateUnitDialog(): void{
-    const createUnitdialogRef = this.createUnitDialog.open(CreateUnitComponent,{
+    const createUnitdialogRef = this.createUnitDialog.open(CreateUnitViewComponent,{
       // to make dialog full-screen
       maxWidth: '100vw',
       maxHeight: '100vh',

@@ -16,7 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import {MatDialogModule} from '@angular/material/dialog';
-import { CreateUnitComponent } from './create-unit/create-unit.component';
+import { UnitViewerComponent } from './unit-viewer/unit-viewer.component';
 import {MatInputModule} from '@angular/material/input';
 import { ConceptViewerComponent } from './concept-viewer/concept-viewer.component';
 import { DiscardChangesDialogComponent } from './discard-changes-dialog/discard-changes-dialog.component';
@@ -27,10 +27,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { settingsReducer } from './ngrx-store/settings.reducer';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CreateUnitViewComponent } from './create-unit-view/create-unit-view.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, CreateUnitComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })
