@@ -5,17 +5,15 @@
         <div class="concept-card-default" *ngIf="!showConceptExpandedCard">
             <div class="concept-name-and-connect-point">
                 <div class="connection-point" *ngIf="statefulConcept.hasParent()">
-                    <mat-icon class="connection-point">
-                        circle
-                    </mat-icon>
+                    <div class="connection-point">
+                    </div>
                 </div>
                 <div class="concept-name">
                     <p class="concept-name">{{statefulConcept.name}}</p>
                 </div>
                 <div class="connection-point default" *ngIf="statefulConcept.isSubconceptExtended()">
-                    <mat-icon class="connection-point">
-                        circle
-                    </mat-icon>
+                    <div class="connection-point">
+                    </div>
                 </div>
 
             </div>
@@ -30,12 +28,11 @@
         <div id="concept-expanded" class="concept-expanded" *ngIf="showConceptExpandedCard">
             <div id="concept-name-and-order-toggle" class="concept-name-and-order-toggle">
                 <div class="connection-point" *ngIf="statefulConcept.hasParent()">
-                    <mat-icon class="connection-point">
-                        circle
-                    </mat-icon>
+                    <div class="connection-point">
+                    </div>
                 </div>
                 <textarea id="concept-name" class="concept-name" [(ngModel)]="statefulConcept.name" matInput
-                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
+                    cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="6" (focus)="onFocus(true)"
                     (focusout)="onFocus(false)"></textarea>
 
                 <mat-slide-toggle id="order-subconcepts-toggle" color="accent"
@@ -43,16 +40,19 @@
                 </mat-slide-toggle>
 
             </div>
+            <div class="definition">
+                <p class="definition-label">Definition</p>
+                <textarea id="concept-definition" class="definition" [(ngModel)]="statefulConcept.definition" cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="7" (focus)="onFocus(true)"
+                (focusout)="onFocus(false)"></textarea>
+            </div>
             <div id="subconcept-div" class="subconcept-div-row" *ngFor="let subconcept of statefulConcept.subconcepts">
                 <mat-icon class="delete-button">highlight_off</mat-icon>
                 <textarea id="sub-concept-name" class="sub-concept-name" [(ngModel)]="subconcept.name" matInput
                     cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
                     (focusout)="onFocus(false)"></textarea>
-                <div class="connection-point expanded" *ngIf="subconcept.isExtended()"
-                    #connectionPoint>
-                    <mat-icon class="connection-point-subconcept">
-                        circle
-                    </mat-icon>
+                <div class="connection-point" *ngIf="subconcept.isExtended()">
+                    <div class="connection-point">
+                    </div>
                 </div>
 
                 <div class="extend-subconcept-button" *ngIf="!subconcept.isExtended()"
