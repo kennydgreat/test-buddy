@@ -26,6 +26,7 @@ export class UnitViewerComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<void>();
   @Output() doneEvent = new EventEmitter<void>();
   @Input() unit : UnitStateful
+  @Input() action: string
 
   constructor() {
     

@@ -1,6 +1,6 @@
 <div id="root-view" class="view-root">
     <div id="details-panel" class="details-panel">
-        <p id="page-title" class="page-title">Create a Unit</p>
+        <p id="page-title" class="page-title">{{action}}</p>
 
         <p id="unit-name-label" class="field-labels">Name</p>
         <textarea id="unit-name-field" class="name-field"  [(ngModel)]="unit.name" matInput cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (change)="unitDetailsChange()">
