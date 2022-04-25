@@ -141,4 +141,37 @@ export class ConceptStateful {
         return false;
     }
 
+    
+    /**
+     * Returns number of extended concepts in the concept's tree (include itself)
+     * function traverses tree in breath-first order
+     * @returns number
+     */
+    countExtendedConcepts(): number {
+        //number of extended concepts
+        var numOfExtendedConcepts = 0;
+
+        //queue from which concepts are added to the list
+        var queue = new Array<ConceptStateful>()
+
+        queue.push(this)
+        while (queue.length > 0) {
+            //remove the first element in th queue
+            var currentConcept = queue.shift();
+            if (currentConcept.isExtended()) {
+                //the concept has subconcepts or a definition so it can added, leaf concepts are treated as information and not actual concepts
+                numOfExtendedConcepts++;
+            }
+
+            currentConcept.subconcepts.forEach(subconcept => {
+                //add the subConcepts to the queue so then can be looked at next time around
+                queue.push(subconcept)
+            })
+
+        }
+
+        return numOfExtendedConcepts;
+
+    }
+
 }

@@ -77,7 +77,7 @@ export class UnitStateful {
             name: this.name,
             description: this.description,
             concepts: [],
-            numOfConcepts: this.numOfConcepts,
+            numOfConcepts: this.getNumOfExtendedConcepts(),
             numOfRootConceptsWithDefiniton: this.numOfRootConceptsWithDefiniton,
             numOfRootConceptsWithSubconcepts: this.numOfRootConceptsWithSubconcepts
         };
@@ -93,7 +93,7 @@ export class UnitStateful {
     /**
      * save or update the unit it the redux store
      */
-    updateUnitInStore(){
+    async updateUnitInStore(){
         // this will save or update the unit
         if (this.store != undefined){
             this.store.dispatch(updateUnit(this.makeStatelessCopy()))
@@ -106,5 +106,28 @@ export class UnitStateful {
         if(this.store != undefined){
             this.store.dispatch(deleteUnit({id: this.id}));
         }
+    }
+
+    
+    /**
+     * Returns number of all extened concepts (concepts with subconcepts)
+     * @returns number
+     */
+    getNumOfExtendedConcepts(): number {
+        var numOfConcepts = 0;
+        // get the number of extended concept for each root concept
+        this.concepts.forEach(concept => {
+            
+            if (concept.hasSubconcepts()){
+                //this concept is tree so add the concepts in the tree
+                numOfConcepts = numOfConcepts + concept.countExtendedConcepts();
+                
+            }else{
+                //this isn't a tree, add 1 for the concept
+                numOfConcepts++;
+            }
+          
+        });
+        return numOfConcepts;
     }
   }
