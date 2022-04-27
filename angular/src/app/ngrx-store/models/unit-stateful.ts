@@ -130,4 +130,28 @@ export class UnitStateful {
         });
         return numOfConcepts;
     }
+    /**
+     * copies data from a stateless concept
+     * @param  {UnitStateless} unit
+     */
+    copyInStatelessData(unit: UnitStateless){
+        // copy unit data
+        for (var prop in unit){
+            this[prop] = unit[prop];
+        }
+
+        //clear our concepts set by loop
+        this.concepts = [];
+
+        //set subconcepts
+        for(var i = 0; i < unit.concepts.length; i++ ){
+            // create a new stateful concept
+            var concept = new ConceptStateful();
+            // copy data 
+            concept.copyInStatelessData(unit.concepts[i]);
+            // add concept
+            this.concepts.push(concept);
+        }
+
+    }
   }

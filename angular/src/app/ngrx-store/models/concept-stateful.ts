@@ -173,5 +173,30 @@ export class ConceptStateful {
         return numOfExtendedConcepts;
 
     }
+    /**
+     * Copies data from a stateless concept
+     * @param  {ConceptStateless} concept
+     */
+    copyInStatelessData(concept: ConceptStateless){
+        //copy concept data
+        for( var prop in concept){
+            this[prop] = concept[prop];
+        }
+        // clear out subconcept set
+        this.subconcepts = [];
+
+        //set subconcepts
+        for( var i = 0; i < concept.subconcepts.length; i++){
+            // create new concept
+            var subconcept = new ConceptStateful();
+            // set parent 
+            subconcept.parent = this;
+            // copy data
+            subconcept.copyInStatelessData(concept.subconcepts[i]);
+            // add subconcept
+            this.subconcepts.push(subconcept);
+            
+        }
+    }
 
 }
