@@ -20,6 +20,8 @@ export const reportErrorAction = createAction('units/reportError', props<{title:
 
 export const hideErrorAction = createAction('units/hideError', props<{id: string}>()); 
 
+export const editUnitAction = createAction('units/editUnit',props<{id: string}>());
+
 //------------Unit State Action helper functions----------------
 /**
  * update a unit in the store with new unit 
@@ -39,6 +41,13 @@ export function reportError(title: string, message: string) {
 export function hideError(id: string) {
     
     return hideErrorAction({id: id});
+}
+/**
+ * Calls editUnit Action. edit unit updates the unitEditID in the store which is used by editting component to get the right unit
+ * @param  {string} id
+ */
+export function editUnit(id: string){
+    return editUnitAction({id: id});
 }
 
 //------------Units state Reducer---------------
@@ -95,7 +104,13 @@ const _unitsReducer = createReducer(unitInitialState,
        error.show = false;
        newState.errorDictionary[action.id] = error;
        return newState;
-   })
+   }),
+   on(editUnitAction, (state,  action) =>(
+       {
+           ...state,
+           unitToEditID: action.id
+       }
+   ))
     );
 
    

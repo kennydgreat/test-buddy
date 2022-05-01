@@ -8,6 +8,7 @@ export interface UnitDictionary {
 }
 export interface UnitsState {
     unitsDictionary : UnitDictionary;
+    unitToEditID: string
     errorDictionary: ErrorDictionary;
 }
 
@@ -15,5 +16,6 @@ export interface UnitsState {
 
 export const unitInitialState : UnitsState = {
     unitsDictionary: {},
+    unitToEditID: "",
     errorDictionary: {}
 }
