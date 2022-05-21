@@ -12,6 +12,7 @@ export class UnitStateful {
     numOfConcepts: number;
     numOfRootConceptsWithDefiniton: number;
     numOfRootConceptsWithSubconcepts: number;
+    unitBeforeChanges: UnitStateless;
 
     constructor(public store: Store<AppState> | undefined){
         this.id = timeStampUUID();
@@ -135,6 +136,8 @@ export class UnitStateful {
      * @param  {UnitStateless} unit
      */
     copyInStatelessData(unit: UnitStateless){
+        // set unit before changes to this unit is before, this to discard the changes.
+        this.unitBeforeChanges = unit;
         // copy unit data
         for (var prop in unit){
             this[prop] = unit[prop];
@@ -153,5 +156,11 @@ export class UnitStateful {
             this.concepts.push(concept);
         }
 
+    }
+    /**
+     * Undoes changes to the unit
+     */
+    deleteChanges(){
+        this.store.dispatch(updateUnit(this.unitBeforeChanges));
     }
   }
