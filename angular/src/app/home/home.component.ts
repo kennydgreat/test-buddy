@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ChooseDataFileViewComponent } from '../choose-data-file-view/choose-data-file-view.component';
-import { AppState, selectUnits } from '../ngrx-store/app-state';
+import { AppState, selectUnitsAsArray } from '../ngrx-store/app-state';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 import { AppDataService } from '../app-data-service/app-data.service';
 import { CreateUnitViewComponent } from '../create-unit-view/create-unit-view.component';
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   
   constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog, public appDataService: AppDataService) {
     //connect units stream to units from units state
-    this.units$ = this.store.select(selectUnits);
+    this.units$ = this.store.select(selectUnitsAsArray);
     
    }
 
