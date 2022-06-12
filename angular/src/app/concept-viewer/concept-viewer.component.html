@@ -60,7 +60,7 @@
                         cdkTextareaAutosize [cdkAutosizeMinRows]="1" [cdkAutosizeMaxRows]="4" (focus)="onFocus(true)"
                         (focusout)="onFocus(false)"></textarea>
 
-                    <mat-icon class="delete-button">highlight_off</mat-icon>
+                    <mat-icon class="delete-button" (click)="deleteSubconcept(subconcept)">highlight_off</mat-icon>
 
                     <div class="connection-point" *ngIf="subconcept.isExtended()">
                         <div class="connection-point">

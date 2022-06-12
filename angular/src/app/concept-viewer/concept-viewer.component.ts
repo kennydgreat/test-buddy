@@ -104,6 +104,12 @@ export class ConceptViewerComponent implements OnInit {
     this.conceptDeleteEvent.emit(this.statefulConcept);
   }
 
+  deleteSubconcept(subconcept: ConceptStateful){
+    
+    // send event to parent component to delete subconcept
+    this.conceptDeleteEvent.emit(subconcept);
+  }
+
   deleteSubconceptEventReceived(subConcept: ConceptStateful){
 
     // the delete event received, propagate event up the tree to eventually reach the unit component.
