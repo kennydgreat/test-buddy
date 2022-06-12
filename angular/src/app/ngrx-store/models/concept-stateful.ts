@@ -140,6 +140,17 @@ export class ConceptStateful {
         }
         return false;
     }
+    /**
+     * Delete all subconcepts
+     */
+    deleteSubconcepts() {
+        this.subconcepts.forEach((subconcept, index) => {
+            subconcept.deleteSubconcepts()
+        })
+
+        //clear children array
+        this.subconcepts.length = 0
+    }
 
     
     /**

@@ -163,4 +163,27 @@ export class UnitStateful {
     deleteChanges(){
         this.store.dispatch(updateUnit(this.unitBeforeChanges));
     }
+
+    /**
+     * Deletes a concept from the unit''
+     * @param  {ConceptStateful} concept the concept to delete
+     */
+    deleteConcept(concept: ConceptStateful){
+
+        concept.deleteSubconcepts()
+        let parent = concept.parent;
+        
+       if (parent === undefined) {
+            //this concept isn't part of a tree so it is a root in the unit's concept list and needs to be deleted
+            this.concepts = this.concepts.filter(currrentConcept => (currrentConcept !== concept))
+        }
+        else{
+
+            // the concept as a parent so need from the parent
+            parent.subconcepts = parent.subconcepts.filter(currrentConcept => (currrentConcept !== concept));
+        }
+
+        this.updateUnitInStore();
+    }
+    
   }

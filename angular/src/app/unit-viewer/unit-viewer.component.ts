@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConceptStateful } from '../ngrx-store/models/concept-stateful';
 import { UnitStateful } from '../ngrx-store/models/unit-stateful';
 
 @Component({
@@ -61,11 +62,17 @@ export class UnitViewerComponent implements OnInit {
     this.unit.updateUnitInStore();
   }
 
+  deleteConcept(concept: ConceptStateful){
+    //a concept needs to be deleted 
+    this.unit.deleteConcept(concept);
+  }
+
   // user click done button
   done(){
     // emit done Event to parent
-  this.doneEvent.emit();
-
+    this.doneEvent.emit();
   }
+
+  
 
 }

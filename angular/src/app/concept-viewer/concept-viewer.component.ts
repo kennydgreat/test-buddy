@@ -17,6 +17,7 @@ export class ConceptViewerComponent implements OnInit {
 
   @Input() statefulConcept: ConceptStateful;
   @Output() conceptChangeEvent = new EventEmitter<void>();
+  @Output() conceptDeleteEvent = new EventEmitter<ConceptStateful>();
 
   leaderLines = [];
 
@@ -42,8 +43,8 @@ export class ConceptViewerComponent implements OnInit {
     this.isHover = isHover;
     this.setExpandVaraibles();
 
-
   }
+
   /**
    * sets the onFocus varaible, triggers the expand logic, change concept and triggers concept change event
    * @param  {boolean} onFocus whether view in focus
@@ -95,6 +96,23 @@ export class ConceptViewerComponent implements OnInit {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     //update the stateful concept and emit change
     this.statefulConcept.subconcepts = event.container.data;
+    this.conceptChangeEvent.emit();
+  }
+
+  deleteConcept(){
+    // send event to the parent component to delete this concept. 
+    this.conceptDeleteEvent.emit(this.statefulConcept);
+  }
+
+  deleteSubconceptEventReceived(subConcept: ConceptStateful){
+
+    // the delete event received, propagate event up the tree to eventually reach the unit component.
+    this.conceptDeleteEvent.emit(subConcept);
+  }
+
+  subconceptChanged(){
+
+    // a subconcept changed event was received propagate event up the tree
     this.conceptChangeEvent.emit();
   }
 

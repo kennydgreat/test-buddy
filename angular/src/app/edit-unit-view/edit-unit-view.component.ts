@@ -18,6 +18,7 @@ export class EditUnitViewComponent implements OnInit {
   unit$ : Observable<UnitStateless>;
   unitAction = "Edit Unit" ;
   unitChanged = false;
+
   constructor(private store : Store<AppState>, public dialogRef: MatDialogRef<EditUnitViewComponent>, public discardChangesDialog: MatDialog) { 
     this.unit$ = this.store.select(selectUnitEditStateless);
 
@@ -25,13 +26,13 @@ export class EditUnitViewComponent implements OnInit {
     this.unit$.subscribe(
       {
         next:(unit: UnitStateless) =>{
-          // check the unit  id of the comp unit and unit from store. if they are same they don't need to changed again
-          if(unit.id == this.unit.id){
-            // the unit was recently changed
+          // check the unit  id of the component unit and unit from store. if they are the same they don't need to changed again (the unit has access to the store was what updated the store)
+          if(unit.id === this.unit.id){
+            // this means this is not the first time the store sent the unit, the unit was just changed 
             this.unitChanged = true;
 
           }else{
-            // the id's of the comp.'s unit and the unit from the store are different so the comp's unit is a random unit created when the comp. is first created
+            // the id's of the comp.'s unit and the unit from the store are different so the comp's unit is a random unit created when the component is first created
 
             // create a stateful version for the unit
           const unitStateful = new UnitStateful(store);

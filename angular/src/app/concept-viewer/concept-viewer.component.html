@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div id="delete-concept-button-row" class="delete-button-row">
-                <mat-icon class="delete-button">highlight_off</mat-icon>
+                <mat-icon class="delete-button" (click)="deleteConcept()">highlight_off</mat-icon>
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@
     <div id="extend-subconcepts" class="extended-subconcepts">
         <!-- extra div is used as two templates can't be used on an element-->
         <div *ngFor="let subconcept of statefulConcept.subconcepts">
-            <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()"></app-concept-viewer>
+            <app-concept-viewer [statefulConcept]="subconcept" *ngIf="subconcept.isExtended()" (conceptChangeEvent)="subconceptChanged()" (conceptDeleteEvent)="deleteSubconceptEventReceived($event)"></app-concept-viewer>
 
         </div>
 
