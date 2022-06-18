@@ -3,7 +3,7 @@ import { v1 as timeStampUUID } from 'uuid';
 import { UnitStateless } from "./unit-stateless";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app-state";
-import { deleteUnit, updateUnit } from "../unit.reducer";
+import { deleteUnitAction, updateUnit } from "../unit.reducer";
 export class UnitStateful {
     id: string;
     name: string;
@@ -105,7 +105,7 @@ export class UnitStateful {
      */
     deleteUnitInStore(){
         if(this.store != undefined){
-            this.store.dispatch(deleteUnit({id: this.id}));
+            this.store.dispatch(deleteUnitAction({id: this.id}));
         }
     }
 

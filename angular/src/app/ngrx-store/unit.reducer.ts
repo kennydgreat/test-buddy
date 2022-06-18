@@ -12,7 +12,7 @@ export const getUnitsSuccess = createAction('units/getunitsSuccess', props<{unit
 // This action triggers the unit to the updated in store
 export const updateUnitAction = createAction('units/updateUnit', props<{unit: UnitStateless}>());
 
-export const deleteUnit = createAction('units/deleteUnit', props<{id: string}>());
+export const deleteUnitAction = createAction('units/deleteUnit', props<{id: string}>());
 
 export const updateUnitsWithFileData = createAction('units/updateUnitsWithFileData', props<{units: UnitDictionary}>());
 
@@ -21,6 +21,7 @@ export const reportErrorAction = createAction('units/reportError', props<{title:
 export const hideErrorAction = createAction('units/hideError', props<{id: string}>()); 
 
 export const editUnitAction = createAction('units/editUnit',props<{id: string}>());
+
 
 //------------Unit State Action helper functions----------------
 /**
@@ -50,6 +51,12 @@ export function editUnit(id: string){
     return editUnitAction({id: id});
 }
 
+export function deleteUnit(id: string){
+    return deleteUnitAction({id: id});
+}
+
+
+
 //------------Units state Reducer---------------
 
 const _unitsReducer = createReducer(unitInitialState, 
@@ -68,7 +75,7 @@ const _unitsReducer = createReducer(unitInitialState,
     newState.unitsDictionary[action.unit.id] = action.unit;
     return newState;
    }),
-   on(deleteUnit, (state, action) =>{
+   on(deleteUnitAction, (state, action) =>{
        //delete unit with id
        var newState = {...state};
        newState.unitsDictionary = {...state.unitsDictionary};
