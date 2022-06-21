@@ -29,11 +29,13 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateUnitViewComponent } from './create-unit-view/create-unit-view.component';
 import { EditUnitViewComponent } from './edit-unit-view/edit-unit-view.component';
+import { UnitDeleteTimerItemComponent } from './unit-delete-timer-item/unit-delete-timer-item.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent],
-  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent, UnitDeleteTimerItemComponent],
+  imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule, MatProgressBarModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

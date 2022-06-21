@@ -110,3 +110,5 @@ $light-gray: #e8e8e8;
 
 @include mat.slide-toggle-theme($my-theme);
 
+@include mat.progress-bar-theme($my-theme);
+

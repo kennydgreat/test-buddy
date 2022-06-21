@@ -5,7 +5,7 @@
       TestBuddy
     </a>
   </div>
-  
+
 </div>
 <!--App side nav and content-->
 <mat-sidenav-container>
@@ -21,6 +21,12 @@
       <div class="side-menu-item" routerLink="/settings" routerLinkActive="side-menu-item-active">
         <mat-icon class="side-menu-item">settings</mat-icon>
         <p class="side-menu-item">Settings</p>
+      </div>
+
+      <!--Unit delete timer list (not a menu item)-->
+      <div class="unit-delete-timer">
+        <app-unit-delete-timer-item></app-unit-delete-timer-item>
+        <app-unit-delete-timer-item></app-unit-delete-timer-item>
       </div>
     </div>
   </mat-sidenav>
