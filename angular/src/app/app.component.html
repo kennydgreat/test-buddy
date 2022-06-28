@@ -25,8 +25,7 @@
 
       <!--Unit delete timer list (not a menu item)-->
       <div class="unit-delete-timer">
-        <app-unit-delete-timer-item></app-unit-delete-timer-item>
-        <app-unit-delete-timer-item></app-unit-delete-timer-item>
+        <app-unit-delete-timer-item *ngFor="let unitDeleteItem of $unitsToBeDeletedItems | async" [unitToBeDeleteDItem]="unitDeleteItem"></app-unit-delete-timer-item>
       </div>
     </div>
   </mat-sidenav>

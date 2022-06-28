@@ -10,7 +10,10 @@ export interface AppState {
 }
 
 // units selector for array of units
-export const selectUnitsAsArray = createSelector((state: AppState) =>state.units, (units: UnitsState) => Object.values(units.unitsDictionary) );
+export const selectUnitsAsArray = createSelector((state: AppState) =>state.units, (units: UnitsState) => {
+    // return array of units not to be deleted
+    return Object.values(units.unitsDictionary).filter(unit => !unit.toBeDeleted)
+} );
 
 // errorDictionary list selector
 export const selectErrorMessages = createSelector((state: AppState) => state.units.errorDictionary, (errorDict: ErrorDictionary) => {
@@ -26,3 +29,10 @@ export const selectEditUnit = createSelector( (state: AppState) =>state.units.un
 export const selectUnitEditStateless = createSelector(selectUnitsDictionary, selectEditUnit, (units : UnitDictionary, unitToEditID: string) =>{
     return units[unitToEditID];
 });
+
+/**
+ * Returns units to be delete dictionaru as array
+ */
+export const selectUnitsTobeDeletedList = createSelector((state: AppState) => state.units, (units: UnitsState) => {
+    return Object.values(units.unitDeleteItemDictionary);
+})

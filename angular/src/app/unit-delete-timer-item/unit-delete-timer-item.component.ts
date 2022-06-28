@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { UnitDeleteItem } from '../ngrx-store/models/UnitDeleteItem';
 
 @Component({
   selector: 'app-unit-delete-timer-item',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnitDeleteTimerItemComponent implements OnInit {
 
+  @Input() unitToBeDeleteDItem: UnitDeleteItem;
   counter = 100; 
   constructor() {
 

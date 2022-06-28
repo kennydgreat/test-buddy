@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { EditUnitViewComponent } from '../edit-unit-view/edit-unit-view.component';
 import { AppState } from '../ngrx-store/app-state';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
-import { deleteUnit, editUnit } from '../ngrx-store/unit.reducer';
+import { addUnitToUnitsToBeDeleted, deleteUnit, editUnit } from '../ngrx-store/unit.reducer';
 
 @Component({
   selector: 'app-units-list-item',
@@ -35,6 +35,6 @@ export class UnitsListItemComponent implements OnInit {
   }
   
   deleteUnit(){
-    this.store.dispatch(deleteUnit(this.unit.id));
+    this.store.dispatch(addUnitToUnitsToBeDeleted(this.unit));
   }
 }

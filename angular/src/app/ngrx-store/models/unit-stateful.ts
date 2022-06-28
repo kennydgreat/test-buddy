@@ -13,6 +13,8 @@ export class UnitStateful {
     numOfRootConceptsWithDefiniton: number;
     numOfRootConceptsWithSubconcepts: number;
     unitBeforeChanges: UnitStateless;
+    toBeDeleted: boolean;
+
 
     constructor(public store: Store<AppState> | undefined){
         this.id = timeStampUUID();
@@ -22,6 +24,7 @@ export class UnitStateful {
         this.numOfConcepts = 0;
         this.numOfRootConceptsWithDefiniton = 0;
         this.numOfRootConceptsWithSubconcepts = 0;
+        this.toBeDeleted = false;
 
     }
     /**
@@ -80,7 +83,8 @@ export class UnitStateful {
             concepts: [],
             numOfConcepts: this.getNumOfExtendedConcepts(),
             numOfRootConceptsWithDefiniton: this.numOfRootConceptsWithDefiniton,
-            numOfRootConceptsWithSubconcepts: this.numOfRootConceptsWithSubconcepts
+            numOfRootConceptsWithSubconcepts: this.numOfRootConceptsWithSubconcepts,
+            toBeDeleted: this.toBeDeleted,
         };
 
         // copy concepts

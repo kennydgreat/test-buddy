@@ -109,6 +109,7 @@ div.side-menu-item-active {
 
 div.unit-delete-timer{
     display: flex;
+    max-height: 500px;
     flex-direction: column;
     row-gap: 0.5rem;
     position: fixed;

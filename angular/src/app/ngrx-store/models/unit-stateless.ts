@@ -8,4 +8,5 @@ export interface UnitStateless {
   numOfConcepts: number;
   numOfRootConceptsWithDefiniton: number;
   numOfRootConceptsWithSubconcepts: number;
+  toBeDeleted: boolean;
 }

@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
 
   //units stream
   units$: Observable<UnitStateless[]>
-  units: UnitStateless[]
 
   
   constructor(private store: Store<AppState>, public createUnitDialog: MatDialog, public choseDataFileDialog: MatDialog, public appDataService: AppDataService) {

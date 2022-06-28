@@ -22,6 +22,11 @@ export const hideErrorAction = createAction('units/hideError', props<{id: string
 
 export const editUnitAction = createAction('units/editUnit',props<{id: string}>());
 
+/**
+ * action to add unit to list of units to be deleted
+ */
+export const addToUnitsTobeDeleted = createAction('units/addToUnitsToBeDeleted', props<{unit: UnitStateless}>());
+
 
 //------------Unit State Action helper functions----------------
 /**
@@ -50,9 +55,19 @@ export function hideError(id: string) {
 export function editUnit(id: string){
     return editUnitAction({id: id});
 }
-
+/**
+ * Calls the deleteUnit action
+ * @param  {string} id the unit id
+ */
 export function deleteUnit(id: string){
     return deleteUnitAction({id: id});
+}
+/**
+ * Calls the AddUnitToUnitsToBeDeleted list
+ * @param  {UnitStateless} unit unit to be deleted
+ */
+export function addUnitToUnitsToBeDeleted(unit: UnitStateless){
+    return addToUnitsTobeDeleted({unit: unit});
 }
 
 
@@ -84,8 +99,17 @@ const _unitsReducer = createReducer(unitInitialState,
    }),
    on(updateUnitsWithFileData, (state, action)=>{
 
+        // add a false toBeDeleted flag to each unit to clear out flag
+        const units = Object.values(action.units).map(unit => {
+            return {...unit, toBeDeleted: false}
+        });
+        // create a dictionary object and put in units with toBeDeleted flag
+        var unitDictionary = {};
+        units.forEach(unit => {
+            unitDictionary[unit.id] = unit
+        })
         var newState = {...state};
-        newState.unitsDictionary = action.units;
+        newState.unitsDictionary = unitDictionary;
         return newState
    }), 
    // Add an error to the list of errors
@@ -117,7 +141,26 @@ const _unitsReducer = createReducer(unitInitialState,
            ...state,
            unitToEditID: action.id
        }
-   ))
+   )),
+   on(addToUnitsTobeDeleted, (state, action) => {
+       // get list with units to be deleted and add unit
+       var unitsTobeDeleted = {...state.unitDeleteItemDictionary};
+       unitsTobeDeleted[action.unit.id] = {id: action.unit.id, name: action.unit.name};
+
+       // flag unit to be deleted
+       var unit = {...state.unitsDictionary[action.unit.id]}
+       unit.toBeDeleted = true;
+       var units = {...state.unitsDictionary};
+       units[action.unit.id] = unit;
+  
+
+       return {
+           ...state, 
+           unitDeleteItemDictionary: unitsTobeDeleted,
+           unitsDictionary: units
+       }
+
+   })
     );
 
    
