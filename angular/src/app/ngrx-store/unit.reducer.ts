@@ -3,6 +3,7 @@ import { Error } from "./models/error-message";
 import { UnitStateless } from "./models/unit-stateless";
 import { unitInitialState, UnitDictionary, UnitsState } from "./unit-state";
 import { v1 as timeStampUUID } from 'uuid';
+import { UnitDeleteItem } from "./models/UnitDeleteItem";
 
 //------------Units state Actions----------------
 
@@ -25,8 +26,14 @@ export const editUnitAction = createAction('units/editUnit',props<{id: string}>(
 /**
  * action to add unit to list of units to be deleted
  */
-export const addToUnitsTobeDeleted = createAction('units/addToUnitsToBeDeleted', props<{unit: UnitStateless}>());
+export const addToUnitsTobeDeletedAction = createAction('units/addToUnitsToBeDeleted', props<{unit: UnitStateless}>());
 
+/**
+ * Remove a unit from the list of unit to be deleted
+ */
+ const removeFromUnitsToBeDeletedAction = createAction('units/removeFromUnitsToBeDeleted', props<{unitItem: UnitDeleteItem}>());
+
+ 
 
 //------------Unit State Action helper functions----------------
 /**
@@ -63,13 +70,21 @@ export function deleteUnit(id: string){
     return deleteUnitAction({id: id});
 }
 /**
- * Calls the AddUnitToUnitsToBeDeleted list
+ * Calls the AddUnitToUnitsToBeDeleted action with the unit
  * @param  {UnitStateless} unit unit to be deleted
  */
 export function addUnitToUnitsToBeDeleted(unit: UnitStateless){
-    return addToUnitsTobeDeleted({unit: unit});
+    return addToUnitsTobeDeletedAction({unit: unit});
 }
 
+/**
+ * Calls the RemoveFromUnitsToBeDeleted action 
+ * @param deleteUnitItem item to representing unit to be removed
+ * @returns RemoveFromUnitsToBeDeleted action 
+ */
+export function removeFromUnitsToBeDeleted(deleteUnitItem: UnitDeleteItem){
+    return removeFromUnitsToBeDeletedAction({unitItem: deleteUnitItem});
+}
 
 
 //------------Units state Reducer---------------
@@ -142,7 +157,7 @@ const _unitsReducer = createReducer(unitInitialState,
            unitToEditID: action.id
        }
    )),
-   on(addToUnitsTobeDeleted, (state, action) => {
+   on(addToUnitsTobeDeletedAction, (state, action) => {
        // get list with units to be deleted and add unit
        var unitsTobeDeleted = {...state.unitDeleteItemDictionary};
        unitsTobeDeleted[action.unit.id] = {id: action.unit.id, name: action.unit.name};
@@ -160,6 +175,24 @@ const _unitsReducer = createReducer(unitInitialState,
            unitsDictionary: units
        }
 
+   }),
+   on(removeFromUnitsToBeDeletedAction, (state, action) => {
+       console.log('hello');
+       // remove the unit delete item
+       var deleteUnitItems = {...state.unitDeleteItemDictionary};
+       delete deleteUnitItems[action.unitItem.id];
+       
+       //clear delete flag on unit
+       var units = {...state.unitsDictionary};
+       var unit = {...state.unitsDictionary[action.unitItem.id]};
+       unit.toBeDeleted = false;
+       units[unit.id] = unit;
+
+       return {
+           ...state,
+           unitsDictionary: units,
+           unitDeleteItemDictionary: deleteUnitItems,
+       }
    })
     );
 
