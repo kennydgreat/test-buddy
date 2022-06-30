@@ -110,6 +110,11 @@ const _unitsReducer = createReducer(unitInitialState,
        var newState = {...state};
        newState.unitsDictionary = {...state.unitsDictionary};
        delete newState.unitsDictionary[action.id] ;
+
+       // remove delete item
+       var unitsDeleteItems = {...newState.unitDeleteItemDictionary};
+       delete unitsDeleteItems[action.id];
+       newState.unitDeleteItemDictionary = unitsDeleteItems;
        return newState
    }),
    on(updateUnitsWithFileData, (state, action)=>{

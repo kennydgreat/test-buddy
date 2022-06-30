@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UnitDeleteItem } from '../ngrx-store/models/UnitDeleteItem';
-import { removeFromUnitsToBeDeleted } from '../ngrx-store/unit.reducer';
+import { deleteUnit, removeFromUnitsToBeDeleted } from '../ngrx-store/unit.reducer';
 
 @Component({
   selector: 'app-unit-delete-timer-item',
@@ -20,7 +20,8 @@ export class UnitDeleteTimerItemComponent implements OnInit {
       this.counter = this.counter - 10 ;
       // clear timer when counter gets to 0
       if (this.counter === 0){
-        clearInterval(this.intervalID);
+        // delete unit
+        this.delete();
       }
     }, 1000);
    }
@@ -30,6 +31,10 @@ export class UnitDeleteTimerItemComponent implements OnInit {
 
   undo(){
     this.store.dispatch(removeFromUnitsToBeDeleted(this.unitToBeDeleteDItem));
+  }
+
+  delete(){
+    this.store.dispatch(deleteUnit(this.unitToBeDeleteDItem.id));
   }
 
   ngOnDestroy() {
