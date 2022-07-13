@@ -31,10 +31,11 @@ import { CreateUnitViewComponent } from './create-unit-view/create-unit-view.com
 import { EditUnitViewComponent } from './edit-unit-view/edit-unit-view.component';
 import { UnitDeleteTimerItemComponent } from './unit-delete-timer-item/unit-delete-timer-item.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { StudySessionComponent } from './study-session/study-session.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent, UnitDeleteTimerItemComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent, UnitDeleteTimerItemComponent, StudySessionComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule, MatProgressBarModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })

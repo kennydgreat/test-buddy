@@ -1,0 +1,45 @@
+@import "../theme.scss";
+div.root {
+    display: flex;
+    height: 97%;
+    flex-direction: column;
+    padding: 3rem;
+    align-items: center;
+    background-color: white;
+
+    div.close-button {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        mat-icon {
+            position: fixed;
+            color: $primary-grey;
+            cursor: pointer;
+        }
+    }
+    div.heading {
+        display: flex;
+        justify-content: flex-start;
+        column-gap: 0.8rem;
+        align-items: center;
+        width: 100%;
+
+        p.title {
+            font-family: "Josefin Sans";
+            font-style: normal;
+            font-size: 24px;
+            line-height: 24px;
+            margin: 0px;
+            color: $primary-grey;
+        }
+
+        p.unit-name {
+            font-family: "Josefin Sans";
+            font-style: normal;
+            font-weight: 700;
+            font-size: 30px;
+            line-height: 30px;
+            color: $primary-grey;
+        }
+    }
+}
