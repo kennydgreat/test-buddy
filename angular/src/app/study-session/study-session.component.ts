@@ -13,4 +13,10 @@ export class StudySessionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // user chooses to end the session
+  close(){
+    //close the dialog, the user's progress should already presisted so it is safe to end the session
+    this.dialogRef.close();
+  }
+
 }
