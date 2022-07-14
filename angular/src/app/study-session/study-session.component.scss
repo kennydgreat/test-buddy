@@ -4,6 +4,8 @@ div.root {
     height: 97%;
     flex-direction: column;
     padding: 3rem;
+    padding-left: 4rem;
+    row-gap: 1.5rem;
     align-items: center;
     background-color: white;
 
@@ -41,6 +43,31 @@ div.root {
             font-size: 30px;
             line-height: 30px;
             color: $primary-grey;
+        }
+    }
+
+    div.session-progress{
+        display: flex;
+        width: 30%;
+        flex-direction: column;
+        row-gap: 1.5rem;
+
+        div.progress-text{
+            display: flex;
+            align-items: baseline;
+            column-gap: 0.3rem;
+
+            p.number-of-concepts{
+                font-weight: 700;
+            }
+        }
+
+        div.progress-bar{
+            display: flex;
+            padding: 1rem;
+            width: 100%;
+            background-color: $light-gray;
+            border-radius: 5px;
         }
     }
 }
