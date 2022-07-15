@@ -3,9 +3,9 @@ div.root {
     display: flex;
     height: 97%;
     flex-direction: column;
-    padding: 3rem;
+    padding: 2rem;
     padding-left: 4rem;
-    row-gap: 1.5rem;
+    row-gap: 2rem;
     align-items: center;
     background-color: white;
 
@@ -37,12 +37,7 @@ div.root {
         }
 
         p.unit-name {
-            font-family: "Josefin Sans";
-            font-style: normal;
-            font-weight: 700;
             font-size: 30px;
-            line-height: 30px;
-            color: $primary-grey;
         }
     }
 

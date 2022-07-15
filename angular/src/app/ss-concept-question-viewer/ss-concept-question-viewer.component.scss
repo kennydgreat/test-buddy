@@ -1,0 +1,14 @@
+div.root{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+
+    div.concept-name{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: flex-start;
+        row-gap: 0.5rem;
+
+    }
+}
