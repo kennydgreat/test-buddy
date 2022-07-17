@@ -1,0 +1,32 @@
+@import "../theme.scss";
+div.done-icon{
+    height: 17px;
+
+    mat-icon{
+        font-size: 18px;
+        width: 17px;
+        height: 17px;
+        color: $primary-pink;
+    }
+    
+}
+
+div.progress-dot-doing{
+    display: flex;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: $primary-pink;
+}
+
+
+
+div.progress-dot-undone{
+    display: flex;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: white;
+}

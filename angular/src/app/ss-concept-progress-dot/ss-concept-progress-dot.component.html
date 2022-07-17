@@ -1,0 +1,11 @@
+<div class="done-icon" *ngIf="status === 'done'">
+    <mat-icon>
+        check_circle
+    </mat-icon>
+</div>
+
+<div class="progress-dot-doing" *ngIf="status === 'doing'"></div>
+
+
+
+<div class="progress-dot-undone" *ngIf="status === 'undone'"></div>

@@ -1,0 +1,41 @@
+@import "../theme.scss";
+div.root{
+    display: flex;
+    column-gap: 0.5rem;
+
+    div.progress{
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.3rem;
+        padding: 0.3rem;
+        border-radius: 0.9rem;
+        align-items: center;
+        background-color: $light-gray;
+
+        
+
+        div.divider{
+            width: 2px;
+            height: 4rem;
+            background-color: #C4C4C4;
+
+        }
+
+    }
+
+    div.progress-text{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.3rem;
+
+        p.progress-text{
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 13px;
+            margin: 0px;
+            color: $primary-grey;
+        }
+    }
+}
