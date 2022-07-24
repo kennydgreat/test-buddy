@@ -60,9 +60,12 @@ div.root {
         div.progress-bar{
             display: flex;
             padding: 1rem;
-            width: 100%;
             background-color: $light-gray;
             border-radius: 5px;
         }
+    }
+
+    div.concept-question-viewer{
+        max-width: 60%;
     }
 }

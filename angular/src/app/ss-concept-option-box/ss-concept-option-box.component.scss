@@ -1,0 +1,74 @@
+@import "../theme.scss";
+div.textbox {
+    width: 100%;
+    padding: 0.5rem;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: $light-gray;
+    cursor: pointer;
+
+    p {
+        font-family: Josefin Sans;
+        font-size: 14px;
+        margin: 0px;
+        font-weight: normal;
+        color: $primary-grey;
+    }
+}
+
+mat-icon {
+    font-size: 17px;
+    width: 15px;
+    height: 15px;
+}
+
+div.box-and-indicator {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    column-gap: 2rem;
+}
+
+div.wrong-option {
+    div.wrong-text {
+        border: 3px solid rgba(177, 45, 45, 0.42);
+    }
+
+    mat-icon.red {
+        color: $primary-red;
+    }
+}
+
+div.correct {
+    div.correct-text {
+        border: 3px solid rgba(211, 88, 231, 0.34);
+    }
+
+    mat-icon.pink {
+        color: $primary-pink;
+    }
+}
+
+div.missing-option {
+    mat-icon.arrow {
+        color: $primary-pink;
+    }
+}
+
+div.wrong-position {
+    div.wrong-position-text {
+        border: 3px solid rgba(177, 45, 45, 0.42);
+    }
+
+    p.position-number {
+        font-family: "Josefin Sans";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        width: 17px;
+        line-height: 15px;
+
+        color: #b12d2d;
+    }
+}

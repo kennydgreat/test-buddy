@@ -103,6 +103,8 @@ $primary-grey: #707070;
 //---other varaibles
 $top-bar-height: 35px;
 
+$primary-red: #B12D2D;
+
 $light-gray: #e8e8e8;
 // Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($my-theme);

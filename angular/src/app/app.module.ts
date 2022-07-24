@@ -35,10 +35,11 @@ import { StudySessionComponent } from './study-session/study-session.component';
 import { SsConceptQuestionViewerComponent } from './ss-concept-question-viewer/ss-concept-question-viewer.component';
 import { SsConceptProgressComponent } from './ss-concept-progress/ss-concept-progress.component';
 import { SsConceptProgressDotComponent } from './ss-concept-progress-dot/ss-concept-progress-dot.component';
+import { SsConceptOptionBoxComponent } from './ss-concept-option-box/ss-concept-option-box.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent, UnitDeleteTimerItemComponent, StudySessionComponent, SsConceptQuestionViewerComponent, SsConceptProgressComponent, SsConceptProgressDotComponent],
+  declarations: [AppComponent, HomeComponent, UnitsListItemComponent, UnitViewerComponent, ConceptViewerComponent, DiscardChangesDialogComponent, ChooseDataFileViewComponent, ErrorMessageViewerComponent, ErrorMessageViewComponent, SettingsComponent, CreateUnitViewComponent, EditUnitViewComponent, UnitDeleteTimerItemComponent, StudySessionComponent, SsConceptQuestionViewerComponent, SsConceptProgressComponent, SsConceptProgressDotComponent, SsConceptOptionBoxComponent],
   imports: [BrowserModule, AppRoutingModule, MatSidenavModule, BrowserAnimationsModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule, MatInputModule, FormsModule, MatSlideToggleModule, DragDropModule, MatProgressBarModule,StoreModule.forRoot({units: unitsReducer, settings: settingsReducer}), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
   bootstrap: [AppComponent]
 })

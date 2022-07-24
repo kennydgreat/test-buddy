@@ -1,0 +1,44 @@
+<div id="default" class="textbox" *ngIf="state === 'default'" >
+    <p>{{text}}</p>
+</div>
+
+<div id="wrong-option" class="wrong-option box-and-indicator " *ngIf="state === 'wrong'">
+    <div class="textbox wrong-text">
+        <p>{{text}}</p>
+    </div>
+
+    <mat-icon class="red">cancel</mat-icon>
+</div>
+
+
+<div id="correct-option" class="correct box-and-indicator" *ngIf="state === 'correct'">
+
+    <div class="textbox correct-text">
+
+        <p>{{text}}</p>
+    </div>
+
+    <mat-icon class="pink">check_circle</mat-icon>
+</div>
+
+
+<div id="missing-option" class="missing-option box-and-indicator "  *ngIf="state === 'missed'">
+
+    <div class="textbox">
+        <p>{{text}}</p>
+    </div>
+
+    <mat-icon class="arrow">reply</mat-icon>
+
+</div>
+
+<div id="wrong-position" class="wrong-position box-and-indicator " *ngIf="state === 'wrong-position'" >
+
+    <div class="textbox wrong-position-text">
+
+        <p>{{text}}</p>
+    </div>
+
+    <p class="position-number">1</p>
+
+</div>
