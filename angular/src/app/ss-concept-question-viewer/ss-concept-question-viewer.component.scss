@@ -16,11 +16,18 @@ div.root {
         display: flex;
         column-gap: 2rem;
         width: 100%;
+        
 
         div.options {
             display: flex;
             flex-direction: column;
             row-gap: 1.5rem;
+            max-height: 200px;
+            padding: 1rem;
+            overflow-y: scroll;
+            overflow-x: visible;
+
+            
         }
     }
 }
