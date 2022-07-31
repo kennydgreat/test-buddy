@@ -3,10 +3,12 @@ import { ErrorDictionary } from "./models/error-message";
 import { UnitStateful } from "./models/unit-stateful";
 import { SettingsState } from "./settings.reducer";
 import { UnitDictionary, UnitsState } from "./unit-state";
+import { UnitStudySessionState as UnitStudyState } from "./unit-study-state";
 
 export interface AppState {
     units: UnitsState;
     settings: SettingsState;
+    unitStudy: UnitStudyState
 }
 
 // units selector for array of units
@@ -36,3 +38,4 @@ export const selectUnitEditStateless = createSelector(selectUnitsDictionary, sel
 export const selectUnitsTobeDeletedList = createSelector((state: AppState) => state.units, (units: UnitsState) => {
     return Object.values(units.unitDeleteItemDictionary);
 })
+

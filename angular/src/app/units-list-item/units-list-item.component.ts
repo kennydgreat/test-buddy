@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { EditUnitViewComponent } from '../edit-unit-view/edit-unit-view.component';
 import { AppState } from '../ngrx-store/app-state';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
+import { studyUnit } from '../ngrx-store/unit-study-session.reducer';
 import { addUnitToUnitsToBeDeleted, deleteUnit, editUnit } from '../ngrx-store/unit.reducer';
 import { StudySessionComponent } from '../study-session/study-session.component';
 
@@ -36,6 +37,9 @@ export class UnitsListItemComponent implements OnInit {
   }
 
   studyUnit(){
+    // send study unit action
+    this.store.dispatch(studyUnit(this.unit.id));
+    //open study sesssion dialog
     const studyUnitDialogRef = this.studyUnitDialog.open(StudySessionComponent, {
       // to make dialog full-screen
       maxWidth: '100vw',

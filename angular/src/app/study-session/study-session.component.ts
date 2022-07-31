@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { AppState } from '../ngrx-store/app-state';
+import { UnitSS_Stateful } from '../ngrx-store/models/unit-ss-stateful';
 
 @Component({
   selector: 'app-study-session',
@@ -8,7 +11,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class StudySessionComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<StudySessionComponent>) { }
+
+  unitSS_Stateful : UnitSS_Stateful;
+  constructor(public dialogRef: MatDialogRef<StudySessionComponent>, store: Store<AppState>) {
+
+    this.unitSS_Stateful = new UnitSS_Stateful(store);
+
+   }
 
   ngOnInit(): void {
   }
