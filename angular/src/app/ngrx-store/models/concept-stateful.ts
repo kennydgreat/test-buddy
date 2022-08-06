@@ -10,7 +10,7 @@ export class ConceptStateful {
     definition: string;
     index: number;
     numberOfSubconceptsWithDefinition: number;
-    numberOfSubConcpetsWithSubconcepts: number ;
+    numberOfSubConcpetsWithSubconcepts: number;
     /**
      * Creates a new concept
      * @param  {ConceptStateful|undefined=undefined} parent the concept parent, if undefined this is a root concept
@@ -24,21 +24,21 @@ export class ConceptStateful {
         this.parent = parent != undefined ? parent : undefined;
         this.index = 0;
         this.numberOfSubconceptsWithDefinition = 0;
-        this,this.numberOfSubConcpetsWithSubconcepts = 0;
+        this.numberOfSubConcpetsWithSubconcepts = 0;
     }
     /**
      * checks that the concept has meaningful data
      * @returns boolean
      */
-    isConceptEmpty(): boolean{
+    isConceptEmpty(): boolean {
         // check that the name and definition
-        if (this.hasDefinition() || this.hasName()){
+        if (this.hasDefinition() || this.hasName()) {
             return false;
         }
 
         // check subconcepts
-        for (var i = 0; i < this.subconcepts.length; i++){
-            if (!this.subconcepts[i].isConceptEmpty()){
+        for (var i = 0; i < this.subconcepts.length; i++) {
+            if (!this.subconcepts[i].isConceptEmpty()) {
                 // the current subconcept is not empty so the unit not empty
                 return false;
             }
@@ -61,28 +61,41 @@ export class ConceptStateful {
      * Checks that the concept definition is not empty
      * @returns boolean
      */
-     hasDefinition(): boolean {
+    hasDefinition(): boolean {
         return this.definition.length > 0
     }
+    
     /**
      * Makes a stateless copy for the redux store
      * @returns ConceptStateless 
      */
-    makeStatelessCopy(): ConceptStateless{
-        var statelessCopy : ConceptStateless = {
+    makeStatelessCopy(): ConceptStateless {
+        var statelessCopy: ConceptStateless = {
             id: this.id,
             name: this.name,
             parent: undefined,
             hasOrderedSubconcepts: this.hasOrderedSubconcepts,
             subconcepts: [],
             definition: this.definition,
-            index: this.index,
-            numberOfSubconceptsWithDefinition: this.numberOfSubconceptsWithDefinition,
-            numberOfSubConcpetsWithSubconcepts: this.numberOfSubConcpetsWithSubconcepts
+            index: 0,
+            numberOfSubconceptsWithDefinition: 0,
+            numberOfSubConcpetsWithSubconcepts: 0,
         }
 
         this.subconcepts.forEach((concept: ConceptStateful, index: number) => {
             var statelessSubConCopy = concept.makeStatelessCopy();
+            //set index
+            statelessSubConCopy.index = index;
+
+            // add to sub-concepts with defintion count
+            if (concept.hasDefinition()) {
+                statelessCopy.numberOfSubconceptsWithDefinition++;
+            }
+
+            // add to expend subconcepts count
+            if (concept.hasSubconcepts()) {
+                statelessCopy.numberOfSubConcpetsWithSubconcepts++;
+            }
             statelessCopy.subconcepts.push(statelessSubConCopy);
         });
 
@@ -92,10 +105,10 @@ export class ConceptStateful {
     /**
      * Adds a subconcept
      */
-    addsubconcept(){
+    addsubconcept() {
         var subconcept = new ConceptStateful(this);
         subconcept.index = this.subconcepts.length;
-        this.subconcepts.push(subconcept);     
+        this.subconcepts.push(subconcept);
     }
 
     /**
@@ -124,22 +137,33 @@ export class ConceptStateful {
      * Turns true if the concept has a parent
      * @returns boolean
      */
-    hasParent() : boolean{
+    hasParent(): boolean {
         return this.parent != undefined;
     }
-    
+
     /**
      * Returns true if there is subconcept that's exteneded
      * @returns boolean
      */
-    isSubconceptExtended() : boolean{
-        for(var i = 0; i < this.subconcepts.length; i++){
-            if (this.subconcepts[i].isExtended()){
+    isSubconceptExtended(): boolean {
+        for (var i = 0; i < this.subconcepts.length; i++) {
+            if (this.subconcepts[i].isExtended()) {
                 return true;
             }
         }
         return false;
     }
+    /**
+     * Return true if parent has definition
+     * @returns boolean
+     */
+    parentHasDefinition(): boolean {
+        if (this.parent === undefined) {
+            return false;
+        }
+        return this.parent?.hasDefinition();
+    }
+
     /**
      * Delete all subconcepts
      */
@@ -152,7 +176,20 @@ export class ConceptStateful {
         this.subconcepts.length = 0
     }
 
-    
+    /**
+     * Gets the number of slibing concepts with defintion
+     * @returns number
+     */
+    getNumberOfSlibingsWithDefinition(): number {
+
+        let number = 0;
+        if (this.parent) {
+            // parent exists so get the number of children with definition, substract 1 for current concept
+            number = this.hasDefinition() ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.parent.numberOfSubconceptsWithDefinition;
+        }
+        return number;
+    }
+
     /**
      * Returns number of extended concepts in the concept's tree (include itself)
      * function traverses tree in breath-first order
@@ -188,16 +225,16 @@ export class ConceptStateful {
      * Copies data from a stateless concept
      * @param  {ConceptStateless} concept
      */
-    copyInStatelessData(concept: ConceptStateless){
+    copyInStatelessData(concept: ConceptStateless) {
         //copy concept data
-        for( var prop in concept){
+        for (var prop in concept) {
             this[prop] = concept[prop];
         }
         // clear out subconcept set
         this.subconcepts = [];
 
         //set subconcepts
-        for( var i = 0; i < concept.subconcepts.length; i++){
+        for (var i = 0; i < concept.subconcepts.length; i++) {
             // create new concept
             var subconcept = new ConceptStateful();
             // set parent 
@@ -206,7 +243,7 @@ export class ConceptStateful {
             subconcept.copyInStatelessData(concept.subconcepts[i]);
             // add subconcept
             this.subconcepts.push(subconcept);
-            
+
         }
     }
 

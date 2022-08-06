@@ -7,6 +7,20 @@ export interface UnitStudySessionState{
     unitToStudyID: string;
 }
 
+/**
+ * This represent learn progress of a concept during a study session
+ */
+export interface SSConcpetProgress {
+    id: string;
+    name: string;
+    learnt: boolean;
+    definitionLearnt: boolean;
+}
+
+export interface SSConceptProgressDictionary {
+    [key: string] : SSConcpetProgress;
+}
+
 
 export const selectUnitToStudyID = createSelector((state: AppState) => state.unitStudy, (unitStudy) => unitStudy.unitToStudyID);
 

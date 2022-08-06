@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ss-concept-question-viewer',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SsConceptQuestionViewerComponent implements OnInit {
 
+  @Input() conceptName;
   constructor() { }
 
   ngOnInit(): void {

@@ -70,6 +70,7 @@ export class UnitStateful {
         return this.description.length > 0;
     }
 
+
     /**
      * Make stateless copy of the unit for redux store
      * @returns UnitStateless
@@ -82,14 +83,29 @@ export class UnitStateful {
             description: this.description,
             concepts: [],
             numOfConcepts: this.getNumOfExtendedConcepts(),
-            numOfRootConceptsWithDefiniton: this.numOfRootConceptsWithDefiniton,
-            numOfRootConceptsWithSubconcepts: this.numOfRootConceptsWithSubconcepts,
+            numOfRootConceptsWithDefiniton: 0,
+            numOfRootConceptsWithSubconcepts: 0,
             toBeDeleted: this.toBeDeleted,
         };
 
         // copy concepts
         this.concepts.forEach((concept : ConceptStateful, index: number ) => {
-            unitStatlessCopy.concepts.push(concept.makeStatelessCopy());
+
+            var conceptStateless = concept.makeStatelessCopy();
+
+            //set the stateless concept index
+            conceptStateless.index = index;
+
+            // add to definition concept count
+            if (concept.hasDefinition()){
+                unitStatlessCopy.numOfRootConceptsWithDefiniton++;
+            }
+
+            // add to concepts with sub-concept count
+            if (concept.hasSubconcepts()){
+                unitStatlessCopy.numOfRootConceptsWithSubconcepts++;
+            }
+            unitStatlessCopy.concepts.push(conceptStateless);
         });
         return unitStatlessCopy;
     }
