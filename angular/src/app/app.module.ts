@@ -11,7 +11,7 @@ import { HomeComponent } from './home/home.component';
 import {MatButtonModule} from '@angular/material/button';
 import { UnitsListItemComponent } from './units-list-item/units-list-item.component';
 import { StoreModule } from '@ngrx/store';
-import { unitsReducer } from './ngrx-store/unit.reducer';
+import { unitsReducer } from './ngrx-store/reducers/unit.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
@@ -24,7 +24,7 @@ import { ChooseDataFileViewComponent } from './choose-data-file-view/choose-data
 import { ErrorMessageViewerComponent } from './error-message-viewer/error-message-viewer.component';
 import { ErrorMessageViewComponent } from './error-message-view/error-message-view.component';
 import { SettingsComponent } from './settings/settings.component';
-import { settingsReducer } from './ngrx-store/settings.reducer';
+import { settingsReducer } from './ngrx-store/reducers/settings.reducer';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateUnitViewComponent } from './create-unit-view/create-unit-view.component';
@@ -37,7 +37,7 @@ import { SsConceptProgressComponent } from './ss-concept-progress/ss-concept-pro
 import { SsConceptProgressDotComponent } from './ss-concept-progress-dot/ss-concept-progress-dot.component';
 import { SsConceptOptionBoxComponent } from './ss-concept-option-box/ss-concept-option-box.component';
 import { TestbuddyHelperComponent } from './testbuddy-helper/testbuddy-helper.component';
-import { unitStudySessionReducer } from './ngrx-store/unit-study-session.reducer';
+import { unitStudySessionReducer } from './ngrx-store/reducers/unit-study-session.reducer';
 
 
 @NgModule({

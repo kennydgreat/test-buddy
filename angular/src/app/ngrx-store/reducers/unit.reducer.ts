@@ -1,9 +1,9 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
-import { Error } from "./models/error-message";
-import { UnitStateless } from "./models/unit-stateless";
-import { unitInitialState, UnitDictionary, UnitsState } from "./unit-state";
+import { Error } from "../models/error-message";
+import { UnitStateless } from "../models/unit-stateless";
+import { unitInitialState, UnitDictionary, UnitsState } from "../unit-state";
 import { v1 as timeStampUUID } from 'uuid';
-import { UnitDeleteItem } from "./models/UnitDeleteItem";
+import { UnitDeleteItem } from "../models/UnitDeleteItem";
 
 //------------Units state Actions----------------
 

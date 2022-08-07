@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {getFileHandle, readFile, verifyPermission, writeFile} from '../fs-helpers'
-import { reportError, updateUnitsWithFileData } from '../ngrx-store/unit.reducer';
+import { reportError, updateUnitsWithFileData } from '../ngrx-store/reducers/unit.reducer';
 import { AppState } from '../ngrx-store/app-state';
-import { updateDataFileName } from '../ngrx-store/settings.reducer';
+import { updateDataFileName } from '../ngrx-store/reducers/settings.reducer';
 
 @Injectable({
   providedIn: 'root'

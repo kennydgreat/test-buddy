@@ -1,5 +1,5 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
-import { UnitStudySessionState } from "./unit-study-state";
+import { UnitStudySessionState } from "../unit-study-state";
 
 export const unitStudySessionInitialState: UnitStudySessionState = {
     unitToStudyID: "",

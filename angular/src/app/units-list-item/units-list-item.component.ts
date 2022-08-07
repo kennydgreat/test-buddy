@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { EditUnitViewComponent } from '../edit-unit-view/edit-unit-view.component';
 import { AppState } from '../ngrx-store/app-state';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
-import { studyUnit } from '../ngrx-store/unit-study-session.reducer';
-import { addUnitToUnitsToBeDeleted, deleteUnit, editUnit } from '../ngrx-store/unit.reducer';
+import { studyUnit } from '../ngrx-store/reducers/unit-study-session.reducer';
+import { addUnitToUnitsToBeDeleted, deleteUnit, editUnit } from '../ngrx-store/reducers/unit.reducer';
 import { StudySessionComponent } from '../study-session/study-session.component';
 
 @Component({

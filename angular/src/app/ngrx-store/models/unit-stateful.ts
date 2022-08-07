@@ -3,7 +3,8 @@ import { v1 as timeStampUUID } from 'uuid';
 import { UnitStateless } from "./unit-stateless";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app-state";
-import { deleteUnitAction, updateUnit } from "../unit.reducer";
+import { deleteUnitAction, updateUnit } from "../reducers/unit.reducer";
+import { ConceptType, conceptTypes } from "./study-session/concept-criteria";
 export class UnitStateful {
     id: string;
     name: string;
@@ -129,6 +130,8 @@ export class UnitStateful {
         }
     }
 
+
+    
     
     /**
      * Returns number of all extened concepts (concepts with subconcepts)
@@ -151,6 +154,96 @@ export class UnitStateful {
         });
         return numOfConcepts;
     }
+
+    /**
+     * Returns a certain number of concepts that are adjacent to the concept in the unit's list of concepts
+     * @param  {ConceptStateful} concept
+     * @param  {number} numberOfConceptsNeeded
+     * @param  {ConceptType} creteria
+     * @returns ConceptStateful
+     */
+    getAdjacentConcepts(concept: ConceptStateful, numberOfConceptsNeeded: number, creteria: ConceptType): ConceptStateful[] {
+        if (!this.concepts.includes(concept) || numberOfConceptsNeeded <= 0 || this.concepts.length <= 1) {
+          return [];
+        }
+    
+        const adjecentConcepts = [];
+        if (numberOfConceptsNeeded > this.concepts.length - 1) {
+          // number of concepts needed is more thant the total number of others concepts, make the numberOfConceptsneeded the total number of other concepts
+          numberOfConceptsNeeded = this.concepts.length - 1;
+        }
+    
+        // slipt the number of concepts needed into 2
+    
+        let rightSideConceptsNeeded;
+        let leftSideConceptsNeeded;
+    
+        if (concept.index === 0) {
+          // the concept is the first concept so get concepts from the right side only
+          rightSideConceptsNeeded = numberOfConceptsNeeded;
+          leftSideConceptsNeeded = 0;
+        } else {
+          rightSideConceptsNeeded = numberOfConceptsNeeded % 2 ===
+            0 ? numberOfConceptsNeeded / 2 : Math.floor(numberOfConceptsNeeded / 2 + 1);
+          leftSideConceptsNeeded = Math.floor(numberOfConceptsNeeded / 2);
+        }
+    
+        // start with right side
+        let currentConceptIndex = concept.index + 1;
+        while (rightSideConceptsNeeded > 0 && currentConceptIndex < this.concepts.length) {
+          switch (creteria) {
+            case conceptTypes.hasDefinition:
+              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasDefinition()) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+                rightSideConceptsNeeded--;
+              }
+              break;
+            case conceptTypes.hasSubconcepts:
+              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconcepts()) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+                rightSideConceptsNeeded--;
+              }
+              break;
+            case conceptTypes.none:
+              if (currentConceptIndex !== concept.index) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+                rightSideConceptsNeeded--;
+              }
+          }
+          currentConceptIndex++;
+        }
+    
+        // adding the rightSide concepts needed to the left for the case that the current index reached the end of the concepts array before rightside is 0
+        leftSideConceptsNeeded = leftSideConceptsNeeded + rightSideConceptsNeeded;
+    
+        // starting the current index on the left
+        currentConceptIndex = concept.index - 1;
+    
+        // left side
+        while (leftSideConceptsNeeded > 0 && currentConceptIndex >= 0) {
+          switch (creteria) {
+            case conceptTypes.hasDefinition:
+              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasDefinition()) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+                leftSideConceptsNeeded--;
+              }
+              break;
+            case conceptTypes.hasSubconcepts:
+              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconcepts()) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+              }
+              break;
+            case conceptTypes.none:
+              if (currentConceptIndex !== concept.index) {
+                adjecentConcepts.push(this.concepts[currentConceptIndex]);
+                leftSideConceptsNeeded--;
+              }
+          }
+          currentConceptIndex--;
+        }
+        return adjecentConcepts;
+      }
+
     /**
      * copies data from a stateless concept
      * @param  {UnitStateless} unit

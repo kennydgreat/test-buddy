@@ -8,7 +8,7 @@ export interface UnitStudySessionState{
 }
 
 /**
- * This represent learn progress of a concept during a study session
+ * This represent learning progress of a concept during a study session
  */
 export interface SSConcpetProgress {
     id: string;

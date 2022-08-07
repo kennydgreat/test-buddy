@@ -64,7 +64,7 @@ export class ConceptStateful {
     hasDefinition(): boolean {
         return this.definition.length > 0
     }
-    
+
     /**
      * Makes a stateless copy for the redux store
      * @returns ConceptStateless 
@@ -188,6 +188,87 @@ export class ConceptStateful {
             number = this.hasDefinition() ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.parent.numberOfSubconceptsWithDefinition;
         }
         return number;
+    }
+
+    /**
+     * Gets a certain number of slibling concepts with definitions
+     * @param conceptsNeeded the number of concepts needed
+     * @returns 
+     */
+    getSiblingWithDefinition(conceptsNeeded: number): ConceptStateful[] {
+        if (this.parent === undefined) {
+            return [];
+        }
+        const siblings = new Array<ConceptStateful>();
+        let conceptsAdded = 0;
+        let i = 0;
+        while (i < this.parent.subconcepts.length && conceptsAdded < conceptsNeeded) {
+            const curConcept = this.parent.subconcepts[i];
+            if (curConcept.index !== this.index && curConcept.hasDefinition()) {
+                siblings.push(curConcept);
+                conceptsAdded++;
+            }
+            i++;
+        }
+        return siblings;
+    }
+
+
+    /**
+     * Returns true if the concept's parent has a concept with a definition that isn't this concept
+     * @returns boolean
+     */
+    hasSlibingsWithDefinition(): boolean {
+        if (!this.parent) {
+            return false;
+        }
+        return (this.parent.numberOfSubconceptsWithDefinition > 1);
+    }
+
+    /**
+     * Returns true if this concept has sub-concpets with a defintion
+     * @returns 
+     */
+    hasSubconceptsWithDefinition(): boolean {
+        return (this.numberOfSubconceptsWithDefinition > 0);
+    }
+
+    /**
+     * Gets a certain number of sub-concepts with definition
+     * @param conceptsNeeded 
+     * @returns 
+     */
+    getSubconceptWithDefinition(conceptsNeeded: number): ConceptStateful[] {
+        const children = new Array<ConceptStateful>();
+        if (!this.hasSubconceptsWithDefinition()) {
+            return children;
+        }
+        let conceptsAdded = 0;
+        let i = 0;
+
+        while (i < this.subconcepts.length && conceptsAdded < conceptsNeeded) {
+            if (this.subconcepts[i].hasDefinition()) {
+                children.push(this.subconcepts[i]);
+                conceptsAdded++;
+            }
+            i++;
+        }
+        return children;
+    }
+
+    /**
+     * Get the concept's root concept
+     * @returns 
+     */
+    getRoot(): ConceptStateful {
+        if (this.parent === undefined) {
+            return this;
+        }
+        let parent = this.parent;
+        while (parent?.parent !== undefined) {
+            parent = parent.parent;
+        }
+        return parent;
     }
 
     /**

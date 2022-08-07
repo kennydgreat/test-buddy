@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UnitDeleteItem } from '../ngrx-store/models/UnitDeleteItem';
-import { deleteUnit, removeFromUnitsToBeDeleted } from '../ngrx-store/unit.reducer';
+import { deleteUnit, removeFromUnitsToBeDeleted } from '../ngrx-store/reducers/unit.reducer';
 
 @Component({
   selector: 'app-unit-delete-timer-item',

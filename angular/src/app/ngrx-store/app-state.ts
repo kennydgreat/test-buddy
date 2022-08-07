@@ -1,7 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { ErrorDictionary } from "./models/error-message";
 import { UnitStateful } from "./models/unit-stateful";
-import { SettingsState } from "./settings.reducer";
+import { SettingsState } from "./reducers/settings.reducer";
 import { UnitDictionary, UnitsState } from "./unit-state";
 import { UnitStudySessionState as UnitStudyState } from "./unit-study-state";
 

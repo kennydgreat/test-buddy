@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '../ngrx-store/app-state';
-import { UnitSS_Stateful } from '../ngrx-store/models/unit-ss-stateful';
+import { UnitSS_Stateful } from '../ngrx-store/models/study-session/unit-ss-stateful';
 
 @Component({
   selector: 'app-study-session',

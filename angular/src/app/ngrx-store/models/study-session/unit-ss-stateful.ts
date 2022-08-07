@@ -1,11 +1,11 @@
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { MultipleChoiceQuestionBuilder } from "src/app/study-session/multiple-choice-question-builder";
-import { AppState } from "../app-state";
-import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../unit-study-state";
-import { ConceptStateful } from "./concept-stateful";
-import { UnitStateful } from "./unit-stateful";
-import { UnitStateless } from "./unit-stateless";
+import { AppState } from "../../app-state";
+import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
+import { ConceptStateful } from "../concept-stateful";
+import { UnitStateful } from "../unit-stateful";
+import { UnitStateless } from "../unit-stateless";
 
 /**
  * Represents the stateful version of a unit study session data
@@ -125,6 +125,10 @@ export class UnitSS_Stateful {
     setNextQuestion(concept: ConceptStateful | undefined){
         if (concept){
             this.currentConcept = concept.name;
+
+            if (!this.isConceptDefinitionLearnt(concept)){
+                
+            }
         }
     }
 
@@ -141,5 +145,15 @@ export class UnitSS_Stateful {
         }
 
         return this.ssConceptProgressDictionary[concept.id].learnt;
+    }
+
+    isConceptDefinitionLearnt(concept: ConceptStateful) : boolean{
+
+        if (!this.ssConceptProgressDictionary[concept.id]){
+            return false;
+        }
+
+        return this.ssConceptProgressDictionary[concept.id].definitionLearnt;
+        
     }
 }
