@@ -1,10 +1,10 @@
 @import "../theme.scss";
 div.textbox {
-    width: 100%;
     padding: 0.5rem;
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
+    word-wrap: break-word;
     border-color: $light-gray;
     cursor: pointer;
 
@@ -24,7 +24,6 @@ mat-icon {
 }
 
 div.box-and-indicator {
-    width: 100%;
     align-items: center;
     display: flex;
     column-gap: 2rem;

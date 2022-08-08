@@ -1,11 +1,11 @@
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
 import { MultipleChoiceQuestionBuilder } from "src/app/study-session/multiple-choice-question-builder";
 import { AppState } from "../../app-state";
 import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
 import { ConceptStateful } from "../concept-stateful";
 import { UnitStateful } from "../unit-stateful";
 import { UnitStateless } from "../unit-stateless";
+import { MultipleChoiceQuestion } from "./multiple-choice-question";
 
 /**
  * Represents the stateful version of a unit study session data
@@ -17,6 +17,7 @@ export class UnitSS_Stateful {
     unitNameForStudySession: string;
     currentConcept: string;
     ssConceptProgressDictionary: SSConceptProgressDictionary;
+    currentQuestion: MultipleChoiceQuestion;
 
 
 
@@ -127,7 +128,8 @@ export class UnitSS_Stateful {
             this.currentConcept = concept.name;
 
             if (!this.isConceptDefinitionLearnt(concept)){
-                
+
+                this.currentQuestion = MultipleChoiceQuestionBuilder.makeDefinitionQuestion(concept, this.unit);
             }
         }
     }

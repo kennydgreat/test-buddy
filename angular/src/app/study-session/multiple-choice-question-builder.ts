@@ -28,8 +28,13 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
    }
    return false;
  }
-
- export function makeDefinitionQuestion(concept: ConceptStateful, unit: UnitStateful): MultipleChoiceQuestion | undefined {
+ /**
+  * Makes a study session that test recollection of a concept's defintion 
+  * @param  {ConceptStateful} concept
+  * @param  {UnitStateful} unit
+  * @returns MultipleChoiceQuestion
+  */
+ export function makeSSDefinitionQuestion(concept: ConceptStateful, unit: UnitStateful): MultipleChoiceQuestion | undefined {
   if (unit.numOfConcepts <= 1) {
     return undefined;
   }
@@ -83,21 +88,22 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
   const options = new Array<Option>();
   for (var i = 0; i < numberOfOptions; i++) {
     if (i === rightOptionPosition) {
-      options.push(new Option(concept.name, true));
+      options.push(new Option(concept.definition, true));
     } else {
       const wrongConcept = wrongOptionConcepts.shift();
       if (wrongConcept !== undefined) {
-        options.push(new Option(wrongConcept?.name, false));
+        options.push(new Option(wrongConcept?.definition, false));
       }
     }
   }
-  return new MultipleChoiceQuestion(concept.definition, options, false);
+  return new MultipleChoiceQuestion(`Choose the right definition for "${concept.name}"`, options, false);
 }
 
 
 
  export const MultipleChoiceQuestionBuilder = {
-    isCandiateForMultiChoiceDefinitionQuestion
+    isCandiateForMultiChoiceDefinitionQuestion,
+    makeDefinitionQuestion: makeSSDefinitionQuestion
  }
 
 const shuffleArray = (array: any[]) : any[] => {

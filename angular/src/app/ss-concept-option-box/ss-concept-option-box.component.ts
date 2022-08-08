@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { OptionState } from '../ngrx-store/models/study-session/multiple-choice-option';
 
 @Component({
   selector: 'app-ss-concept-option-box',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class SsConceptOptionBoxComponent implements OnInit {
 
   // the component's states
-  @Input() state: "wrong" | "correct" | "missed" | "wrong-position" | "default";
+  @Input() state: OptionState;
 
   @Input() text: string;
 
