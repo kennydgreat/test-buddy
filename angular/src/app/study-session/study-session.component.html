@@ -28,6 +28,6 @@
     <app-ss-concept-question-viewer [conceptName]="unitSS_Stateful.currentConcept" [multipleChoiceQuestion]="unitSS_Stateful.currentQuestion" ></app-ss-concept-question-viewer>
    </div>
 
-   <app-testbuddy-helper></app-testbuddy-helper>
+   <app-testbuddy-helper [text]="unitSS_Stateful.currentQuestion.questionText"></app-testbuddy-helper>
    
 </div>
