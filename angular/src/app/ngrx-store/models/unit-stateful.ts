@@ -11,6 +11,7 @@ export class UnitStateful {
     description: string;
     concepts: Array<ConceptStateful>;
     numOfConcepts: number;
+    numOfInformationalConcepts: number;
     numOfRootConceptsWithDefiniton: number;
     numOfRootConceptsWithSubconcepts: number;
     unitBeforeChanges: UnitStateless;
@@ -23,6 +24,7 @@ export class UnitStateful {
         this.description = "";
         this.concepts = new Array<ConceptStateful>();
         this.numOfConcepts = 0;
+        this.numOfInformationalConcepts = 0;
         this.numOfRootConceptsWithDefiniton = 0;
         this.numOfRootConceptsWithSubconcepts = 0;
         this.toBeDeleted = false;
@@ -83,7 +85,8 @@ export class UnitStateful {
             name: this.name,
             description: this.description,
             concepts: [],
-            numOfConcepts: this.getNumOfExtendedConcepts(),
+            numOfConcepts: this.getNumOfConcepts(),
+            numOfInformationalConcepts: this.getNumOfInformationalConcepts(),
             numOfRootConceptsWithDefiniton: 0,
             numOfRootConceptsWithSubconcepts: 0,
             toBeDeleted: this.toBeDeleted,
@@ -134,26 +137,51 @@ export class UnitStateful {
     
     
     /**
-     * Returns number of all extened concepts (concepts with subconcepts)
+     * Returns the number of all concept with infomation (concepts with subconcepts or definition), this is primarily used to know if the unit can be studied
      * @returns number
      */
-    getNumOfExtendedConcepts(): number {
+    getNumOfInformationalConcepts(): number {
         var numOfConcepts = 0;
         // get the number of extended concept for each root concept
         this.concepts.forEach(concept => {
             
             if (concept.hasSubconcepts()){
                 //this concept is tree so add the concepts in the tree
-                numOfConcepts = numOfConcepts + concept.countExtendedConcepts();
+                numOfConcepts = numOfConcepts + concept.countInformationalConcepts();
                 
             }else{
-                //this isn't a tree, add 1 for the concept
-                numOfConcepts++;
+                //this isn't a tree, add 1 for the concept if it has informatino
+                if (concept.hasInformation()){
+                  numOfConcepts++;
+                }
             }
           
         });
         return numOfConcepts;
     }
+
+    /**
+     * Returns number of all concepts except non root concepts that are not extended (have definition or subsconcept), this is used to let the user know how many meanful (including concepts without names but with subconcepts and root concepts without subconcepts) concepts they have in the unit
+     * @returns number
+     */
+     getNumOfConcepts(): number {
+      var numOfConcepts = 0;
+      // get the number of extended concept for each root concept
+      this.concepts.forEach(concept => {
+          
+          if (concept.hasSubconcepts()){
+              //this concept is tree so add the concepts in the tree
+              numOfConcepts = numOfConcepts + concept.countExtendedConcepts();
+              
+          }else{
+              //this isn't a tree, add 1 for the concept
+              numOfConcepts++;
+          }
+        
+      });
+      return numOfConcepts;
+  }
+  
 
     /**
      * Returns a certain number of concepts that are adjacent to the concept in the unit's list of concepts
@@ -199,7 +227,7 @@ export class UnitStateful {
               }
               break;
             case conceptTypes.hasSubconcepts:
-              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconcepts()) {
+              if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconceptsWithInformation()) {
                 adjecentConcepts.push(this.concepts[currentConceptIndex]);
                 rightSideConceptsNeeded--;
               }

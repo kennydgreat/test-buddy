@@ -19,7 +19,7 @@
             </p>
         </div>
 
-        <div (click)="studyUnit()">
+        <div (click)="studyUnit()" *ngIf="this.unit.numOfInformationalConcepts >= 3">
 
             <mat-icon class="md-15 study-icon">auto_stories</mat-icon>
             <p class="study">

@@ -24,7 +24,7 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
 
      return concept.numberOfSubconceptsWithDefinition > 0 &&
        (concept.getNumberOfSlibingsWithDefinition() > 0 || concept.parentHasDefinition()) &&
-       unit.numOfRootConceptsWithDefiniton > 0;
+       unit.numOfRootConceptsWithDefiniton > 0 || unit.numOfRootConceptsWithSubconcepts > 0;
    }
    return false;
  }
@@ -57,7 +57,7 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
     });
   }
 
-  if (concept.parent !== undefined && concept.parentHasDefinition() && wrongOptionConcepts.length < numberOfOptions - 1) {
+  if (concept.parent && concept.parentHasDefinition() && wrongOptionConcepts.length < numberOfOptions - 1) {
     // there is still not ehough options yet so try using the parent.
     wrongOptionConcepts.push(concept.parent);
   }
@@ -69,6 +69,19 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
     adjecentConcepts = unit.getAdjacentConcepts(rootconcept, (numberOfOptions - 1) - wrongOptionConcepts.length, conceptTypes.hasDefinition);
     adjecentConcepts.forEach((concept) => {
       wrongOptionConcepts.push(concept);
+    });
+  }
+
+  // try using the subsconcepts of root adjacent concepts
+  if (wrongOptionConcepts.length < numberOfOptions - 1) {
+    var adjecentConcepts = [];
+    const rootConcept = concept.getRoot();
+    adjecentConcepts = unit.getAdjacentConcepts(rootConcept,  (numberOfOptions - 1) - wrongOptionConcepts.length, conceptTypes.hasSubconcepts);
+    adjecentConcepts.forEach((concept : ConceptStateful) => {
+      // only add subconcepts from adjecentConcepts that don't have ordered subconcepts, this way only informational concepts are added rather than timeline or procedural concepts
+      if (!concept.hasOrderedSubconcepts) {
+        wrongOptionConcepts = [...wrongOptionConcepts, ...concept.getConceptInformation()];
+      }
     });
   }
 
@@ -92,7 +105,12 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
     } else {
       const wrongConcept = wrongOptionConcepts.shift();
       if (wrongConcept !== undefined) {
-        options.push(new Option(wrongConcept?.definition, false));
+        if (wrongConcept.hasDefinition()){
+          options.push(new Option(wrongConcept.definition, false));
+        }else{
+          // the concept does not have a definition so it's not concept it's information
+          options.push(new Option(wrongConcept.name, false));
+        }
       }
     }
   }

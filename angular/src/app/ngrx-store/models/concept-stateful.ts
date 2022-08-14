@@ -133,6 +133,31 @@ export class ConceptStateful {
         return this.subconcepts.length > 0
     }
 
+    
+    /**
+     * Returns true if the concept subconcepts have information
+     * @returns boolean
+     */
+    hasSubconceptsWithInformation() : boolean {
+        if (this.hasSubconcepts()){
+
+            for(var i = 0; i < this.subconcepts.length; i++){
+                if (this.subconcepts[i].name.length > 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the concept holds information (definition or subconcepts with information) 
+     * @returns boolean
+     */
+    hasInformation() : boolean{
+        return this.hasDefinition() || this.hasSubconceptsWithInformation();
+    }
+
     /**
      * Turns true if the concept has a parent
      * @returns boolean
@@ -256,6 +281,24 @@ export class ConceptStateful {
         return children;
     }
 
+    
+    /**
+     * Get subconcepts that have 
+     * @returns Array
+     */
+    getConceptInformation(): Array<ConceptStateful>{
+        const concepts = new Array<ConceptStateful>();
+
+        this.subconcepts.forEach((concept: ConceptStateful) =>{
+
+            if (concept.name.length > 0){
+                concepts.push(concept);
+            }
+        });
+        
+        return concepts
+    }
+
     /**
      * Get the concept's root concept
      * @returns 
@@ -302,6 +345,39 @@ export class ConceptStateful {
         return numOfExtendedConcepts;
 
     }
+
+    /**
+     * Returns number of concepts with infomation in the concept's tree (include itself)
+     * function traverses tree in breath-first order
+     * @returns number
+     */
+     countInformationalConcepts(): number {
+        //number of extended concepts
+        var numOfExtendedConcepts = 0;
+
+        //queue from which concepts are added to the list
+        var queue = new Array<ConceptStateful>()
+
+        queue.push(this)
+        while (queue.length > 0) {
+            //remove the first element in th queue
+            var currentConcept = queue.shift();
+            if (currentConcept.hasInformation()) {
+                //the concept has subconcepts or a definition so it can added, leaf concepts are treated as information and not actual concepts
+                numOfExtendedConcepts++;
+            }
+
+            currentConcept.subconcepts.forEach(subconcept => {
+                //add the subConcepts to the queue so then can be looked at next time around
+                queue.push(subconcept)
+            })
+
+        }
+
+        return numOfExtendedConcepts;
+
+    }
+
     /**
      * Copies data from a stateless concept
      * @param  {ConceptStateless} concept
