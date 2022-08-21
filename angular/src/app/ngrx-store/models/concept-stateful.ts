@@ -1,5 +1,6 @@
 import { v1 as timeStampUUID } from 'uuid';
 import { ConceptStateless } from './concept-stateless';
+import { ConceptType, conceptTypes } from './study-session/concept-criteria';
 
 export class ConceptStateful {
     id: string;
@@ -11,6 +12,7 @@ export class ConceptStateful {
     index: number;
     numberOfSubconceptsWithDefinition: number;
     numberOfSubConcpetsWithSubconcepts: number;
+    type: ConceptType;
     /**
      * Creates a new concept
      * @param  {ConceptStateful|undefined=undefined} parent the concept parent, if undefined this is a root concept
@@ -25,6 +27,7 @@ export class ConceptStateful {
         this.index = 0;
         this.numberOfSubconceptsWithDefinition = 0;
         this.numberOfSubConcpetsWithSubconcepts = 0;
+        this.type = conceptTypes.none;
     }
     /**
      * checks that the concept has meaningful data
@@ -80,6 +83,17 @@ export class ConceptStateful {
             index: 0,
             numberOfSubconceptsWithDefinition: 0,
             numberOfSubConcpetsWithSubconcepts: 0,
+            type: conceptTypes.none,
+        }
+
+        if (this.hasDefinition()) {
+            statelessCopy.type = conceptTypes.hasDefinition;
+        } else if (this.hasOrderedSubconcepts) {
+            statelessCopy.type = conceptTypes.hasOrderedSubconcepts;
+        } else if (this.hasSubconcepts()) {
+            statelessCopy.type = conceptTypes.hasSubconcepts
+        } else {
+            statelessCopy.type = conceptTypes.none;
         }
 
         this.subconcepts.forEach((concept: ConceptStateful, index: number) => {
@@ -133,16 +147,16 @@ export class ConceptStateful {
         return this.subconcepts.length > 0
     }
 
-    
+
     /**
      * Returns true if the concept subconcepts have information
      * @returns boolean
      */
-    hasSubconceptsWithInformation() : boolean {
-        if (this.hasSubconcepts()){
+    hasSubconceptsWithInformation(): boolean {
+        if (this.hasSubconcepts()) {
 
-            for(var i = 0; i < this.subconcepts.length; i++){
-                if (this.subconcepts[i].name.length > 0){
+            for (var i = 0; i < this.subconcepts.length; i++) {
+                if (this.subconcepts[i].name.length > 0) {
                     return true;
                 }
             }
@@ -154,7 +168,7 @@ export class ConceptStateful {
      * Returns true if the concept holds information (definition or subconcepts with information) 
      * @returns boolean
      */
-    hasInformation() : boolean{
+    hasInformation(): boolean {
         return this.hasDefinition() || this.hasSubconceptsWithInformation();
     }
 
@@ -201,42 +215,68 @@ export class ConceptStateful {
         this.subconcepts.length = 0
     }
 
+
     /**
-     * Gets the number of slibing concepts with defintion
+     * Get the number of slibings of a certain type
+     * @param  {ConceptType} criteria
      * @returns number
      */
-    getNumberOfSlibingsWithDefinition(): number {
-
+    getNumberOfSlibings(criteria: ConceptType): number {
         let number = 0;
         if (this.parent) {
-            // parent exists so get the number of children with definition, substract 1 for current concept
-            number = this.hasDefinition() ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.parent.numberOfSubconceptsWithDefinition;
+            switch (criteria) {
+                case conceptTypes.hasDefinition:
+                    number = this.type === criteria ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.numberOfSubconceptsWithDefinition;
+                    break;
+                case conceptTypes.hasSubconcepts:
+                    number = this.type === criteria ? this.parent.numberOfSubConcpetsWithSubconcepts - 1 : this.parent.numberOfSubConcpetsWithSubconcepts;
+                    break;
+                case conceptTypes.none:
+                    this.parent.subconcepts.length - 1;
+                    break;
+            }
         }
         return number;
     }
 
+
+
     /**
-     * Gets a certain number of slibling concepts with definitions
-     * @param conceptsNeeded the number of concepts needed
-     * @returns 
+     * Gets a certain number of slibings of a certain type
+     * @param  {number} conceptsNeeded
+     * @param  {ConceptType} criteria
+     * @returns ConceptStateful
      */
-    getSiblingWithDefinition(conceptsNeeded: number): ConceptStateful[] {
+    getSlibings(conceptsNeeded: number, criteria: ConceptType): ConceptStateful[] {
+        const slibings = new Array<ConceptStateful>();
         if (this.parent === undefined) {
-            return [];
+            return slibings;
         }
-        const siblings = new Array<ConceptStateful>();
         let conceptsAdded = 0;
         let i = 0;
+
         while (i < this.parent.subconcepts.length && conceptsAdded < conceptsNeeded) {
-            const curConcept = this.parent.subconcepts[i];
-            if (curConcept.index !== this.index && curConcept.hasDefinition()) {
-                siblings.push(curConcept);
-                conceptsAdded++;
+            switch (criteria) {
+                case conceptTypes.hasDefinition:
+                    if (!this.hasSubconceptsWithDefinition()) {
+                        return slibings;
+                    }
+                    if (this.parent.subconcepts[i].hasDefinition()) {
+                        slibings.push(this.parent.subconcepts[i]);
+                        conceptsAdded++;
+                    }
+                    break;
+                case conceptTypes.none:
+                    slibings.push(this.parent.subconcepts[i]);
+                    conceptsAdded++;
+                    break;
             }
             i++;
         }
-        return siblings;
+        return slibings;
     }
+
+
 
 
     /**
@@ -251,6 +291,17 @@ export class ConceptStateful {
     }
 
     /**
+     * Returns true if concept is not the only subconcept of concept parent
+     * @returns boolean
+     */
+    hasSiblings(): boolean {
+        if (this.parent === undefined) {
+            return false;
+        }
+        return this.parent.subconcepts.length > 1;
+    }
+
+    /**
      * Returns true if this concept has sub-concpets with a defintion
      * @returns 
      */
@@ -259,43 +310,89 @@ export class ConceptStateful {
     }
 
     /**
-     * Gets a certain number of sub-concepts with definition
-     * @param conceptsNeeded 
-     * @returns 
+     * Gets a certain number of subconcept of a  certain type
+     * @param  {number} conceptsNeeded
+     * @param  {ConceptType} criteria
+     * @returns ConceptStateful
      */
-    getSubconceptWithDefinition(conceptsNeeded: number): ConceptStateful[] {
+    getSubconcepts(conceptsNeeded: number, criteria: ConceptType): ConceptStateful[] {
         const children = new Array<ConceptStateful>();
-        if (!this.hasSubconceptsWithDefinition()) {
+        if (!this.hasSubconcepts()) {
             return children;
         }
         let conceptsAdded = 0;
         let i = 0;
 
         while (i < this.subconcepts.length && conceptsAdded < conceptsNeeded) {
-            if (this.subconcepts[i].hasDefinition()) {
-                children.push(this.subconcepts[i]);
-                conceptsAdded++;
+            switch (criteria) {
+                case conceptTypes.hasDefinition:
+                    if (!this.hasSubconceptsWithDefinition()) {
+                        return children;
+                    }
+                    if (this.subconcepts[i].hasDefinition()) {
+                        children.push(this.subconcepts[i]);
+                        conceptsAdded++;
+                    }
+                    break;
+                case conceptTypes.none:
+                    children.push(this.subconcepts[i]);
+                    conceptsAdded++;
+                    break;
             }
             i++;
         }
         return children;
     }
 
-    
+    /**
+     * Returns the dominate type in the subconcepts list
+     * @returns ConceptType
+     */
+    getSubconceptsDominateType(): ConceptType {
+        var definitionType, hasSubconcepts, hasOrderedConcepts = 0;
+
+        // go through the subconcepts to update the type counts
+        this.subconcepts.forEach((subconcept => {
+
+            switch (subconcept.type) {
+
+                case conceptTypes.hasDefinition:
+                    definitionType++;
+                    break;
+
+                case conceptTypes.hasSubconcepts:
+                    hasSubconcepts++;
+                    break;
+
+                case conceptTypes.hasOrderedSubconcepts:
+                    hasOrderedConcepts++;
+                    break;
+            }
+        }));
+
+        if (definitionType >= hasSubconcepts) {
+            // even in cases where the numbers are the same chose hasDefinition as the type
+            return conceptTypes.hasDefinition;
+        } else {
+
+            return conceptTypes.hasSubconcepts;
+        }
+    }
+
     /**
      * Get subconcepts that have 
      * @returns Array
      */
-    getConceptInformation(): Array<ConceptStateful>{
+    getConceptInformation(): Array<ConceptStateful> {
         const concepts = new Array<ConceptStateful>();
 
-        this.subconcepts.forEach((concept: ConceptStateful) =>{
+        this.subconcepts.forEach((concept: ConceptStateful) => {
 
-            if (concept.name.length > 0){
+            if (concept.name.length > 0) {
                 concepts.push(concept);
             }
         });
-        
+
         return concepts
     }
 
@@ -351,7 +448,7 @@ export class ConceptStateful {
      * function traverses tree in breath-first order
      * @returns number
      */
-     countInformationalConcepts(): number {
+    countInformationalConcepts(): number {
         //number of extended concepts
         var numOfExtendedConcepts = 0;
 

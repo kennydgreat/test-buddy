@@ -1,3 +1,4 @@
+import { ConceptType } from "./study-session/concept-criteria";
 
 export interface ConceptStateless {
     id: string;
@@ -8,5 +9,6 @@ export interface ConceptStateless {
     definition: string
     index: number;
     numberOfSubconceptsWithDefinition: number;
-    numberOfSubConcpetsWithSubconcepts: number ;
+    numberOfSubConcpetsWithSubconcepts: number;
+    type: ConceptType
 }

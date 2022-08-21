@@ -1,16 +1,19 @@
 export class Option {
-    text: string;
-    isAnwser: boolean;
-    chosen: boolean;
-    state: OptionState
-    
+  text: string;
+  isAnwser: boolean;
+  chosen: boolean;
+  state: OptionState
+  // for when option represents a subconcept 
+  conceptID: string;
 
-    constructor(text: string, isAnwser: boolean) {
-      this.text = text;
-      this.isAnwser = isAnwser;
-      this.chosen = false;
-      this.state = "default";
-    }
+
+  constructor(text: string, isAnwser: boolean, conceptId = "") {
+    this.text = text;
+    this.isAnwser = isAnwser;
+    this.chosen = false;
+    this.state = "default";
+    this.conceptID = conceptId;
+  }
 
 }
 
