@@ -1,5 +1,5 @@
 import { Store } from "@ngrx/store";
-import { MultipleChoiceQuestionBuilder } from "src/app/study-session/multiple-choice-question-builder";
+import { SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
 import { AppState } from "../../app-state";
 import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
 import { ConceptStateful } from "../concept-stateful";
@@ -48,16 +48,16 @@ export class UnitSS_Stateful {
      * Atempts to find the next concept for a question in the unit
      * @returns ConceptStateful
      */
-    findNextConceptInUnit() : ConceptStateful | undefined {
-        for(var i = 0; i < this.unit.concepts.length; i++){
+    findNextConceptInUnit(): ConceptStateful | undefined {
+        for (var i = 0; i < this.unit.concepts.length; i++) {
             var curConcept = this.findNextConceptTree(this.unit.concepts[i], false);
-            if (curConcept){
-               return curConcept;
+            if (curConcept) {
+                return curConcept;
             }
         }
         return undefined;
     }
-    
+
     /**
      * Attempt to find the next concept for a question in the concept tree, return undefined if it can't find one
      * @param  {ConceptStateful} concept
@@ -111,8 +111,12 @@ export class UnitSS_Stateful {
      * @param  {ConceptStateful} concept
      * @returns boolean
      */
-    canMakeQuestion(concept: ConceptStateful) : boolean{
-        if (MultipleChoiceQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)){
+    canMakeQuestion(concept: ConceptStateful): boolean {
+        if (SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)) {
+            return true;
+        }
+
+        if (SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit)) {
             return true;
         }
 
@@ -123,14 +127,23 @@ export class UnitSS_Stateful {
      * Sets the next question
      * @param  {ConceptStateful|undefined} concept
      */
-    setNextQuestion(concept: ConceptStateful | undefined){
-        if (concept){
+    setNextQuestion(concept: ConceptStateful | undefined) {
+        if (concept) {
             this.currentConcept = concept.name;
 
-            if (!this.isConceptDefinitionLearnt(concept)){
+            if (!this.isConceptDefinitionRecalled(concept)) {
 
-                this.currentQuestion = MultipleChoiceQuestionBuilder.makeDefinitionQuestion(concept, this.unit);
+                this.currentQuestion = SSQuestionBuilder.makeDefinitionQuestion(concept, this.unit);
+                return;
             }
+
+            if (!this.isConceptSubconceptsRecalled(concept)) {
+                // remove the recalled subconcepts
+                this.removeReclledSubconcepts(concept);
+                this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(concept, this.unit);
+                return;
+            }
+
         }
     }
 
@@ -140,22 +153,62 @@ export class UnitSS_Stateful {
      * @param  {ConceptStateful} concept
      * @returns boolean
      */
-    isConceptLearnt(concept: ConceptStateful) : boolean{
+    isConceptLearnt(concept: ConceptStateful): boolean {
 
-        if (!this.ssConceptProgressDictionary[concept.id]){
+        if (!this.ssConceptProgressDictionary[concept.id]) {
             return false;
         }
 
         return this.ssConceptProgressDictionary[concept.id].learnt;
     }
+    /**
+     * Returns true if concept's defintion was recalled
+     * @param  {ConceptStateful} concept
+     * @returns boolean
+     */
+    isConceptDefinitionRecalled(concept: ConceptStateful): boolean {
 
-    isConceptDefinitionLearnt(concept: ConceptStateful) : boolean{
-
-        if (!this.ssConceptProgressDictionary[concept.id]){
+        if (!this.ssConceptProgressDictionary[concept.id]) {
             return false;
         }
 
-        return this.ssConceptProgressDictionary[concept.id].definitionLearnt;
-        
+        return this.ssConceptProgressDictionary[concept.id].definition;
+
+    }
+
+    /**
+     * Return true if concept subconcepts was completely recalled
+     * @param  {ConceptStateful} concept
+     * @returns boolean
+     */
+    isConceptSubconceptsRecalled(concept: ConceptStateful): boolean {
+
+        if (!this.ssConceptProgressDictionary[concept.id]) {
+            return false;
+        }
+        return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.recalled;
+    }
+
+    /**
+     * Returns true if the subconcept was recalled 
+     * @param  {ConceptStateful} subconcept 
+     * @param  {ConceptStateful} concept
+     * @returns boolean
+     */
+    isSubconceptLearnt(subconcept: ConceptStateful, concept: ConceptStateful): boolean {
+        if (!this.ssConceptProgressDictionary[concept.id]) {
+            return false;
+        }
+
+        return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.progress[subconcept.id].relationshipRecalled;
+    }
+
+    /**
+     * Removes all subconcepts recalled yet
+     * @param  {ConceptStateful} concept
+     */
+    removeReclledSubconcepts(concept: ConceptStateful) {
+
+        concept.subconcepts = concept.subconcepts.filter(subconcept => !this.isSubconceptLearnt(subconcept, concept));
     }
 }
