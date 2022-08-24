@@ -9,12 +9,14 @@
     <div class="concept-progress-options">
         <app-ss-concept-progress></app-ss-concept-progress>
         <div class="options">
-            <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text" [state]="option.state" (click)="chooseOption(option)"></app-ss-concept-option-box>
+            <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text"
+                [state]="option.state" (click)="chooseOption(option)"></app-ss-concept-option-box>
         </div>
     </div>
 
-    <div *ngIf="multipleChoiceQuestion.hasMultipleAnwsers" id="action-button" class="primary-pink-button-and-text">
+    <div *ngIf="multipleChoiceQuestion.hasMultipleAnwsers" id="action-button" class="primary-pink-button-and-text"
+        (click)="done()">
         <p>Done</p>
-   </div>
+    </div>
 
 </div>

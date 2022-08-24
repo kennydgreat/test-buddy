@@ -8,9 +8,9 @@
         <p class="title">Study Session for</p>
         <p class="primary-josefin-sans-heading unit-name">{{unitSS_Stateful.unitNameForStudySession}}</p>
     </div>
-    
+
     <div class="session-progress">
-        
+
         <div class="progress-text">
 
             <p class="primary-roboto-body">Session progress:</p>
@@ -24,10 +24,12 @@
         </div>
     </div>
 
-   <div class="concept-question-viewer">
-    <app-ss-concept-question-viewer [conceptName]="unitSS_Stateful.currentConcept" [multipleChoiceQuestion]="unitSS_Stateful.currentQuestion" ></app-ss-concept-question-viewer>
-   </div>
+    <div class="concept-question-viewer">
+        <app-ss-concept-question-viewer [conceptName]="unitSS_Stateful.currentConcept"
+            [multipleChoiceQuestion]="unitSS_Stateful.currentQuestion" (userDoneAnswering)="userDoneAnswering()">
+        </app-ss-concept-question-viewer>
+    </div>
 
-   <app-testbuddy-helper [text]="unitSS_Stateful.currentQuestion.questionText"></app-testbuddy-helper>
-   
+    <app-testbuddy-helper [text]="unitSS_Stateful.currentQuestion.questionText"></app-testbuddy-helper>
+
 </div>

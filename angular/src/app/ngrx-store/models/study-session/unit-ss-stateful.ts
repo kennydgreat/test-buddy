@@ -131,19 +131,33 @@ export class UnitSS_Stateful {
         if (concept) {
             this.currentConcept = concept.name;
 
-            if (!this.isConceptDefinitionRecalled(concept)) {
+            if (!this.isConceptDefinitionRecalled(concept) && SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)) {
 
                 this.currentQuestion = SSQuestionBuilder.makeDefinitionQuestion(concept, this.unit);
                 return;
             }
 
-            if (!this.isConceptSubconceptsRecalled(concept)) {
+            if (!this.isConceptSubconceptsRecalled(concept) && SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit)) {
                 // remove the recalled subconcepts
                 this.removeReclledSubconcepts(concept);
                 this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(concept, this.unit);
                 return;
             }
 
+        }
+    }
+    /**
+     * indicate that user has answered question
+     */
+    userAnswered(){
+        //user has answered, mark question
+        this.currentQuestion.markQuestion();
+        if(this.currentQuestion.right){
+            // update question instruction with positive response
+            this.currentQuestion.questionText = "Well done!";
+        }else{
+           // update question instruction with supportive response
+           this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session."
         }
     }
 

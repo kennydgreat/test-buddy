@@ -349,7 +349,9 @@ export class ConceptStateful {
      * @returns ConceptType
      */
     getSubconceptsDominateType(): ConceptType {
-        var definitionType, hasSubconcepts, hasOrderedConcepts = 0;
+        var definitionType = 0;
+        var hasSubconcepts = 0;
+        var hasOrderedConcepts = 0;
 
         // go through the subconcepts to update the type counts
         this.subconcepts.forEach((subconcept => {

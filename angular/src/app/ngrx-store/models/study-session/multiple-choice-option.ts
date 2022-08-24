@@ -15,7 +15,12 @@ export class Option {
     this.conceptID = conceptId;
   }
 
+  toggleChosen() {
+    this.chosen = !this.chosen;
+    this.state = this.chosen ? "chosen" : "default";
+  }
+
 }
 
 // Represents the states of a multiple choice option
-export type OptionState = "wrong" | "correct" | "missed" | "wrong-position" | "default";
+export type OptionState = "wrong" | "correct" | "missed" | "wrong-position" | "default" | "chosen";

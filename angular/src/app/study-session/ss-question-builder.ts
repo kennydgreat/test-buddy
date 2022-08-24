@@ -107,7 +107,7 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   // setting the number of options needed
   var numberOfOptions = 4;
 
-  // number of subconcepts that need to be chosen, could be 0-3.
+  // number of subconcepts that need to be chosen, could be 0-4.
   var numberOfRightAwnsers = getRandomInt(numberOfOptions);
   var numberOfWrongOptions = numberOfOptions - numberOfRightAwnsers;
 
@@ -134,6 +134,8 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
     var adjecentConcepts = [];
     const rootConcept = concept.getRoot();
     adjecentConcepts = unit.getAdjacentConcepts(rootConcept, (numberOfWrongOptions - wrongOptionConcepts.length), conceptTypes.hasSubconcepts);
+    // add adjacent concepts as well as their subconcepts
+    wrongOptionConcepts = [...adjecentConcepts, ...wrongOptionConcepts];
     adjecentConcepts.forEach((concept: ConceptStateful) => {
       // only add subconcepts from adjecentConcepts that don't have ordered subconcepts
       if (!concept.hasOrderedSubconcepts) {
@@ -148,6 +150,7 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
     // there are more options than is needed so take what's needed.
     wrongOptionConcepts = wrongOptionConcepts.slice(0, numberOfWrongOptions);
   }
+
 
 
   // create wrong options for wrong concepts

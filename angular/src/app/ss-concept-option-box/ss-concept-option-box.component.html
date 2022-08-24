@@ -2,6 +2,11 @@
     <p>{{text}}</p>
 </div>
 
+<div id="default" class="textbox chosen" *ngIf="state === 'chosen'" >
+    <p>{{text}}</p>
+</div>
+
+
 <div id="wrong-option" class="wrong-option box-and-indicator " *ngIf="state === 'wrong'">
     <div class="textbox wrong-text">
         <p>{{text}}</p>
