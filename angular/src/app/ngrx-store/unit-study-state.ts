@@ -19,6 +19,7 @@ export interface SSConcpetProgress {
         recalled: boolean,
         progress: SubconceptsRelationProgress
     };
+    subconceptOrder: boolean;
 }
 
 /**

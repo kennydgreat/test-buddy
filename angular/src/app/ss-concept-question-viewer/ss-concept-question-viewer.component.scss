@@ -16,7 +16,6 @@ div.root {
         display: flex;
         column-gap: 2rem;
         width: 100%;
-        
 
         div.options {
             display: flex;
@@ -26,7 +25,10 @@ div.root {
             padding: 1rem;
             overflow-y: scroll;
 
-            
+            // element that will be shown instead of the real element as it's being dragged, this has the effect of making space empty
+            .cdk-drag-placeholder {
+                opacity: 0;
+            }
         }
     }
 }

@@ -8,9 +8,18 @@
     </div>
     <div class="concept-progress-options">
         <app-ss-concept-progress></app-ss-concept-progress>
-        <div class="options">
+
+        <!--For regular options-->
+        <div class="options" *ngIf="!multipleChoiceQuestion.isOrderQuestion">
             <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text"
                 [state]="option.state" (click)="chooseOption(option)"></app-ss-concept-option-box>
+        </div>
+
+        <!--For drag and drop options-->
+        <div class="options" *ngIf="multipleChoiceQuestion.isOrderQuestion" cdkDropList [cdkDropListData]="multipleChoiceQuestion.options">
+
+            <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text"
+                [state]="option.state" (click)="chooseOption(option)" cdkDrag cdkDragPreviewContainer="parent" cdkDragLockAxis="y"  ></app-ss-concept-option-box>
         </div>
     </div>
 

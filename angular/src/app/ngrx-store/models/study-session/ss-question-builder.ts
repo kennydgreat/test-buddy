@@ -1,8 +1,8 @@
-import { ConceptStateful } from "../ngrx-store/models/concept-stateful";
-import { ConceptType, conceptTypes } from "../ngrx-store/models/study-session/concept-criteria";
-import { Option } from "../ngrx-store/models/study-session/multiple-choice-option";
-import { MultipleChoiceQuestion } from "../ngrx-store/models/study-session/multiple-choice-question";
-import { UnitStateful } from "../ngrx-store/models/unit-stateful";
+import { ConceptStateful } from "../concept-stateful";
+import { ConceptType, conceptTypes } from "./concept-criteria";
+import { Option } from "./multiple-choice-option";
+import { MultipleChoiceQuestion } from "./multiple-choice-question";
+import { UnitStateful } from "../unit-stateful";
 
 
 /**
@@ -174,6 +174,28 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   return new MultipleChoiceQuestion(questionText, options, true);
 }
 
+
+export function makeOrderSubconceptsQuestion(concept: ConceptStateful): MultipleChoiceQuestion | undefined {
+  if (!isCanadiateForOrderSubconceptsQuestion(concept)) {
+    return undefined;
+  }
+
+  // create options from concept's subconcepts
+  var options = new Array<Option>();
+
+  concept.subconcepts.forEach((subconcept: ConceptStateful, index: number) => {
+    options.push(new Option(subconcept.name, undefined, undefined, index));
+  });
+
+  // shuffle the options
+  options = shuffleArray(options);
+
+  const questionText = `Move the cards into the right order for "${concept.name}"`
+
+  return new MultipleChoiceQuestion(questionText, options, undefined, true);
+}
+
+
 /**
 * Check if a multiple choice definition question can be made for this concept
 * @param  {ConceptStateful} concept the concept
@@ -199,6 +221,12 @@ export function isCandiateForMultiChoiceDefinitionQuestion(concept: ConceptState
   return false;
 }
 
+/**
+ * Returns true if concept is a candiate for a choose subconcepts question
+ * @param  {ConceptStateful} concept
+ * @param  {UnitStateful} unit
+ * @returns boolean
+ */
 export function isCandiateForMultipleSubconceptQuestion(concept: ConceptStateful, unit: UnitStateful): boolean {
   // concepts with order subconcepts are excluded
   if (concept.hasOrderedSubconcepts) {
@@ -220,11 +248,23 @@ export function isCandiateForMultipleSubconceptQuestion(concept: ConceptStateful
   return false;
 }
 
+/**
+ * Returns true if concept is a candiate for an order subconcept question
+ * @param  {ConceptStateful} concept
+ * @returns boolean
+ */
+export function isCanadiateForOrderSubconceptsQuestion(concept: ConceptStateful): boolean {
+
+  return concept.hasOrderedSubconcepts && concept.hasSubconceptsWithInformation();
+}
+
 export const SSQuestionBuilder = {
   isCandiateForMultiChoiceDefinitionQuestion,
   isCandiateForMultipleSubconceptQuestion,
+  isCanadiateForOrderSubconceptsQuestion,
   makeDefinitionQuestion: makeSSDefinitionQuestion,
   makeMultipleSubsconceptQuestion,
+  makeOrderSubconceptsQuestion,
 
 }
 

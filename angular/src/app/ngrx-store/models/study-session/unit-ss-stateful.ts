@@ -1,5 +1,5 @@
 import { Store } from "@ngrx/store";
-import { SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
+import { SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
 import { AppState } from "../../app-state";
 import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
 import { ConceptStateful } from "../concept-stateful";
@@ -8,7 +8,7 @@ import { UnitStateless } from "../unit-stateless";
 import { MultipleChoiceQuestion } from "./multiple-choice-question";
 
 /**
- * Represents the stateful version of a unit study session data
+ * Represents the stateful version of a unit study session data and concepts the logic for a study session
  */
 export class UnitSS_Stateful {
 
@@ -120,6 +120,10 @@ export class UnitSS_Stateful {
             return true;
         }
 
+        if (SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -144,20 +148,25 @@ export class UnitSS_Stateful {
                 return;
             }
 
+            if (!this.isSubconceptOrderRecalled(concept) && SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept)) {
+                this.currentQuestion = SSQuestionBuilder.makeOrderSubconceptsQuestion(concept);
+                return;
+            }
+
         }
     }
     /**
      * indicate that user has answered question
      */
-    userAnswered(){
+    userAnswered() {
         //user has answered, mark question
         this.currentQuestion.markQuestion();
-        if(this.currentQuestion.right){
+        if (this.currentQuestion.right) {
             // update question instruction with positive response
             this.currentQuestion.questionText = "Well done!";
-        }else{
-           // update question instruction with supportive response
-           this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session."
+        } else {
+            // update question instruction with supportive response
+            this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session."
         }
     }
 
@@ -203,6 +212,8 @@ export class UnitSS_Stateful {
         return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.recalled;
     }
 
+
+
     /**
      * Returns true if the subconcept was recalled 
      * @param  {ConceptStateful} subconcept 
@@ -215,6 +226,20 @@ export class UnitSS_Stateful {
         }
 
         return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.progress[subconcept.id].relationshipRecalled;
+    }
+
+
+    /**
+     * Returns true if the concept subconcept order has been learnt
+     * @param  {ConceptStateful} concept
+     * @returns boolean
+     */
+    isSubconceptOrderRecalled(concept: ConceptStateful): boolean {
+        if (!this.ssConceptProgressDictionary[concept.id]) {
+            return false;
+        }
+
+        return this.ssConceptProgressDictionary[concept.id].subconceptOrder;
     }
 
     /**

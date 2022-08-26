@@ -7,15 +7,17 @@ export class MultipleChoiceQuestion {
     questionText: string;
     options: Option[];
     hasMultipleAnwsers: boolean;
+    isOrderQuestion: boolean
     right: boolean;
     marked: boolean;
 
-    constructor(questionText: string, options: Option[], hasMultipleAnswers: boolean) {
+    constructor(questionText: string, options: Option[], hasMultipleAnswers: boolean, isOrderQuestion = false) {
         this.questionText = questionText;
         this.options = options;
         this.hasMultipleAnwsers = hasMultipleAnswers;
         this.right = false;
         this.marked = false;
+        this.isOrderQuestion = isOrderQuestion;
     }
 
     /**

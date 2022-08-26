@@ -29,7 +29,7 @@ export class ConceptViewerComponent implements OnInit {
 
 
   constructor() {
-  
+
   }
   ngOnInit(): void {
 
@@ -75,6 +75,7 @@ export class ConceptViewerComponent implements OnInit {
   // update concept and triggers concept change event
   toggleSubconceptOrdered() {
     // emit concept change event
+    this.statefulConcept.hasOrderedSubconcepts = !this.statefulConcept.hasOrderedSubconcepts;
     this.conceptChangeEvent.emit();
 
   }
@@ -91,7 +92,7 @@ export class ConceptViewerComponent implements OnInit {
     this.conceptChangeEvent.emit();
   }
 
-  subconceptsDragDropEvent(event: CdkDragDrop<ConceptStateful[]>){
+  subconceptsDragDropEvent(event: CdkDragDrop<ConceptStateful[]>) {
     // change the order of the elements
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     //update the stateful concept and emit change
@@ -99,24 +100,24 @@ export class ConceptViewerComponent implements OnInit {
     this.conceptChangeEvent.emit();
   }
 
-  deleteConcept(){
+  deleteConcept() {
     // send event to the parent component to delete this concept. 
     this.conceptDeleteEvent.emit(this.statefulConcept);
   }
 
-  deleteSubconcept(subconcept: ConceptStateful){
-    
+  deleteSubconcept(subconcept: ConceptStateful) {
+
     // send event to parent component to delete subconcept
     this.conceptDeleteEvent.emit(subconcept);
   }
 
-  deleteSubconceptEventReceived(subConcept: ConceptStateful){
+  deleteSubconceptEventReceived(subConcept: ConceptStateful) {
 
     // the delete event received, propagate event up the tree to eventually reach the unit component.
     this.conceptDeleteEvent.emit(subConcept);
   }
 
-  subconceptChanged(){
+  subconceptChanged() {
 
     // a subconcept changed event was received propagate event up the tree
     this.conceptChangeEvent.emit();
