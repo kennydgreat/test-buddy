@@ -1,4 +1,5 @@
 import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 import { SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
 import { AppState } from "../../app-state";
 import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
@@ -18,6 +19,7 @@ export class UnitSS_Stateful {
     currentConcept: string;
     ssConceptProgressDictionary: SSConceptProgressDictionary;
     currentQuestion: MultipleChoiceQuestion;
+    $unit: Observable<UnitStateless>
 
 
 
@@ -26,18 +28,20 @@ export class UnitSS_Stateful {
         this.ssConceptProgressDictionary = {};
 
         //use selector to get unit to study
-        let $unit = this.store.select(selectUnitToStudyStateless);
+       this.$unit = this.store.select(selectUnitToStudyStateless);
 
         // subscribe to cahnges to the obserable to get the unit
-        $unit.subscribe(
+        this.$unit.subscribe(
 
             {
                 next: (unitFromStore: UnitStateless) => {
+                   if(unitFromStore){
                     this.unit = new UnitStateful(store);
                     this.unit.copyInStatelessData(unitFromStore);
                     this.unitNameForStudySession = this.unit.name
                     this.unitID = this.unit.id;
                     this.setNextQuestion(this.findNextConceptInUnit());
+                   }
                 }
             }
         );
@@ -250,4 +254,5 @@ export class UnitSS_Stateful {
 
         concept.subconcepts = concept.subconcepts.filter(subconcept => !this.isSubconceptLearnt(subconcept, concept));
     }
+
 }

@@ -17,10 +17,19 @@ export class Option {
     this.conceptID = conceptId;
     this.index = index;
   }
-
+  /**
+   * Toggle the chosen flag and state between "chosen" and "default"
+   */
   toggleChosen() {
     this.chosen = !this.chosen;
     this.state = this.chosen ? "chosen" : "default";
+  }
+  /**
+   * Return option position
+   * @returns number
+   */
+  getOption(): number {
+    return this.index + 1;
   }
 
 }

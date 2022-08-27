@@ -9,21 +9,21 @@
     <div class="concept-progress-options">
         <app-ss-concept-progress></app-ss-concept-progress>
 
-        <!--For regular options-->
-        <div class="options" *ngIf="!multipleChoiceQuestion.isOrderQuestion">
+        <!--For single answer-->
+        <div class="options" *ngIf="multipleChoiceQuestion.type === 'single answer' || multipleChoiceQuestion.type === 'multi-answer'">
             <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text"
                 [state]="option.state" (click)="chooseOption(option)"></app-ss-concept-option-box>
         </div>
 
-        <!--For drag and drop options-->
-        <div class="options" *ngIf="multipleChoiceQuestion.isOrderQuestion" cdkDropList [cdkDropListData]="multipleChoiceQuestion.options">
+        <!--For drag and drop options (multi-answer)-->
+        <div class="options" *ngIf="multipleChoiceQuestion.type === 'ordered question'" cdkDropList [cdkDropListData]="multipleChoiceQuestion.options" (cdkDropListDropped)="optionsDragDropEvent($event)">
 
-            <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text"
-                [state]="option.state" (click)="chooseOption(option)" cdkDrag cdkDragPreviewContainer="parent" cdkDragLockAxis="y"  ></app-ss-concept-option-box>
+            <app-ss-concept-option-box *ngFor="let option of multipleChoiceQuestion.options" [text]="option.text" 
+                [state]="option.state" cdkDrag cdkDragPreviewContainer="parent" cdkDragLockAxis="y" [index]="option.getOption()" ></app-ss-concept-option-box>
         </div>
     </div>
 
-    <div *ngIf="multipleChoiceQuestion.hasMultipleAnwsers" id="action-button" class="primary-pink-button-and-text"
+    <div *ngIf="multipleChoiceQuestion.type === 'ordered question' || multipleChoiceQuestion.type === 'multi-answer'" id="action-button" class="primary-pink-button-and-text"
         (click)="done()">
         <p>Done</p>
     </div>

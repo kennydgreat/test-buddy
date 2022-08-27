@@ -13,6 +13,8 @@ export class SsConceptOptionBoxComponent implements OnInit {
 
   @Input() text: string;
 
+  @Input() index: number;
+
   constructor() { }
 
   ngOnInit(): void {

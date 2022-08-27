@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Option, OptionState } from '../ngrx-store/models/study-session/multiple-choice-option';
 import { MultipleChoiceQuestion } from '../ngrx-store/models/study-session/multiple-choice-question';
@@ -20,7 +21,7 @@ export class SsConceptQuestionViewerComponent implements OnInit {
 
   chooseOption(option: Option) {
 
-    if (this.multipleChoiceQuestion.hasMultipleAnwsers) {
+    if (this.multipleChoiceQuestion.type === 'multi-answer') {
       //set the chosen flag for option
       option.toggleChosen();
     } else {
@@ -32,6 +33,17 @@ export class SsConceptQuestionViewerComponent implements OnInit {
 
 
   }
+
+  optionsDragDropEvent(event: CdkDragDrop<Option[]>) {
+    // change the order of the element according to user action
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+    //update options
+    this.multipleChoiceQuestion.options = event.container.data;
+
+  }
+
+
 
   done() {
     // user is done responding, mark question tell parent user done answering
