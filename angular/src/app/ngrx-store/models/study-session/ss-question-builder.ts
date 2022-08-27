@@ -91,7 +91,7 @@ export function makeSSDefinitionQuestion(concept: ConceptStateful, unit: UnitSta
       }
     }
   }
-  return new MultipleChoiceQuestion(`Choose the right definition for "${concept.name}"`, options, false);
+  return new MultipleChoiceQuestion(`Choose the right definition for "${concept.name}"`, options, "single answer");
 }
 
 
@@ -171,7 +171,7 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   options = shuffleArray(options);
 
   const questionText = `Choose all options that are "${concept.name}" or choose none.`;
-  return new MultipleChoiceQuestion(questionText, options, true);
+  return new MultipleChoiceQuestion(questionText, options, "multi-answer");
 }
 
 
@@ -192,7 +192,7 @@ export function makeOrderSubconceptsQuestion(concept: ConceptStateful): Multiple
 
   const questionText = `Move the cards into the right order for "${concept.name}"`
 
-  return new MultipleChoiceQuestion(questionText, options, undefined, true);
+  return new MultipleChoiceQuestion(questionText, options, "ordered question");
 }
 
 
