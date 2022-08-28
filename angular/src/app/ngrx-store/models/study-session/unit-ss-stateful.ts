@@ -2,7 +2,7 @@ import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
 import { AppState } from "../../app-state";
-import { selectUnitToStudyStateless, SSConceptProgressDictionary } from "../../unit-study-state";
+import { selectUnitToStudyStateless, SSConceptProgressDictionary, SSConcpetProgress } from "../../unit-study-state";
 import { ConceptStateful } from "../concept-stateful";
 import { UnitStateful } from "../unit-stateful";
 import { UnitStateless } from "../unit-stateless";
@@ -19,7 +19,8 @@ export class UnitSS_Stateful {
     currentConcept: string;
     ssConceptProgressDictionary: SSConceptProgressDictionary;
     currentQuestion: MultipleChoiceQuestion;
-    $unit: Observable<UnitStateless>
+    $unit: Observable<UnitStateless>;
+    currentConceptAspect: "definition"
 
 
 
@@ -28,24 +29,31 @@ export class UnitSS_Stateful {
         this.ssConceptProgressDictionary = {};
 
         //use selector to get unit to study
-       this.$unit = this.store.select(selectUnitToStudyStateless);
+        this.$unit = this.store.select(selectUnitToStudyStateless);
 
         // subscribe to cahnges to the obserable to get the unit
         this.$unit.subscribe(
 
             {
                 next: (unitFromStore: UnitStateless) => {
-                   if(unitFromStore){
-                    this.unit = new UnitStateful(store);
-                    this.unit.copyInStatelessData(unitFromStore);
-                    this.unitNameForStudySession = this.unit.name
-                    this.unitID = this.unit.id;
-                    this.setNextQuestion(this.findNextConceptInUnit());
-                   }
+                    // this will be undefined if the user isn't in study (fix for angular not automatically unsubscribing to store updates when owner component destoryed)
+                    if (unitFromStore) {
+
+                        this.unit = new UnitStateful(store);
+                        this.unit.copyInStatelessData(unitFromStore);
+                        this.unitNameForStudySession = this.unit.name
+                        this.unitID = this.unit.id;
+                        this.setNextQuestion();
+
+                    }
                 }
             }
         );
 
+    }
+
+    userReadyForNextQuestion(){
+        this.setNextQuestion()
     }
 
     /**
@@ -55,7 +63,22 @@ export class UnitSS_Stateful {
     findNextConceptInUnit(): ConceptStateful | undefined {
         for (var i = 0; i < this.unit.concepts.length; i++) {
             var curConcept = this.findNextConceptTree(this.unit.concepts[i], false);
+
             if (curConcept) {
+                // create object for the concept progress, if the concept hasn't been seen before
+                if (!this.ssConceptProgressDictionary[curConcept.id]) {
+                    this.ssConceptProgressDictionary[curConcept.id] = {
+                        id: curConcept.id,
+                        name: curConcept.name,
+                        learnt: false,
+                        definition: curConcept.hasDefinition() ? false : undefined,
+                        subconceptRelationship: curConcept.hasSubconcepts() ? {
+                            recalled: false,
+                            progress: {}
+                        } : undefined,
+                        subconceptOrder: curConcept.hasOrderedSubconcepts ? false : undefined,
+                    };
+                }
                 return curConcept;
             }
         }
@@ -133,9 +156,9 @@ export class UnitSS_Stateful {
 
     /**
      * Sets the next question
-     * @param  {ConceptStateful|undefined} concept
      */
-    setNextQuestion(concept: ConceptStateful | undefined) {
+    setNextQuestion() {
+        var concept = this.findNextConceptInUnit();
         if (concept) {
             this.currentConcept = concept.name;
 
@@ -167,7 +190,7 @@ export class UnitSS_Stateful {
         this.currentQuestion.markQuestion();
         if (this.currentQuestion.right) {
             // update question instruction with positive response
-            this.currentQuestion.questionText = "Well done!";
+            this.currentQuestion.questionText = "That’s right, great job!";
         } else {
             // update question instruction with supportive response
             this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session."
@@ -185,6 +208,8 @@ export class UnitSS_Stateful {
         if (!this.ssConceptProgressDictionary[concept.id]) {
             return false;
         }
+
+
 
         return this.ssConceptProgressDictionary[concept.id].learnt;
     }
@@ -228,7 +253,9 @@ export class UnitSS_Stateful {
         if (!this.ssConceptProgressDictionary[concept.id]) {
             return false;
         }
-
+        if (!this.ssConceptProgressDictionary[concept.id].subconceptRelationship.progress[subconcept.id]) {
+            return false;
+        }
         return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.progress[subconcept.id].relationshipRecalled;
     }
 
@@ -254,5 +281,7 @@ export class UnitSS_Stateful {
 
         concept.subconcepts = concept.subconcepts.filter(subconcept => !this.isSubconceptLearnt(subconcept, concept));
     }
+
+
 
 }

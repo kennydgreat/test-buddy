@@ -23,9 +23,13 @@
         </div>
     </div>
 
-    <div *ngIf="multipleChoiceQuestion.type === 'ordered question' || multipleChoiceQuestion.type === 'multi-answer'" id="action-button" class="primary-pink-button-and-text"
+    <div *ngIf="multipleChoiceQuestion.type === 'ordered question' || multipleChoiceQuestion.type === 'multi-answer' && !multipleChoiceQuestion.marked" id="done-button" class="primary-pink-button-and-text"
         (click)="done()">
         <p>Done</p>
+    </div>
+
+    <div class="primary-pink-button-and-text" id="ok-done" *ngIf="multipleChoiceQuestion.marked" (click)="ok()">
+        <p>Ok</p>
     </div>
 
 </div>

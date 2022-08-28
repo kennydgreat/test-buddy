@@ -13,6 +13,7 @@ export class SsConceptQuestionViewerComponent implements OnInit {
   @Input() conceptName: string;
   @Input() multipleChoiceQuestion: MultipleChoiceQuestion
   @Output() userDoneAnswering = new EventEmitter<void>();
+  @Output() userReadyForNextQuestion = new EventEmitter<void>();
   userAnwsered: boolean = false;
   constructor() { }
 
@@ -44,6 +45,9 @@ export class SsConceptQuestionViewerComponent implements OnInit {
   }
 
 
+  ok() {
+    this.userReadyForNextQuestion.emit();
+  }
 
   done() {
     // user is done responding, mark question tell parent user done answering

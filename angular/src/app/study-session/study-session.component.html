@@ -26,7 +26,8 @@
 
     <div class="concept-question-viewer">
         <app-ss-concept-question-viewer [conceptName]="unitSS_Stateful.currentConcept"
-            [multipleChoiceQuestion]="unitSS_Stateful.currentQuestion" (userDoneAnswering)="userDoneAnswering()">
+            [multipleChoiceQuestion]="unitSS_Stateful.currentQuestion" (userDoneAnswering)="userDoneAnswering()"
+            (userReadyForNextQuestion)="userReadyNextQuestion()">
         </app-ss-concept-question-viewer>
     </div>
 

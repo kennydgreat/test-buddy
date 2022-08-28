@@ -35,4 +35,8 @@ export class StudySessionComponent implements OnInit {
     this.unitSS_Stateful.userAnswered();
   }
 
+  userReadyNextQuestion(){
+    this.unitSS_Stateful.userReadyForNextQuestion();
+  }
+
 }

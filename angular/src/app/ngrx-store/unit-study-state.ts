@@ -14,12 +14,12 @@ export interface SSConcpetProgress {
     id: string;
     name: string;
     learnt: boolean;
-    definition: boolean;
+    definition: boolean | undefined;
     subconceptRelationship: {
         recalled: boolean,
         progress: SubconceptsRelationProgress
-    };
-    subconceptOrder: boolean;
+    } | undefined;
+    subconceptOrder: boolean | undefined;
 }
 
 /**
