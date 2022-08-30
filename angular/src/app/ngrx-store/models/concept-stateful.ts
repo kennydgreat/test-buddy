@@ -232,7 +232,7 @@ export class ConceptStateful {
                     number = this.type === criteria ? this.parent.numberOfSubConcpetsWithSubconcepts - 1 : this.parent.numberOfSubConcpetsWithSubconcepts;
                     break;
                 case conceptTypes.none:
-                    this.parent.subconcepts.length - 1;
+                   number = this.parent.subconcepts.length - 1;
                     break;
             }
         }
@@ -258,17 +258,21 @@ export class ConceptStateful {
         while (i < this.parent.subconcepts.length && conceptsAdded < conceptsNeeded) {
             switch (criteria) {
                 case conceptTypes.hasDefinition:
-                    if (!this.hasSubconceptsWithDefinition()) {
+                    if (!this.parent.hasSubconceptsWithDefinition()) {
                         return slibings;
                     }
-                    if (this.parent.subconcepts[i].hasDefinition()) {
+                    // the current parent subconcept has definition and is not the concept added to list
+                    if (this.parent.subconcepts[i].hasDefinition() && this.parent.subconcepts[i].id !== this.id) {
                         slibings.push(this.parent.subconcepts[i]);
                         conceptsAdded++;
                     }
                     break;
                 case conceptTypes.none:
+                   if(this.parent.subconcepts[i].id !== this.id){
+                     
                     slibings.push(this.parent.subconcepts[i]);
                     conceptsAdded++;
+                   }
                     break;
             }
             i++;

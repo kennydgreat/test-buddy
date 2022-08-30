@@ -1,11 +1,12 @@
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
+import { isCandiateForMultiChoiceDefinitionQuestion, SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
 import { AppState } from "../../app-state";
 import { selectUnitToStudyStateless, SSConceptProgressDictionary, SSConcpetProgress } from "../../unit-study-state";
 import { ConceptStateful } from "../concept-stateful";
 import { UnitStateful } from "../unit-stateful";
 import { UnitStateless } from "../unit-stateless";
+import { Option } from "./multiple-choice-option";
 import { MultipleChoiceQuestion } from "./multiple-choice-question";
 
 /**
@@ -17,10 +18,11 @@ export class UnitSS_Stateful {
     unitID: string
     unitNameForStudySession: string;
     currentConcept: string;
+    sessionQueue: Array<QuestionQueueElement>; // the order of concept and aspects to show user
     ssConceptProgressDictionary: SSConceptProgressDictionary;
     currentQuestion: MultipleChoiceQuestion;
     $unit: Observable<UnitStateless>;
-    currentConceptAspect: "definition"
+    currentConceptAspect: "definition" | "subconcepts" | "subconcept order"
 
 
 
@@ -36,102 +38,115 @@ export class UnitSS_Stateful {
 
             {
                 next: (unitFromStore: UnitStateless) => {
-                    // this will be undefined if the user isn't in study (fix for angular not automatically unsubscribing to store updates when owner component destoryed)
-                    if (unitFromStore) {
+                    // this will be undefined if the user isn't in study (fix for angular not automatically unsubscribing to store updates when owner component destoryed). also next firing from unknown trigger
+                    if (unitFromStore && !this.unit) {
 
                         this.unit = new UnitStateful(store);
                         this.unit.copyInStatelessData(unitFromStore);
                         this.unitNameForStudySession = this.unit.name
                         this.unitID = this.unit.id;
+                        this.setSSQueueFromUnit();
                         this.setNextQuestion();
 
                     }
                 }
+
+
+
+
             }
         );
 
     }
 
-    userReadyForNextQuestion(){
-        this.setNextQuestion()
-    }
 
     /**
-     * Atempts to find the next concept for a question in the unit
-     * @returns ConceptStateful
+     * Creates a queue of concept and aspects for the session
      */
-    findNextConceptInUnit(): ConceptStateful | undefined {
-        for (var i = 0; i < this.unit.concepts.length; i++) {
-            var curConcept = this.findNextConceptTree(this.unit.concepts[i], false);
+    setSSQueueFromUnit() {
+        this.sessionQueue = new Array<QuestionQueueElement>();
+        this.unit.concepts.forEach((concept: ConceptStateful) => {
+            this.addConceptTreeToQueue(concept);
+        });
+    }
 
-            if (curConcept) {
-                // create object for the concept progress, if the concept hasn't been seen before
-                if (!this.ssConceptProgressDictionary[curConcept.id]) {
-                    this.ssConceptProgressDictionary[curConcept.id] = {
-                        id: curConcept.id,
-                        name: curConcept.name,
-                        learnt: false,
-                        definition: curConcept.hasDefinition() ? false : undefined,
-                        subconceptRelationship: curConcept.hasSubconcepts() ? {
-                            recalled: false,
-                            progress: {}
-                        } : undefined,
-                        subconceptOrder: curConcept.hasOrderedSubconcepts ? false : undefined,
-                    };
-                }
-                return curConcept;
+
+    /**
+     * Adds the tree of concepts to the session's queue
+     */
+    addConceptTreeToQueue(concept: ConceptStateful) {
+
+        if (!this.ssConceptProgressDictionary[concept.id]) {
+            this.createProgressForConcept(concept);
+        }
+
+        if (this.canMakeQuestion(concept)) {
+            if (SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)) {
+                this.sessionQueue.push({
+                    concept: concept,
+                    aspect: "definition",
+                });
             }
-        }
-        return undefined;
-    }
 
-    /**
-     * Attempt to find the next concept for a question in the concept tree, return undefined if it can't find one
-     * @param  {ConceptStateful} concept
-     * @param  {boolean} nextconceptFound
-     * @returns ConceptStateful
-     */
-    findNextConceptTree(concept: ConceptStateful, nextconceptFound: boolean): ConceptStateful | undefined {
+            if (SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit)) {
+                this.sessionQueue.push({
+                    concept: concept,
+                    aspect: "subconcepts",
+                });
+            }
 
-        // check that a concept hasn't been found
-        if (nextconceptFound) {
-            return undefined;
-        }
+            if (SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept)) {
+                this.sessionQueue.push({
+                    concept: concept,
+                    aspect: "subconcept order",
+                });
+            }
 
-        // check that the concept is extended (has information learn)
-        if (!concept.isExtended()) {
-            // the concept is not extended it can be skipped
-            return undefined;
-        }
-
-        if (!this.isConceptLearnt(concept) && this.canMakeQuestion(concept)) {
-            nextconceptFound = true;
-            return concept;
-
-        } else {
-            // the have been learnt go through sub-concept if they are present
             if (concept.hasSubconcepts()) {
-
-                for (var i = 0; i < concept.subconcepts.length; i++) {
-
-                    if (concept.subconcepts[i].isExtended()) {
-
-                        let nextConcept = this.findNextConceptTree(concept.subconcepts[i], nextconceptFound);
-
-                        if (nextConcept) {
-                            return nextConcept;
-                        }
-
-                    }
-                }
-                // no extended subconcepts found return
-                return undefined;
+                concept.subconcepts.forEach((subconcept: ConceptStateful) => {
+                    this.addConceptTreeToQueue(subconcept);
+                });
             }
-
-            // if there are no subconcepts return
-            return undefined;
         }
     }
+
+    /**
+     * Progress the session on to the next question
+     */
+    userReadyForNextQuestion() {
+        this.setNextQuestion();
+    }
+
+
+    /**
+     * Create a progress object for concept
+     * @param  {ConceptStateful} concept
+     */
+    createProgressForConcept(concept: ConceptStateful) {
+        this.ssConceptProgressDictionary[concept.id] = {
+            id: concept.id,
+            name: concept.name,
+            learnt: false,
+            definition: concept.hasDefinition() ? false : undefined,
+            subconceptRelationship: concept.hasSubconcepts() ? {
+                recalled: false,
+                progress: {}
+            } : undefined,
+            subconceptOrder: concept.hasOrderedSubconcepts ? false : undefined,
+        };
+
+        if (concept.hasSubconcepts()) {
+            concept.subconcepts.forEach((subconcept: ConceptStateful) => {
+
+                this.ssConceptProgressDictionary[concept.id].subconceptRelationship.progress[subconcept.id] = {
+                    subconceptId: subconcept.id,
+                    relationshipRecalled: false
+                }
+            });
+        }
+    }
+
+
 
     /**
      * Returns true if the a study session question can be created from the concept
@@ -154,47 +169,73 @@ export class UnitSS_Stateful {
         return false;
     }
 
+
     /**
-     * Sets the next question
+     * Sets the next question based on the current aspect and concept
      */
     setNextQuestion() {
-        var concept = this.findNextConceptInUnit();
-        if (concept) {
-            this.currentConcept = concept.name;
+        // get the first aspect and concept in the queue
+        var aspect = this.sessionQueue[0];
+        if (aspect) {
+            this.currentConcept = aspect.concept.name;
+            switch (aspect.aspect) {
+                case "definition":
+                    this.currentQuestion = SSQuestionBuilder.makeDefinitionQuestion(aspect.concept, this.unit);
+                    break;
 
-            if (!this.isConceptDefinitionRecalled(concept) && SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)) {
+                case "subconcepts":
+                    // removes recalled subconcepts so they won't be used again to make questions
+                    this.removeReclledSubconcepts(aspect.concept);
+                    this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(aspect.concept, this.unit);
+                    break;
 
-                this.currentQuestion = SSQuestionBuilder.makeDefinitionQuestion(concept, this.unit);
-                return;
+                case "subconcept order":
+                    this.currentQuestion = SSQuestionBuilder.makeOrderSubconceptsQuestion(aspect.concept);
+                    break;
             }
-
-            if (!this.isConceptSubconceptsRecalled(concept) && SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit)) {
-                // remove the recalled subconcepts
-                this.removeReclledSubconcepts(concept);
-                this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(concept, this.unit);
-                return;
-            }
-
-            if (!this.isSubconceptOrderRecalled(concept) && SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept)) {
-                this.currentQuestion = SSQuestionBuilder.makeOrderSubconceptsQuestion(concept);
-                return;
-            }
-
         }
     }
+
     /**
      * indicate that user has answered question
      */
     userAnswered() {
+
+        // pop aspect from queue, so the next aspect can used next time around
+        var aspect = this.sessionQueue[0];
+
         //user has answered, mark question
         this.currentQuestion.markQuestion();
+        // update con
+        this.updateProgressOfAspect(aspect);
         if (this.currentQuestion.right) {
             // update question instruction with positive response
             this.currentQuestion.questionText = "That’s right, great job!";
+
+            // for subconcept relationship question only move forward if the all subconcepts have been recalled
+            if (aspect.aspect === "subconcepts" && this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.recalled) {
+                this.sessionQueue.shift();
+            }
+
+            // for all other aspects move forward 
+            if (aspect.aspect === "definition" || aspect.aspect === "subconcept order") {
+                this.sessionQueue.shift();
+            }
+
+
         } else {
             // update question instruction with supportive response
-            this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session."
+            this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session.";
+
+            //move forward
+            this.sessionQueue.shift();
+            // add aspect to the end of the queue so the aspect can be attempted again
+            this.sessionQueue.push(aspect);
+
         }
+
+        // update con
+        this.updateProgressOfAspect(aspect);
     }
 
 
@@ -203,28 +244,28 @@ export class UnitSS_Stateful {
      * @param  {ConceptStateful} concept
      * @returns boolean
      */
-    isConceptLearnt(concept: ConceptStateful): boolean {
+    isConceptLearnt(aspect: ConceptStateful): boolean {
 
-        if (!this.ssConceptProgressDictionary[concept.id]) {
+        if (!this.ssConceptProgressDictionary[aspect.id]) {
             return false;
         }
 
 
 
-        return this.ssConceptProgressDictionary[concept.id].learnt;
+        return this.ssConceptProgressDictionary[aspect.id].learnt;
     }
     /**
      * Returns true if concept's defintion was recalled
      * @param  {ConceptStateful} concept
      * @returns boolean
      */
-    isConceptDefinitionRecalled(concept: ConceptStateful): boolean {
+    isConceptDefinitionRecalled(aspect: ConceptStateful): boolean {
 
-        if (!this.ssConceptProgressDictionary[concept.id]) {
+        if (!this.ssConceptProgressDictionary[aspect.id]) {
             return false;
         }
 
-        return this.ssConceptProgressDictionary[concept.id].definition;
+        return this.ssConceptProgressDictionary[aspect.id].definition;
 
     }
 
@@ -233,12 +274,12 @@ export class UnitSS_Stateful {
      * @param  {ConceptStateful} concept
      * @returns boolean
      */
-    isConceptSubconceptsRecalled(concept: ConceptStateful): boolean {
+    isConceptSubconceptsRecalled(aspect: ConceptStateful): boolean {
 
-        if (!this.ssConceptProgressDictionary[concept.id]) {
+        if (!this.ssConceptProgressDictionary[aspect.id]) {
             return false;
         }
-        return this.ssConceptProgressDictionary[concept.id].subconceptRelationship.recalled;
+        return this.ssConceptProgressDictionary[aspect.id].subconceptRelationship.recalled;
     }
 
 
@@ -282,6 +323,45 @@ export class UnitSS_Stateful {
         concept.subconcepts = concept.subconcepts.filter(subconcept => !this.isSubconceptLearnt(subconcept, concept));
     }
 
+    /**
+     * Updates the concept learning progress based on the aspect 
+     * 
+     * @param  {QuestionQueueElement} aspect
+     */
+    updateProgressOfAspect(aspect: QuestionQueueElement) {
+        switch (aspect.aspect) {
+            case "definition":
+                this.ssConceptProgressDictionary[aspect.concept.id].definition = this.currentQuestion.right;
+                break;
 
+            case "subconcepts":
+                // only update progress, if the question was right, this punishes guessing
+                if (this.currentQuestion.right) {
 
+                    this.currentQuestion.options.forEach((option: Option) => {
+
+                        // for each subconcept relationship set recalled flag to whether the corresponding option in the question is correct
+                        if (this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.progress[option.conceptID]) {
+                            this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.progress[option.conceptID].relationshipRecalled = option.state === "correct";
+                        }
+
+                    });
+
+                    // set subconcept recalled flag to  whether all subconcepts are succefulyl recalled
+                    this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.recalled = Object.values(this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.progress).every((progress) => progress.relationshipRecalled);
+                }
+
+                break;
+
+            case "subconcept order":
+                this.ssConceptProgressDictionary[aspect.concept.id].subconceptOrder = this.currentQuestion.right;
+
+        }
+    }
+
+}
+
+interface QuestionQueueElement {
+    concept: ConceptStateful,
+    aspect: "definition" | "subconcepts" | "subconcept order"
 }

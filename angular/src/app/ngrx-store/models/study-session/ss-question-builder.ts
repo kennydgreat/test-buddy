@@ -233,7 +233,7 @@ export function isCandiateForMultipleSubconceptQuestion(concept: ConceptStateful
     return false;
   }
   // the concepts has to have subconcepts
-  if (concept.hasSubconcepts()) {
+  if (concept.hasSubconceptsWithInformation()) {
     // with at least 2 slibings there is a enough to make a question
     if (concept.getNumberOfSlibings(conceptTypes.hasSubconcepts) > 1) {
       return true;
