@@ -1,6 +1,6 @@
 import { v1 as timeStampUUID } from 'uuid';
 import { ConceptStateless } from './concept-stateless';
-import { ConceptType, conceptTypes } from './study-session/concept-criteria';
+import { ConceptType, conceptTypes, isOfTypeHasSubconcepts } from './study-session/concept-criteria';
 
 export class ConceptStateful {
     id: string;
@@ -12,7 +12,7 @@ export class ConceptStateful {
     index: number;
     numberOfSubconceptsWithDefinition: number;
     numberOfSubConcpetsWithSubconcepts: number;
-    type: ConceptType;
+
     /**
      * Creates a new concept
      * @param  {ConceptStateful|undefined=undefined} parent the concept parent, if undefined this is a root concept
@@ -27,7 +27,6 @@ export class ConceptStateful {
         this.index = 0;
         this.numberOfSubconceptsWithDefinition = 0;
         this.numberOfSubConcpetsWithSubconcepts = 0;
-        this.type = conceptTypes.none;
     }
     /**
      * checks that the concept has meaningful data
@@ -83,18 +82,8 @@ export class ConceptStateful {
             index: 0,
             numberOfSubconceptsWithDefinition: 0,
             numberOfSubConcpetsWithSubconcepts: 0,
-            type: conceptTypes.none,
         }
 
-        if (this.hasDefinition()) {
-            statelessCopy.type = conceptTypes.hasDefinition;
-        } else if (this.hasOrderedSubconcepts) {
-            statelessCopy.type = conceptTypes.hasOrderedSubconcepts;
-        } else if (this.hasSubconcepts()) {
-            statelessCopy.type = conceptTypes.hasSubconcepts
-        } else {
-            statelessCopy.type = conceptTypes.none;
-        }
 
         this.subconcepts.forEach((concept: ConceptStateful, index: number) => {
             var statelessSubConCopy = concept.makeStatelessCopy();
@@ -164,6 +153,27 @@ export class ConceptStateful {
         return false;
     }
 
+    
+    /**
+     * Returns true if the concept simply represents information, also not a step (subconcept of ordered concept).
+     */
+    isInformation(): boolean {
+        
+        return this.name.length > 0 && !this.hasDefinition() && !this.hasSubconcepts() && this.isStep();
+    }
+
+   
+ 
+    /**
+     * Return turn if concept is part of ordered concepts
+     */
+    isStep(){
+        if(this.parent){
+            return this.parent.hasOrderedSubconcepts;
+        }   
+        return false;
+    }
+
     /**
      * Returns true if the concept holds information (definition or subconcepts with information) 
      * @returns boolean
@@ -226,13 +236,13 @@ export class ConceptStateful {
         if (this.parent) {
             switch (criteria) {
                 case conceptTypes.hasDefinition:
-                    number = this.type === criteria ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.numberOfSubconceptsWithDefinition;
+                    number = this.hasDefinition() ? this.parent.numberOfSubconceptsWithDefinition - 1 : this.numberOfSubconceptsWithDefinition;
                     break;
                 case conceptTypes.hasSubconcepts:
-                    number = this.type === criteria ? this.parent.numberOfSubConcpetsWithSubconcepts - 1 : this.parent.numberOfSubConcpetsWithSubconcepts;
+                    number = this.hasSubconcepts() ? this.parent.numberOfSubConcpetsWithSubconcepts - 1 : this.parent.numberOfSubConcpetsWithSubconcepts;
                     break;
                 case conceptTypes.none:
-                   number = this.parent.subconcepts.length - 1;
+                    number = this.parent.subconcepts.length - 1;
                     break;
             }
         }
@@ -267,12 +277,20 @@ export class ConceptStateful {
                         conceptsAdded++;
                     }
                     break;
+
+                case conceptTypes.information:
+                    if (this.parent.subconcepts[i].isInformation()) {
+                        slibings.push(this.parent.subconcepts[i]);
+                        conceptsAdded++;
+                    }
+                    break;
+
                 case conceptTypes.none:
-                   if(this.parent.subconcepts[i].id !== this.id){
-                     
-                    slibings.push(this.parent.subconcepts[i]);
-                    conceptsAdded++;
-                   }
+                    if (this.parent.subconcepts[i].id !== this.id) {
+
+                        slibings.push(this.parent.subconcepts[i]);
+                        conceptsAdded++;
+                    }
                     break;
             }
             i++;
@@ -338,6 +356,13 @@ export class ConceptStateful {
                         conceptsAdded++;
                     }
                     break;
+
+                case conceptTypes.information:
+                    if (this.subconcepts[i].isInformation()) {
+                        children.push(this.subconcepts[i]);
+                        conceptsAdded++;
+                    }
+                    break;
                 case conceptTypes.none:
                     children.push(this.subconcepts[i]);
                     conceptsAdded++;
@@ -356,33 +381,61 @@ export class ConceptStateful {
         var definitionType = 0;
         var hasSubconcepts = 0;
         var hasOrderedConcepts = 0;
+        var isInformation = 0;
+        var most = 0;
+        var mostIndex = 0;
 
         // go through the subconcepts to update the type counts
         this.subconcepts.forEach((subconcept => {
 
-            switch (subconcept.type) {
+            if (subconcept.hasDefinition()) {
+                definitionType++;
+            }
 
-                case conceptTypes.hasDefinition:
-                    definitionType++;
-                    break;
+            if (isOfTypeHasSubconcepts(subconcept)) {
+                hasSubconcepts++;
+            }
 
-                case conceptTypes.hasSubconcepts:
-                    hasSubconcepts++;
-                    break;
+            if (subconcept.hasOrderedSubconcepts) {
+                hasOrderedConcepts++;
+            }
 
-                case conceptTypes.hasOrderedSubconcepts:
-                    hasOrderedConcepts++;
-                    break;
+            if (subconcept.isInformation()) {
+                isInformation++;
             }
         }));
 
-        if (definitionType >= hasSubconcepts) {
-            // even in cases where the numbers are the same chose hasDefinition as the type
-            return conceptTypes.hasDefinition;
-        } else {
+        // array for determininng the type most seen
+        const countArray = [
+            {
+                type: conceptTypes.hasDefinition,
+                count: definitionType
+            },
+            {
+                type: conceptTypes.hasSubconcepts,
+                count: hasSubconcepts
+            },
+            {
+                type: conceptTypes.hasOrderedSubconcepts,
+                count: hasOrderedConcepts
+            },
 
-            return conceptTypes.hasSubconcepts;
-        }
+            {
+                type: conceptTypes.information,
+                count: isInformation
+            },
+        ]
+
+        countArray.forEach((element, index: number) => {
+            if (element.count >= most) {
+                most = element.count;
+                mostIndex = index;
+            }
+        });
+
+        return countArray[mostIndex].type;
+
+
     }
 
     /**
@@ -478,6 +531,53 @@ export class ConceptStateful {
         }
 
         return numOfExtendedConcepts;
+
+    }
+
+    /**
+     * Returns concepts in the tree of a type critiria
+     * function traverses tree in breath-first order
+     * @returns number
+     */
+     getConceptsInTree(type: ConceptType): Array<ConceptStateful> {
+        //number of extended concepts
+        var concepts = new Array<ConceptStateful>();
+        //queue from which concepts are added to the list
+        var queue = new Array<ConceptStateful>()
+
+        queue.push(this)
+        while (queue.length > 0) {
+            //remove the first element in th queue
+            var currentConcept = queue.shift();
+            // find out if it matches the type
+            switch(type) {
+
+                case conceptTypes.hasDefinition :
+                    if (currentConcept.hasDefinition()){
+                        concepts.push(currentConcept);
+                    }
+                    break;
+                
+                case conceptTypes.hasSubconcepts:
+                    if (isOfTypeHasSubconcepts(currentConcept)){
+                        concepts.push(currentConcept);
+                    } 
+                    break;
+                
+                case conceptTypes.information: 
+                    if (currentConcept.isInformation()){
+                        concepts.push(currentConcept);
+                    }
+            }
+
+            currentConcept.subconcepts.forEach(subconcept => {
+                //add the subConcepts to the queue so then can be looked at next time around
+                queue.push(subconcept)
+            })
+
+        }
+
+        return concepts;
 
     }
 

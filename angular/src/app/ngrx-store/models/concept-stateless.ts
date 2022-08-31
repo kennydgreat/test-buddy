@@ -10,5 +10,5 @@ export interface ConceptStateless {
     index: number;
     numberOfSubconceptsWithDefinition: number;
     numberOfSubConcpetsWithSubconcepts: number;
-    type: ConceptType
+
 }

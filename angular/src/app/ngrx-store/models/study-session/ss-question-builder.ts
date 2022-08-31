@@ -95,8 +95,14 @@ export function makeSSDefinitionQuestion(concept: ConceptStateful, unit: UnitSta
 }
 
 
-
+/**
+ * Makes a multi-anwser question to test concept and subconcept relationship
+ * @param  {ConceptStateful} concept
+ * @param  {UnitStateful} unit
+ * @returns MultipleChoiceQuestion
+ */
 function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitStateful): MultipleChoiceQuestion | undefined {
+
 
   if (unit.numOfConcepts <= 1 || concept.subconcepts.length < 1) {
     return undefined;
@@ -107,19 +113,15 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   // setting the number of options needed
   var numberOfOptions = 4;
 
-  // number of subconcepts that need to be chosen, could be 0-4.
-  var numberOfRightAwnsers = getRandomInt(numberOfOptions);
-  var numberOfWrongOptions = numberOfOptions - numberOfRightAwnsers;
-
-  // subconcepts to be chosen, all types
-  var subconcepts = concept.getSubconcepts(numberOfRightAwnsers, conceptTypes.none);
+  // subconcepts to be chosen, get all types
+  var subconcepts = concept.getSubconcepts(numberOfOptions, conceptTypes.none);
 
   // subconcepts that represents wrong options
   var wrongOptionConcepts = new Array<ConceptStateful>();
 
   // try using sliblings' subconcepts as wrong options
   if (concept.hasSiblings()) {
-    const siblings = concept.getSlibings(numberOfWrongOptions, conceptTypes.hasSubconcepts);
+    const siblings = concept.getSlibings(numberOfOptions, conceptTypes.hasSubconcepts);
     siblings.forEach((sibling: ConceptStateful) => {
       // only add subconcepts from sliblings that don't have ordered subconcepts
       if (!sibling.hasOrderedSubconcepts) {
@@ -129,29 +131,26 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   }
 
 
-  // try using the subsconcepts of adjacent concepts or root adjacent concept
-  if (wrongOptionConcepts.length < numberOfWrongOptions) {
-    var adjecentConcepts = [];
+  // try using the random concepts from unit with type
+  if (wrongOptionConcepts.length < numberOfOptions) {
+    var concepts = [];
     const rootConcept = concept.getRoot();
-    adjecentConcepts = unit.getAdjacentConcepts(rootConcept, (numberOfWrongOptions - wrongOptionConcepts.length), conceptTypes.hasSubconcepts);
-    // add adjacent concepts as well as their subconcepts
-    wrongOptionConcepts = [...adjecentConcepts, ...wrongOptionConcepts];
-    adjecentConcepts.forEach((concept: ConceptStateful) => {
-      // only add subconcepts from adjecentConcepts that don't have ordered subconcepts
-      if (!concept.hasOrderedSubconcepts) {
-        wrongOptionConcepts = [...wrongOptionConcepts, ...concept.subconcepts];
-      }
-    });
-  }
-  // only add concepts with needed concept type
-  wrongOptionConcepts = wrongOptionConcepts.filter((concept: ConceptStateful) => (concept.type === subconceptsType));
+    concepts = unit.getConcepts(subconceptsType);
+    wrongOptionConcepts = [...wrongOptionConcepts, ...concepts];
 
-  if (wrongOptionConcepts.length > numberOfWrongOptions) {
-    // there are more options than is needed so take what's needed.
-    wrongOptionConcepts = wrongOptionConcepts.slice(0, numberOfWrongOptions);
+    // remove concept and subconcepts if in list
+    wrongOptionConcepts = wrongOptionConcepts.filter((curCurrent => curCurrent.id !== concept.id && !concept.subconcepts.includes(curCurrent)));
+
+    // scrumble array to randomize concepts used
+    wrongOptionConcepts = shuffleArray(wrongOptionConcepts);
   }
 
 
+  // use a random number of wrong option concepts
+  wrongOptionConcepts = wrongOptionConcepts.slice(0, getRandomInt(4));
+
+  // remove excess number of subconcept for right options
+  subconcepts = subconcepts.slice(0, 4 - wrongOptionConcepts.length);
 
   // create wrong options for wrong concepts
   var wrongOptions = new Array<Option>();

@@ -54,6 +54,9 @@ export class SsConceptQuestionViewerComponent implements OnInit {
     this.userDoneAnswering.emit();
   }
 
+  readyForUserInput(){
+    return (this.multipleChoiceQuestion.type === "ordered question" || this.multipleChoiceQuestion.type === "multi-answer") && !this.multipleChoiceQuestion.marked;
+  }
 
 
 }

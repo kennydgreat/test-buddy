@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div *ngIf="multipleChoiceQuestion.type === 'ordered question' || multipleChoiceQuestion.type === 'multi-answer' && !multipleChoiceQuestion.marked" id="done-button" class="primary-pink-button-and-text"
+    <div *ngIf="readyForUserInput()" id="done-button" class="primary-pink-button-and-text"
         (click)="done()">
         <p>Done</p>
     </div>
