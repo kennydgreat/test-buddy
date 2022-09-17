@@ -4,6 +4,12 @@
     </mat-icon>
 </div>
 
+<div class="wrong-icon" *ngIf="status === 'not-recalled'">
+    <mat-icon>
+        cancel
+    </mat-icon>
+</div>
+
 <div class="progress-dot-doing" *ngIf="status === 'doing'"></div>
 
 

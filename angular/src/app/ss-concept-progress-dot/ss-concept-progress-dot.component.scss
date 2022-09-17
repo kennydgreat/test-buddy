@@ -11,6 +11,18 @@ div.done-icon{
     
 }
 
+div.wrong-icon{
+    height: 17px;
+
+    mat-icon{
+        font-size: 18px;
+        width: 17px;
+        height: 17px;
+        color:  $primary-red;
+    }
+    
+}
+
 div.progress-dot-doing{
     display: flex;
     justify-content: center;
