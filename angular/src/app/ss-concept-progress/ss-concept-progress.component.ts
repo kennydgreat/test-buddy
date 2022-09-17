@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from '../ngrx-store/app-state';
+import { selectCurrentConceptProgress, SSConceptProgressDictionary, SSConcpetProgress, UIConceptProgress } from '../ngrx-store/unit-study-state';
 
 @Component({
   selector: 'app-ss-concept-progress',
@@ -7,8 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SsConceptProgressComponent implements OnInit {
 
-  
-  constructor() { }
+  progress: UIConceptProgress;
+  constructor(private store: Store<AppState>) {
+    this.store.select(selectCurrentConceptProgress).subscribe(
+      {
+        next: (progress: UIConceptProgress) => {
+          this.progress = progress;
+        }
+      }
+    );
+   }
 
   ngOnInit(): void {
   }

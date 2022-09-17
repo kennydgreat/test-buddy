@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LearningProgressStates } from '../ngrx-store/unit-study-state';
 
 @Component({
   selector: 'app-ss-concept-progress-dot',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class SsConceptProgressDotComponent implements OnInit {
 
   // the status of the 
-  @Input() status: "undone" | "done" | "doing";
+  @Input() status: LearningProgressStates;
   constructor() { }
 
   ngOnInit(): void {

@@ -1,4 +1,5 @@
 import { v1 as timeStampUUID } from 'uuid';
+import { LearningProgressStates, LearningState, SSConcpetProgress, SubconceptsRelationProgress, UnitStudySession } from '../unit-study-state';
 import { ConceptStateless } from './concept-stateless';
 import { ConceptType, conceptTypes, isOfTypeHasSubconcepts } from './study-session/concept-criteria';
 
@@ -12,6 +13,13 @@ export class ConceptStateful {
     index: number;
     numberOfSubconceptsWithDefinition: number;
     numberOfSubConcpetsWithSubconcepts: number;
+
+    //---learning progress data
+    learnt: boolean;
+    definitionLearningProgress: LearningProgressStates;
+    subconceptsLearningProgress: LearningProgressStates;
+    parentRelationshipRecalled: boolean;
+    subconceptOrderLearningProgress: LearningProgressStates;
 
     /**
      * Creates a new concept
@@ -27,6 +35,12 @@ export class ConceptStateful {
         this.index = 0;
         this.numberOfSubconceptsWithDefinition = 0;
         this.numberOfSubConcpetsWithSubconcepts = 0;
+
+        this.learnt =  false;
+        this.definitionLearningProgress = LearningState.undone;
+        this.subconceptsLearningProgress = LearningState.undone;
+        this.parentRelationshipRecalled = false;
+        this.subconceptOrderLearningProgress = LearningState.undone;
     }
     /**
      * checks that the concept has meaningful data
@@ -605,6 +619,47 @@ export class ConceptStateful {
             this.subconcepts.push(subconcept);
 
         }
+    }
+    
+    /**
+     * Creates progress from a concept data 
+     * @returns SSConcpetProgress
+     */
+    makeStudySessionProgressObject() : SSConcpetProgress{
+
+        // create subconcepts relationship progress object
+        var subconceptsRelationship : SubconceptsRelationProgress = {};
+        this.subconcepts.forEach((concept: ConceptStateful) =>{
+
+            subconceptsRelationship[concept.id] = {
+                subconceptId : concept.id,
+                relationshipRecalled: concept.parentRelationshipRecalled
+            }
+        } );
+
+        // create concept progress object
+        var ssconceptProgress : SSConcpetProgress = {
+            id: this.id,
+            name: this.name,
+            learnt: this.learnt,
+            definition: {
+                present : this.hasDefinition(),
+                progress: this.definitionLearningProgress
+            },
+            subconceptRelationship : {
+                state : {
+                    present : this.hasSubconceptsWithInformation(),
+                    progress: this.subconceptsLearningProgress,
+                },
+                subconcepts: subconceptsRelationship
+            },
+            subconceptOrder: {
+                present: this.hasOrderedSubconcepts,
+                progress: this.subconceptOrderLearningProgress,
+            }
+        };
+
+        return ssconceptProgress;
     }
 
 }

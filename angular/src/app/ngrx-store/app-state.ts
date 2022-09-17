@@ -3,7 +3,7 @@ import { ErrorDictionary } from "./models/error-message";
 import { UnitStateful } from "./models/unit-stateful";
 import { SettingsState } from "./reducers/settings.reducer";
 import { UnitDictionary, UnitsState } from "./unit-state";
-import { UnitStudySessionState as UnitStudyState } from "./unit-study-state";
+import { UnitStudyState as UnitStudyState } from "./unit-study-state";
 
 export interface AppState {
     units: UnitsState;

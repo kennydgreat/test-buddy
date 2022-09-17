@@ -5,6 +5,8 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../app-state";
 import { deleteUnitAction, updateUnit } from "../reducers/unit.reducer";
 import { ConceptType, conceptTypes } from "./study-session/concept-criteria";
+import { SSConceptProgressDictionary, UnitStudySession } from "../unit-study-state";
+import { updateUnitProgress } from "../reducers/unit-study-session.reducer";
 export class UnitStateful {
   id: string;
   name: string;
@@ -344,6 +346,47 @@ export class UnitStateful {
     }
 
     this.updateUnitInStore();
+  }
+
+  /**
+   * Creates a study session progress object for unit
+   * @returns UnitStudySession
+   */
+  makeStudySessionProgressObject() : UnitStudySession{
+    //create concept progress dictionary object
+    var conceptsProgress = {};
+
+    this.concepts.forEach((concept: ConceptStateful) => {
+      this.addConceptProgressObject(conceptsProgress, concept);
+    })
+
+    return {
+      unitID: this.id,
+      concepts: conceptsProgress
+    };
+
+
+  }
+
+  /**
+   * Adds a learning progress object to the concepts progress dict passed for concept passed
+   * @param  {SSConceptProgressDictionary} conceptsProgress
+   * @param  {ConceptStateful} concept
+   */
+  addConceptProgressObject(conceptsProgress: SSConceptProgressDictionary, concept: ConceptStateful){
+    // add concept
+    conceptsProgress[concept.id] = concept.makeStudySessionProgressObject();
+
+    // add subconcepts
+    for(var i = 0; i < concept.subconcepts.length; i++){
+      this.addConceptProgressObject(conceptsProgress, concept.subconcepts[i]);
+    }
+  }
+
+  async updateUnitProgress(){
+      if(this.store){
+        this.store.dispatch(updateUnitProgress(this.makeStudySessionProgressObject()))
+      }
   }
 
 }

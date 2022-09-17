@@ -2,23 +2,23 @@
 
     <div class="progress">
 
-        <app-ss-concept-progress-dot status="done"></app-ss-concept-progress-dot>
+        <app-ss-concept-progress-dot *ngIf="progress.definition.present" [status]="progress.definition.progress"></app-ss-concept-progress-dot>
 
-        <div class="divider"></div>
+        <div class="divider" *ngIf="progress.definition.present && progress.subconcept.present " ></div>
 
-        <app-ss-concept-progress-dot status="doing"></app-ss-concept-progress-dot>
+        <app-ss-concept-progress-dot *ngIf="progress.subconcept.present" [status]="progress.subconcept.progress"></app-ss-concept-progress-dot>
 
-        <div class="divider"></div>
+        <div class="divider" *ngIf="(progress.definition.present || progress.subconcept.present) && progress.subconceptOrder.present"></div>
 
-        <app-ss-concept-progress-dot status="undone"></app-ss-concept-progress-dot>
+        <app-ss-concept-progress-dot *ngIf="progress.subconceptOrder.present" [status]="progress.subconceptOrder.progress"></app-ss-concept-progress-dot>
 
     </div>
     <div class="progress-text">
-        <p class="progress-text">Definition</p>
+        <p class="progress-text" *ngIf="progress.definition.present">Definition</p>
 
-        <p class="progress-text">Sub-concepts</p>
+        <p class="progress-text" *ngIf="progress.subconcept.present">Sub-concepts</p>
 
-        <p class="progress-text">Sub-concepts Order</p>
+        <p class="progress-text" *ngIf="progress.subconceptOrder.present">Sub-concepts Order</p>
     </div>
 
 </div>
