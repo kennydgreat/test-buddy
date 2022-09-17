@@ -210,8 +210,12 @@ export class UnitSS_Stateful {
                     aspect.concept.subconceptsLearningProgress = LearningState.doing;
 
                     // removes recalled subconcepts so they won't be used again to make questions
+                    var subconcepts = [...aspect.concept.subconcepts];
                     this.removeReclledSubconcepts(aspect.concept);
+                    
                     this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(aspect.concept, this.unit);
+                    // return subconcepts back
+                    aspect.concept.subconcepts = subconcepts;
                     break;
 
                 case "subconcept order":
@@ -230,12 +234,12 @@ export class UnitSS_Stateful {
      */
     userAnswered() {
 
-        // pop aspect from queue, so the next aspect can used next time around
+        // current aspect
         var aspect = this.sessionQueue[0];
 
         //user has answered, mark question
         this.currentQuestion.markQuestion();
-        // update concept aspect progress
+        // update concept aspect progress based on question result
         this.updateProgressOfAspect(aspect);
         if (this.currentQuestion.right) {
             // update question instruction with positive response
@@ -248,6 +252,7 @@ export class UnitSS_Stateful {
 
             // for all other aspects move forward 
             if (aspect.aspect === "definition" || aspect.aspect === "subconcept order") {
+
                 this.sessionQueue.shift();
             }
 
@@ -334,7 +339,7 @@ export class UnitSS_Stateful {
     }
 
     /**
-     * Updates the concept learning progress based on the aspect 
+     * Updates the concept learning progress based on the aspect and question result
      * 
      * @param  {QuestionQueueElement} aspect
      */
@@ -366,14 +371,18 @@ export class UnitSS_Stateful {
                         // }
 
                         var subconcept = aspect.concept.subconcepts.find((subconcept: ConceptStateful) => subconcept.id === option.conceptID);
+                       if(subconcept){
                         subconcept.parentRelationshipRecalled = option.state === "correct";
+                       }
 
                     });
 
-                    // // set subconcept recalled flag to  whether all subconcepts are succefulyl recalled
+                    // // set subconcept recalled flag depending on whether all subconcepts are succefully recalled else set to still doing
                     // this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.state.progress = Object.values(this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.subconcepts).every((progress) => progress.relationshipRecalled) ? LearningState.recalled : LearningState.notRecalled;
 
-                    aspect.concept.subconceptOrderLearningProgress = aspect.concept.subconcepts.every((subconcept: ConceptStateful) => subconcept.parentRelationshipRecalled) ? LearningState.recalled : LearningState.notRecalled;
+                    aspect.concept.subconceptsLearningProgress = aspect.concept.subconcepts.every((subconcept: ConceptStateful) => subconcept.parentRelationshipRecalled) ? LearningState.recalled : LearningState.doing;
+                }else{
+                    aspect.concept.subconceptsLearningProgress = LearningState.notRecalled;
                 }
 
                 break;
