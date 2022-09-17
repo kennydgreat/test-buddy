@@ -125,46 +125,6 @@ export class UnitSS_Stateful {
         this.setNextQuestion();
     }
 
-
-    /**
-     * Create a progress object for concept
-     * @param  {ConceptStateful} concept
-     */
-    createProgressForConcept(concept: ConceptStateful) {
-        var currentProgress = {
-            id: concept.id,
-            name: concept.name,
-            learnt: false,
-            definition: {
-                present: concept.hasDefinition(),
-                progress: LearningState.undone
-            },
-            subconceptRelationship: {
-                state: {
-                    present: concept.hasSubconcepts(),
-                    progress: LearningState.undone
-                },
-                subconcepts: {}
-            },
-            subconceptOrder: {
-                present: concept.hasOrderedSubconcepts,
-                progress: LearningState.undone
-            },
-        };
-
-        if (concept.hasSubconcepts()) {
-            concept.subconcepts.forEach((subconcept: ConceptStateful) => {
-
-                // this.ssConceptProgressDictionary[concept.id].subconceptRelationship.subconcepts[subconcept.id] = {
-                //     subconceptId: subconcept.id,
-                //     relationshipRecalled: false
-                // }
-            });
-        }
-    }
-
-
-
     /**
      * Returns true if the a study session question can be created from the concept
      * @param  {ConceptStateful} concept
@@ -347,16 +307,11 @@ export class UnitSS_Stateful {
         switch (aspect.aspect) {
             case "definition":
                 //create a new concept aspect progress object and set progress
-                // var definitionProgress = {...this.ssConceptProgressDictionary[aspect.concept.id].definition, progress: this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled} ;
-
+                
                 aspect.concept.definitionLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled
 
                 //create a new progress object with new definition progress
 
-                // var progress = {...this.ssConceptProgressDictionary[aspect.concept.id], definitionProgress: definitionProgress};
-
-                // // update 
-                // this.ssConceptProgressDictionary[aspect.concept.id] = progress;
                 break;
 
             case "subconcepts":
@@ -366,10 +321,7 @@ export class UnitSS_Stateful {
                     this.currentQuestion.options.forEach((option: Option) => {
 
                         // for each subconcept relationship set recalled flag to whether the corresponding option in the question is correct
-                        // if (this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.subconcepts[option.conceptID]) {
-                        //     this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.subconcepts[option.conceptID].relationshipRecalled = option.state === "correct";
-                        // }
-
+                        
                         var subconcept = aspect.concept.subconcepts.find((subconcept: ConceptStateful) => subconcept.id === option.conceptID);
                        if(subconcept){
                         subconcept.parentRelationshipRecalled = option.state === "correct";
@@ -378,8 +330,7 @@ export class UnitSS_Stateful {
                     });
 
                     // // set subconcept recalled flag depending on whether all subconcepts are succefully recalled else set to still doing
-                    // this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.state.progress = Object.values(this.ssConceptProgressDictionary[aspect.concept.id].subconceptRelationship.subconcepts).every((progress) => progress.relationshipRecalled) ? LearningState.recalled : LearningState.notRecalled;
-
+                   
                     aspect.concept.subconceptsLearningProgress = aspect.concept.subconcepts.every((subconcept: ConceptStateful) => subconcept.parentRelationshipRecalled) ? LearningState.recalled : LearningState.doing;
                 }else{
                     aspect.concept.subconceptsLearningProgress = LearningState.notRecalled;
@@ -388,7 +339,7 @@ export class UnitSS_Stateful {
                 break;
 
             case "subconcept order":
-                // this.ssConceptProgressDictionary[aspect.concept.id].subconceptOrder.progress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled;
+                
                 aspect.concept.subconceptOrderLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled; 
 
         }
