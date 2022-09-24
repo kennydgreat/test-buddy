@@ -1,12 +1,12 @@
-import { ConceptStateful } from "./concept-stateful";
+import { ConceptStateful } from "../concept-viewer/concept-stateful";
 import { v1 as timeStampUUID } from 'uuid';
-import { UnitStateless } from "./unit-stateless";
+import { UnitStateless } from "../ngrx-store/models/unit-stateless";
 import { Store } from "@ngrx/store";
-import { AppState } from "../app-state";
-import { deleteUnitAction, updateUnit } from "../reducers/unit.reducer";
-import { ConceptType, conceptTypes } from "./study-session/concept-criteria";
-import { SSConceptProgressDictionary, UnitStudySession } from "../unit-study-state";
-import { updateUnitProgress } from "../reducers/unit-study-session.reducer";
+import { AppState } from "../ngrx-store/app-state";
+import { deleteUnitAction, updateUnit } from "../ngrx-store/reducers/unit.reducer";
+import { ConceptType, conceptTypes } from "../ngrx-store/models/study-session/concept-criteria";
+import { SSConceptProgressDictionary, UnitStudySession } from "../ngrx-store/unit-study-state";
+import { updateUnitProgress } from "../ngrx-store/reducers/unit-study-session.reducer";
 export class UnitStateful {
   id: string;
   name: string;

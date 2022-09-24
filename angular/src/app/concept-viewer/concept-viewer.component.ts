@@ -2,7 +2,7 @@ import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-dro
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../ngrx-store/app-state';
-import { ConceptStateful } from '../ngrx-store/models/concept-stateful';
+import { ConceptStateful } from './concept-stateful';
 
 declare var LeaderLine: any;
 @Component({

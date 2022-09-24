@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConceptStateful } from '../ngrx-store/models/concept-stateful';
-import { UnitStateful } from '../ngrx-store/models/unit-stateful';
+import { ConceptStateful } from '../concept-viewer/concept-stateful';
+import { UnitStateful } from './unit-stateful';
 
 @Component({
   selector: 'app-unit-viewer',

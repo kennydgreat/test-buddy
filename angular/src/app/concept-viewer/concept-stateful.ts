@@ -1,7 +1,7 @@
 import { v1 as timeStampUUID } from 'uuid';
-import { LearningProgressStates, LearningState, SSConcpetProgress, SubconceptsRelationProgress, UnitStudySession } from '../unit-study-state';
-import { ConceptStateless } from './concept-stateless';
-import { ConceptType, conceptTypes, isOfTypeHasSubconcepts } from './study-session/concept-criteria';
+import { LearningProgressStates, LearningState, SSConcpetProgress, SubconceptsRelationProgress, UnitStudySession } from '../ngrx-store/unit-study-state';
+import { ConceptStateless } from '../ngrx-store/models/concept-stateless';
+import { ConceptType, conceptTypes, isOfTypeHasSubconcepts } from '../ngrx-store/models/study-session/concept-criteria';
 
 export class ConceptStateful {
     id: string;

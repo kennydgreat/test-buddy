@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard-changes-dialog.component';
 import { AppState } from '../ngrx-store/app-state';
-import { UnitStateful } from '../ngrx-store/models/unit-stateful';
+import { UnitStateful } from '../unit-viewer/unit-stateful';
 
 @Component({
   selector: 'app-create-unit-view',

@@ -1,6 +1,6 @@
 import { createSelector } from "@ngrx/store";
 import { AppState, selectUnitsDictionary } from "./app-state";
-import { UnitStateful } from "./models/unit-stateful";
+import { UnitStateful } from "../unit-viewer/unit-stateful";
 import { UnitStateless } from "./models/unit-stateless";
 import { UnitDictionary } from "./unit-state";
 

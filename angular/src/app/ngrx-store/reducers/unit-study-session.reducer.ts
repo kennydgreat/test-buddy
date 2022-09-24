@@ -1,5 +1,5 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
-import { ConceptStateful } from "../models/concept-stateful";
+import { ConceptStateful } from "../../concept-viewer/concept-stateful";
 import { LearningState, SSConcpetProgress, UnitStudySession, UnitStudySessionsDictionary, UnitStudyState } from "../unit-study-state";
 
 export const unitStudySessionInitialState: UnitStudyState = {

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { DiscardChangesDialogComponent } from '../discard-changes-dialog/discard-changes-dialog.component';
 import { AppState, selectUnitEditStateless } from '../ngrx-store/app-state';
-import { UnitStateful } from '../ngrx-store/models/unit-stateful';
+import { UnitStateful } from '../unit-viewer/unit-stateful';
 import { UnitStateless } from '../ngrx-store/models/unit-stateless';
 
 @Component({

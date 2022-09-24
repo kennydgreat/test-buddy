@@ -1,14 +1,14 @@
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { isCandiateForMultiChoiceDefinitionQuestion, SSQuestionBuilder } from "src/app/ngrx-store/models/study-session/ss-question-builder";
-import { AppState } from "../../app-state";
-import { updateConceptProgress, updateCurrentConcept } from "../../reducers/unit-study-session.reducer";
-import { LearningState, selectUnitStatelessWithProgress, selectUnitToStudyStateless, SSConceptProgressDictionary, SSConcpetProgress } from "../../unit-study-state";
-import { ConceptStateful } from "../concept-stateful";
-import { UnitStateful } from "../unit-stateful";
-import { UnitStateless } from "../unit-stateless";
-import { Option } from "./multiple-choice-option";
-import { MultipleChoiceQuestion } from "./multiple-choice-question";
+import { isCandiateForMultiChoiceDefinitionQuestion, SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
+import { AppState } from "../ngrx-store/app-state";
+import { updateConceptProgress, updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
+import { LearningState, selectUnitStatelessWithProgress, selectUnitToStudyStateless, SSConceptProgressDictionary, SSConcpetProgress } from "../ngrx-store/unit-study-state";
+import { ConceptStateful } from "../concept-viewer/concept-stateful";
+import { UnitStateful } from "../unit-viewer/unit-stateful";
+import { UnitStateless } from "../ngrx-store/models/unit-stateless";
+import { Option } from "../ngrx-store/models/study-session/multiple-choice-option";
+import { MultipleChoiceQuestion } from "../ngrx-store/models/study-session/multiple-choice-question";
 
 /**
  * Represents the stateful version of a unit study session data and concepts the logic for a study session

@@ -1,4 +1,4 @@
-import { ConceptStateful } from "../concept-stateful";
+import { ConceptStateful } from "../../../concept-viewer/concept-stateful";
 
 export const conceptTypes = {
   hasDefinition: "hasDefintion" as ConceptType, // a concept with definition, mostly likely a one word concept

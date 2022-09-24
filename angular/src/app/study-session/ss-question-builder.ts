@@ -1,8 +1,8 @@
-import { ConceptStateful } from "../concept-stateful";
-import { ConceptType, conceptTypes } from "./concept-criteria";
-import { Option } from "./multiple-choice-option";
-import { MultipleChoiceQuestion } from "./multiple-choice-question";
-import { UnitStateful } from "../unit-stateful";
+import { ConceptStateful } from "../concept-viewer/concept-stateful";
+import { ConceptType, conceptTypes } from "../ngrx-store/models/study-session/concept-criteria";
+import { Option } from "../ngrx-store/models/study-session/multiple-choice-option";
+import { MultipleChoiceQuestion } from "../ngrx-store/models/study-session/multiple-choice-question";
+import { UnitStateful } from "../unit-viewer/unit-stateful";
 
 
 /**

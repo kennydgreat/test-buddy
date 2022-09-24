@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '../ngrx-store/app-state';
-import { UnitSS_Stateful } from '../ngrx-store/models/study-session/unitSSService';
+import { UnitSS_Stateful } from './unitSSService';
 import { studyUnit } from '../ngrx-store/reducers/unit-study-session.reducer';
 
 @Component({

@@ -1,6 +1,6 @@
 import { createSelector } from "@ngrx/store";
 import { ErrorDictionary } from "./models/error-message";
-import { UnitStateful } from "./models/unit-stateful";
+import { UnitStateful } from "../unit-viewer/unit-stateful";
 import { SettingsState } from "./reducers/settings.reducer";
 import { UnitDictionary, UnitsState } from "./unit-state";
 import { UnitStudyState as UnitStudyState } from "./unit-study-state";
