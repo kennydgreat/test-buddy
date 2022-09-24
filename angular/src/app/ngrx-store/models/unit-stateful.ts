@@ -352,7 +352,7 @@ export class UnitStateful {
    * Creates a study session progress object for unit
    * @returns UnitStudySession
    */
-  makeStudySessionProgressObject() : UnitStudySession{
+  makeStudySessionProgressObject(): UnitStudySession {
     //create concept progress dictionary object
     var conceptsProgress = {};
 
@@ -373,20 +373,54 @@ export class UnitStateful {
    * @param  {SSConceptProgressDictionary} conceptsProgress
    * @param  {ConceptStateful} concept
    */
-  addConceptProgressObject(conceptsProgress: SSConceptProgressDictionary, concept: ConceptStateful){
+  addConceptProgressObject(conceptsProgress: SSConceptProgressDictionary, concept: ConceptStateful) {
     // add concept
     conceptsProgress[concept.id] = concept.makeStudySessionProgressObject();
 
     // add subconcepts
-    for(var i = 0; i < concept.subconcepts.length; i++){
+    for (var i = 0; i < concept.subconcepts.length; i++) {
       this.addConceptProgressObject(conceptsProgress, concept.subconcepts[i]);
     }
   }
 
-  async updateUnitProgress(){
-      if(this.store){
-        this.store.dispatch(updateUnitProgress(this.makeStudySessionProgressObject()))
-      }
+  /**
+   * Copies in learning progress data for unit
+   * @param  {UnitStudySession} unitProgress
+   */
+  copyInProgressData(unitProgress: UnitStudySession) {
+
+    this.concepts.forEach((concept: ConceptStateful) => {
+
+      //set the learning progress for the  concept
+      this.copyInConceptProgressData(unitProgress.concepts, concept);
+    });
+  }
+
+  /**
+   * copies in the progress data to concept
+   * @param  {SSConceptProgressDictionary} conceptsProgress
+   * @param  {ConceptStateful} concept
+   */
+  copyInConceptProgressData(conceptsProgress: SSConceptProgressDictionary, concept: ConceptStateful) {
+
+    // the progress of the concept could be non existed, for instance if the concept was deleted
+    if (conceptsProgress[concept.id]) {
+
+      concept.copyInProgressData(conceptsProgress[concept.id]);
+
+      concept.subconcepts.forEach((subconcept: ConceptStateful) => {
+
+        this.copyInConceptProgressData(conceptsProgress, subconcept);
+
+      });
+    }
+
+  }
+
+  async updateUnitProgress() {
+    if (this.store) {
+      this.store.dispatch(updateUnitProgress(this.makeStudySessionProgressObject()))
+    }
   }
 
 }

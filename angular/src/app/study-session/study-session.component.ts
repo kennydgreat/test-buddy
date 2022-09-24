@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '../ngrx-store/app-state';
-import { UnitSS_Stateful } from '../ngrx-store/models/study-session/unit-ss-stateful';
+import { UnitSS_Stateful } from '../ngrx-store/models/study-session/unitSSService';
 import { studyUnit } from '../ngrx-store/reducers/unit-study-session.reducer';
 
 @Component({
@@ -26,7 +26,7 @@ export class StudySessionComponent implements OnInit {
   // user chooses to end the session
   close() {
     // clear study unit inn state
-    this.store.dispatch(studyUnit(""));
+    //this.store.dispatch(studyUnit(""));
     //close the dialog, the user's progress should already presisted so it is safe to end the session
     this.dialogRef.close();
   }

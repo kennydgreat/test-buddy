@@ -93,9 +93,10 @@ export const selectUnitToStudyStateless = createSelector(selectUnitToStudyID, se
  * Gets the unit stateless data and the progress
  */
 export const selectUnitStatelessWithProgress = createSelector((state: AppState) => state.unitStudy, selectUnitToStudyStateless, (unitStudy: UnitStudyState, unit: UnitStateless): { unit: UnitStateless, unitProgress: UnitStudySession } => {
+    var progress = unitStudy.unitsStudySessions[unit.id];
     return {
         unit: unit,
-        unitProgress: unitStudy[unit.id]
+        unitProgress: unitStudy.unitsStudySessions[unit.id],
     }
 });
 

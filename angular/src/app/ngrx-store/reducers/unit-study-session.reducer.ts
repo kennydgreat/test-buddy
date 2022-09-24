@@ -1,6 +1,6 @@
 import { createAction, createReducer, on, props } from "@ngrx/store";
 import { ConceptStateful } from "../models/concept-stateful";
-import { LearningState, SSConcpetProgress, UnitStudySession, UnitStudyState } from "../unit-study-state";
+import { LearningState, SSConcpetProgress, UnitStudySession, UnitStudySessionsDictionary, UnitStudyState } from "../unit-study-state";
 
 export const unitStudySessionInitialState: UnitStudyState = {
     unitToStudyID: "",
@@ -17,6 +17,8 @@ const updateConceptProgressAction = createAction('unitStudySessionState/updateCo
 const updateCurrentConceptAction = createAction('unitStudySessionState/updateCurrentConcept', props<{conceptID: string}>());
 
 const updateUnitProgressAction = createAction('unitStudy/updateUnitProgress',props<{unitProgress: UnitStudySession}>());
+
+const updateUnitsProgressAction = createAction('unitStudy/updateUnitsProgress',props<{unitsProgressDict: UnitStudySessionsDictionary}>());
 
 //---------Action Helper Functions------------
 /**
@@ -47,6 +49,11 @@ export function updateUnitProgress(unitProgress: UnitStudySession){
  */
 export function updateConceptProgress(progress: SSConcpetProgress){
     return updateConceptProgressAction({progress: {...progress}});
+}
+
+
+export function updateUnitsProgress(progressDict: UnitStudySessionsDictionary){
+    return updateUnitsProgressAction({unitsProgressDict: {...progressDict}});
 }
 
 //-----Reducer--------------
@@ -97,7 +104,12 @@ on(updateUnitProgressAction, (state, action) => {
     newState.unitsStudySessions[action.unitProgress.unitID] = action.unitProgress;
     return newState;
 }),
-
+on(updateUnitsProgressAction, (state, action) => (
+    {
+        ...state,
+        unitsStudySessions: action.unitsProgressDict,
+    }
+))
 );
 
 export function unitStudySessionReducer(state: UnitStudyState, action){

@@ -36,7 +36,7 @@ export class ConceptStateful {
         this.numberOfSubconceptsWithDefinition = 0;
         this.numberOfSubConcpetsWithSubconcepts = 0;
 
-        this.learnt =  false;
+        this.learnt = false;
         this.definitionLearningProgress = LearningState.undone;
         this.subconceptsLearningProgress = LearningState.undone;
         this.parentRelationshipRecalled = false;
@@ -167,24 +167,24 @@ export class ConceptStateful {
         return false;
     }
 
-    
+
     /**
      * Returns true if the concept simply represents information, also not a step (subconcept of ordered concept).
      */
     isInformation(): boolean {
-        
+
         return this.name.length > 0 && !this.hasDefinition() && !this.hasSubconcepts() && this.isStep();
     }
 
-   
- 
+
+
     /**
      * Return turn if concept is part of ordered concepts
      */
-    isStep(){
-        if(this.parent){
+    isStep() {
+        if (this.parent) {
             return this.parent.hasOrderedSubconcepts;
-        }   
+        }
         return false;
     }
 
@@ -553,7 +553,7 @@ export class ConceptStateful {
      * function traverses tree in breath-first order
      * @returns number
      */
-     getConceptsInTree(type: ConceptType): Array<ConceptStateful> {
+    getConceptsInTree(type: ConceptType): Array<ConceptStateful> {
         //number of extended concepts
         var concepts = new Array<ConceptStateful>();
         //queue from which concepts are added to the list
@@ -564,22 +564,22 @@ export class ConceptStateful {
             //remove the first element in th queue
             var currentConcept = queue.shift();
             // find out if it matches the type
-            switch(type) {
+            switch (type) {
 
-                case conceptTypes.hasDefinition :
-                    if (currentConcept.hasDefinition()){
+                case conceptTypes.hasDefinition:
+                    if (currentConcept.hasDefinition()) {
                         concepts.push(currentConcept);
                     }
                     break;
-                
+
                 case conceptTypes.hasSubconcepts:
-                    if (isOfTypeHasSubconcepts(currentConcept)){
+                    if (isOfTypeHasSubconcepts(currentConcept)) {
                         concepts.push(currentConcept);
-                    } 
+                    }
                     break;
-                
-                case conceptTypes.information: 
-                    if (currentConcept.isInformation()){
+
+                case conceptTypes.information:
+                    if (currentConcept.isInformation()) {
                         concepts.push(currentConcept);
                     }
             }
@@ -620,35 +620,35 @@ export class ConceptStateful {
 
         }
     }
-    
+
     /**
      * Creates progress from a concept data 
      * @returns SSConcpetProgress
      */
-    makeStudySessionProgressObject() : SSConcpetProgress{
+    makeStudySessionProgressObject(): SSConcpetProgress {
 
         // create subconcepts relationship progress object
-        var subconceptsRelationship : SubconceptsRelationProgress = {};
-        this.subconcepts.forEach((concept: ConceptStateful) =>{
+        var subconceptsRelationship: SubconceptsRelationProgress = {};
+        this.subconcepts.forEach((concept: ConceptStateful) => {
 
             subconceptsRelationship[concept.id] = {
-                subconceptId : concept.id,
+                subconceptId: concept.id,
                 relationshipRecalled: concept.parentRelationshipRecalled
             }
-        } );
+        });
 
         // create concept progress object
-        var ssconceptProgress : SSConcpetProgress = {
+        var ssconceptProgress: SSConcpetProgress = {
             id: this.id,
             name: this.name,
             learnt: this.learnt,
             definition: {
-                present : this.hasDefinition(),
+                present: this.hasDefinition(),
                 progress: this.definitionLearningProgress
             },
-            subconceptRelationship : {
-                state : {
-                    present : this.hasSubconceptsWithInformation(),
+            subconceptRelationship: {
+                state: {
+                    present: this.hasSubconceptsWithInformation(),
                     progress: this.subconceptsLearningProgress,
                 },
                 subconcepts: subconceptsRelationship
@@ -660,6 +660,30 @@ export class ConceptStateful {
         };
 
         return ssconceptProgress;
+    }
+
+
+    /**
+     * Copy in progress data
+     * @param  {SSConcpetProgress} conceptProgress
+     */
+    copyInProgressData(conceptProgress: SSConcpetProgress) {
+
+        // set data
+        this.learnt = conceptProgress.learnt;
+        this.definitionLearningProgress = conceptProgress.definition.progress;
+        this.subconceptsLearningProgress = conceptProgress.subconceptRelationship.state.progress;
+        this.subconceptOrderLearningProgress = conceptProgress.subconceptOrder.progress;
+
+        // set subconcept relationship progress
+        this.subconcepts.forEach((subconcept: ConceptStateful) => {
+
+            if (conceptProgress.subconceptRelationship.subconcepts[subconcept.id]) {
+                subconcept.parentRelationshipRecalled = conceptProgress.subconceptRelationship.subconcepts[subconcept.id].relationshipRecalled;
+            }
+
+        });
+
     }
 
 }

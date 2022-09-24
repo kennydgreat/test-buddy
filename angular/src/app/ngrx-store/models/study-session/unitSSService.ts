@@ -44,9 +44,8 @@ export class UnitSS_Stateful {
                         this.unit = new UnitStateful(store);
                         this.unit.copyInStatelessData(unitWithProgress.unit);
                         if(unitWithProgress.unitProgress){
-                            /**
-                             * ****make unit copy in progress*****
-                             */
+                            //copy in progress data into unit
+                            this.unit.copyInProgressData(unitWithProgress.unitProgress);
                         }else{
                             // this is the first time the unit is being studied update the progress from the unit as is
                             this.unit.updateUnitProgress();
@@ -89,21 +88,21 @@ export class UnitSS_Stateful {
     addConceptTreeToQueue(concept: ConceptStateful) {
 
         if (this.canMakeQuestion(concept)) {
-            if (SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit)) {
+            if (SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit) && !this.isConceptDefinitionRecalled(concept)) {
                 this.sessionQueue.push({
                     concept: concept,
                     aspect: "definition",
                 });
             }
 
-            if (SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit)) {
+            if (SSQuestionBuilder.isCandiateForMultipleSubconceptQuestion(concept, this.unit) && !this.isConceptSubconceptsRecalled(concept)) {
                 this.sessionQueue.push({
                     concept: concept,
                     aspect: "subconcepts",
                 });
             }
 
-            if (SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept)) {
+            if (SSQuestionBuilder.isCanadiateForOrderSubconceptsQuestion(concept) && !this.isSubconceptOrderRecalled(concept)) {
                 this.sessionQueue.push({
                     concept: concept,
                     aspect: "subconcept order",
@@ -306,7 +305,7 @@ export class UnitSS_Stateful {
     updateProgressOfAspect(aspect: QuestionQueueElement) {
         switch (aspect.aspect) {
             case "definition":
-                //create a new concept aspect progress object and set progress
+                // set progress, the object refers to the concepts in the unit object so it will be update
                 
                 aspect.concept.definitionLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled
 
