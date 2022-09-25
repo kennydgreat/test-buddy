@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from '../ngrx-store/app-state';
-import { selectCurrentConceptProgress, SSConceptProgressDictionary, SSConcpetProgress, UIConceptProgress } from '../ngrx-store/unit-study-state';
+import { selectCurrentConceptProgress, UIConceptProgress } from '../ngrx-store/unit-study-state';
 
 @Component({
   selector: 'app-ss-concept-progress',
@@ -11,18 +12,30 @@ import { selectCurrentConceptProgress, SSConceptProgressDictionary, SSConcpetPro
 })
 export class SsConceptProgressComponent implements OnInit {
 
+  // subject observable to trigger unsubscribition
+  private unsubscribe = new Subject<void>();
   progress: UIConceptProgress;
   constructor(private store: Store<AppState>) {
-    this.store.select(selectCurrentConceptProgress).subscribe(
+
+    this.store.select(selectCurrentConceptProgress).pipe(
+      takeUntil(this.unsubscribe) // this ensures the subscription when the unsubscription subject is triggered
+
+    ).subscribe(
       {
         next: (progress: UIConceptProgress) => {
           this.progress = progress;
         }
       }
     );
-   }
+  }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+    // trigger unsubscribe subject and end it's values
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }

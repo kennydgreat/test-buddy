@@ -1,20 +1,21 @@
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { isCandiateForMultiChoiceDefinitionQuestion, SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
+import { Subject } from "rxjs";
+import { SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
 import { AppState } from "../ngrx-store/app-state";
-import { updateConceptProgress, updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
-import { LearningState, selectUnitStatelessWithProgress, selectUnitToStudyStateless, SSConceptProgressDictionary, SSConcpetProgress } from "../ngrx-store/unit-study-state";
+import { updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
+import { LearningState, selectUnitStatelessWithProgress } from "../ngrx-store/unit-study-state";
 import { ConceptStateful } from "../concept-viewer/concept-stateful";
 import { UnitStateful } from "../unit-viewer/unit-stateful";
-import { UnitStateless } from "../ngrx-store/models/unit-stateless";
 import { Option } from "../ngrx-store/models/study-session/multiple-choice-option";
 import { MultipleChoiceQuestion } from "../ngrx-store/models/study-session/multiple-choice-question";
+import { takeUntil } from "rxjs/operators";
 
 /**
  * Represents the stateful version of a unit study session data and concepts the logic for a study session
  */
-export class UnitSS_Stateful {
+export class UnitSS_Service {
 
+    private unsubscribe = new Subject<void>();
     unit: UnitStateful;
     unitID: string
     unitNameForStudySession: string;
@@ -33,12 +34,13 @@ export class UnitSS_Stateful {
         //use selector to get unit to study
        var $unit = this.store.select(selectUnitStatelessWithProgress);
 
-        // subscribe to cahnges to the obserable to get the unit
-       $unit.subscribe(
+        // subscribe to the observable to get the unit
+       $unit.pipe(takeUntil(this.unsubscribe)).subscribe(
 
             {
                 next: (unitWithProgress) => {
-                    // this will be undefined if the user isn't in study (fix for angular not automatically unsubscribing to store updates when owner component destoryed). also next firing from unknown trigger
+                    // this makes sure the subscription triggers once and other updates will ignored
+                    this.unsubscribeFromAllObservables();
                     if (unitWithProgress && !this.unit) {
 
                         this.unit = new UnitStateful(store);
@@ -54,6 +56,7 @@ export class UnitSS_Stateful {
                         this.unitID = this.unit.id;
                         this.setSSQueueFromUnit();
                         this.setNextQuestion();
+                       
 
                     }
                 }
@@ -345,6 +348,15 @@ export class UnitSS_Stateful {
 
         //update progress in store
         this.unit.updateUnitProgress();
+    }
+
+    
+    /**
+     * Unsubscribes from all observables to prevent memory leaks
+     */
+    unsubscribeFromAllObservables(){
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
 }
