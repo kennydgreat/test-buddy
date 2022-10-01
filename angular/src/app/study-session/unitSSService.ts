@@ -225,8 +225,8 @@ export class UnitSS_Service {
 
             //move forward
             this.sessionQueue.shift();
-            // add aspect to the end of the queue so the aspect can be attempted again
-            this.sessionQueue.push(aspect);
+            // add aspect to be redone at a later point
+            this.addAspectToBeRedone(aspect);
 
         }
 
@@ -357,6 +357,42 @@ export class UnitSS_Service {
     unsubscribeFromAllObservables(){
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+
+    
+    /**
+     * Places the aspect after the next concept aspects so it's redone after the next concept
+     * @param  {QuestionQueueElement} queueElementToRedo
+     */
+    addAspectToBeRedone(queueElementToRedo: QuestionQueueElement){
+
+       if (this.sessionQueue.length <= 3){
+        // the session is almost empty so simply add the element at the end
+            this.sessionQueue.push(queueElementToRedo);
+            return;
+       }
+
+       // get the top element
+       var topElement = this.sessionQueue[0];
+
+       if (topElement.concept.id === this.sessionQueue[this.sessionQueue.length-1].concept.id){
+        // the last aspect is from the same concept as the top aspect, place the element at the end
+        this.sessionQueue.push(queueElementToRedo);
+            return;
+       }
+
+       //look for the index of the concept's aspects that's after the current concept
+       var index = 0;
+       while(topElement.concept.id === this.sessionQueue[index].concept.id && index < this.sessionQueue.length){
+        index++;
+       }
+       
+       // split array at the index of that concept aspects
+       var start = this.sessionQueue.slice(0,index);
+       var end = this.sessionQueue.slice(index, undefined);
+       // place element before the concept aspect
+       this.sessionQueue = [...start, queueElementToRedo, ...end];
+
     }
 
 }
