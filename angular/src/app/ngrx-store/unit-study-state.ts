@@ -88,6 +88,12 @@ export const selectUnitToStudyStateless = createSelector(selectUnitToStudyID, se
     return units[unitToStudyID];
 });
 
+/**
+ * gets the dict of unit study sessions
+ */
+export const selectUnitsStudySessions = createSelector((state: AppState) => state.unitStudy.unitsStudySessions, (unitsStudySessions: UnitStudySessionsDictionary) => unitsStudySessions);
+
+export const selectCurrentUnitStudySession = createSelector(selectUnitsStudySessions, selectUnitToStudyID, (unitsStudySessions: UnitStudySessionsDictionary, unitToStudyID: string) => unitsStudySessions[unitToStudyID]);
 
 /**
  * Gets the unit stateless data and the progress
@@ -115,6 +121,27 @@ export const selectCurrentConceptProgress = createSelector((state: AppState) => 
         subconceptOrder: currentConceptProgress.subconceptOrder
     }
 });
+
+/**
+ * gets the number of concepts learnt
+ */
+export const selectCurrentNumberOfConceptsLearnt = createSelector(selectUnitsStudySessions, selectUnitToStudyID, (unitsStudySessions: UnitStudySessionsDictionary, unitToStudyID: string) => {
+
+    // get the concepts
+    var conceptsProgressArray = Object.values(unitsStudySessions[unitToStudyID].concepts);
+    // return number of items from array with unlearnt concepts filter
+    return conceptsProgressArray.filter((coceptProgress: SSConcpetProgress) => coceptProgress.learnt).length;
+});
+
+export const selectCurrentNumberOfConceptsBeingLearnt = createSelector(selectUnitsStudySessions, selectUnitToStudyID, (unitsStudySessions: UnitStudySessionsDictionary, unitToStudyID: string) => {
+    //get concepts from dictionary
+    var conceptsProgressArray = Object.values(unitsStudySessions[unitToStudyID].concepts);
+
+    return conceptsProgressArray.length;
+});
+
+export const selectCurrentPercentOfConceptsCompleted = createSelector(selectCurrentNumberOfConceptsLearnt, selectCurrentNumberOfConceptsBeingLearnt, (currentNumberOfConceptsLearnt: number, currentNumberOfConceptsBeingLearnt) => currentNumberOfConceptsLearnt/currentNumberOfConceptsBeingLearnt * 100);
+
 
 export type UIConceptProgress = {
     definition: ConceptAspectProgress,

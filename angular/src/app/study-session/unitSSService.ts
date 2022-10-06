@@ -11,17 +11,18 @@ import { MultipleChoiceQuestion } from "../ngrx-store/models/study-session/multi
 import { takeUntil } from "rxjs/operators";
 
 /**
- * Represents the stateful version of a unit study session data and concepts the logic for a study session
+ * Hold session data and handles the logic for a study session
  */
 export class UnitSS_Service {
 
     private unsubscribe = new Subject<void>();
-    unit: UnitStateful;
+    private unit: UnitStateful;
     unitID: string
     unitNameForStudySession: string;
     currentConcept: string;
     sessionQueue: Array<QuestionQueueElement>; // the order of concept and aspects to show user
 
+    // the current question
     currentQuestion: MultipleChoiceQuestion;
 
     
@@ -241,8 +242,6 @@ export class UnitSS_Service {
      */
     isConceptLearnt(concept: ConceptStateful): boolean {
 
-
-
         return concept.learnt;
     }
     /**
@@ -345,6 +344,17 @@ export class UnitSS_Service {
                 aspect.concept.subconceptOrderLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled; 
 
         }
+
+        //set learnt flag based on progress of aspect progress.
+
+        //check if definition was recalled, if there isn't a defintion set it to true
+        var definitionRecalled = aspect.concept.hasDefinition() ? this.isConceptDefinitionRecalled(aspect.concept)  : true;
+
+        var subconceptRelationshipRecalled = aspect.concept.hasSubconcepts ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
+
+        var subconceptOrderRecalled = aspect.concept.hasOrderedSubconcepts ? this.isSubconceptOrderRecalled(aspect.concept) : true;
+
+        aspect.concept.learnt = definitionRecalled && subconceptRelationshipRecalled && subconceptOrderRecalled;
 
         //update progress in store
         this.unit.updateUnitProgress();

@@ -163,7 +163,7 @@ export class UnitStateful {
   }
 
   /**
-   * Returns number of all concepts except non root concepts that are not extended (have definition or subsconcept), this is used to let the user know how many meanful (including concepts without names but with subconcepts and root concepts without subconcepts) concepts they have in the unit
+   * Returns number of all concepts except non root concepts that are extended (have definition or subsconcept), this is used to let the user know how many meanful (including concepts without names but with subconcepts and root concepts without subconcepts) concepts they have in the unit
    * @returns number
    */
   getNumOfConcepts(): number {
@@ -357,7 +357,9 @@ export class UnitStateful {
     var conceptsProgress = {};
 
     this.concepts.forEach((concept: ConceptStateful) => {
-      this.addConceptProgressObject(conceptsProgress, concept);
+      if(concept.hasInformation()){
+        this.addConceptProgressObject(conceptsProgress, concept);
+      }
     })
 
     return {
@@ -379,7 +381,11 @@ export class UnitStateful {
 
     // add subconcepts
     for (var i = 0; i < concept.subconcepts.length; i++) {
-      this.addConceptProgressObject(conceptsProgress, concept.subconcepts[i]);
+
+      if(concept.subconcepts[i].hasInformation()){
+        this.addConceptProgressObject(conceptsProgress, concept.subconcepts[i]);
+      }
+     
     }
   }
 
