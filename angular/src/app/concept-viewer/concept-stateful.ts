@@ -173,7 +173,7 @@ export class ConceptStateful {
      */
     isInformation(): boolean {
 
-        return this.name.length > 0 && !this.hasDefinition() && !this.hasSubconcepts() && this.isStep();
+        return this.name.length > 0 && !this.hasDefinition() && !this.hasSubconcepts() && !this.isStep();
     }
 
 
@@ -299,6 +299,12 @@ export class ConceptStateful {
                     }
                     break;
 
+                case conceptTypes.hasSubconcepts:
+                    if(isOfTypeHasSubconcepts(this.parent.subconcepts[i]) && this.parent.subconcepts[i].id !== this.id){
+                        slibings.push(this.parent.subconcepts[i]);
+                    }
+                    break;
+
                 case conceptTypes.none:
                     if (this.parent.subconcepts[i].id !== this.id) {
 
@@ -366,6 +372,13 @@ export class ConceptStateful {
                         return children;
                     }
                     if (this.subconcepts[i].hasDefinition()) {
+                        children.push(this.subconcepts[i]);
+                        conceptsAdded++;
+                    }
+                    break;
+
+                case conceptTypes.hasSubconcepts:
+                    if(isOfTypeHasSubconcepts(this.subconcepts[i])){
                         children.push(this.subconcepts[i]);
                         conceptsAdded++;
                     }
@@ -453,7 +466,7 @@ export class ConceptStateful {
     }
 
     /**
-     * Get subconcepts that have 
+     * Get subconcepts that are just information, have no subconcepts 
      * @returns Array
      */
     getConceptInformation(): Array<ConceptStateful> {

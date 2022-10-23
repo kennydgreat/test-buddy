@@ -39,27 +39,17 @@ export function makeSSDefinitionQuestion(concept: ConceptStateful, unit: UnitSta
     wrongOptionConcepts.push(concept.parent);
   }
 
-  if (wrongOptionConcepts.length < numberOfOptions - 1) {
-    // this is still not enough options so try using the adjacent concepts of the concept's root
-    let adjecentConcepts = [];
-    const rootconcept = concept.getRoot();
-    adjecentConcepts = unit.getAdjacentConcepts(rootconcept, (numberOfOptions - 1) - wrongOptionConcepts.length, conceptTypes.hasDefinition);
-    adjecentConcepts.forEach((concept) => {
-      wrongOptionConcepts.push(concept);
-    });
-  }
+  // try using the random concepts from unit with definiton
+  if (wrongOptionConcepts.length < numberOfOptions) {
+    var concepts = [];
+    concepts = unit.getConcepts(conceptTypes.hasDefinition);
+    wrongOptionConcepts = [...wrongOptionConcepts, ...concepts];
 
-  // try using the subsconcepts of root adjacent concepts
-  if (wrongOptionConcepts.length < numberOfOptions - 1) {
-    var adjecentConcepts = [];
-    const rootConcept = concept.getRoot();
-    adjecentConcepts = unit.getAdjacentConcepts(rootConcept, (numberOfOptions - 1) - wrongOptionConcepts.length, conceptTypes.hasSubconcepts);
-    adjecentConcepts.forEach((concept: ConceptStateful) => {
-      // only add subconcepts from adjecentConcepts that don't have ordered subconcepts, this way only informational concepts are added rather than timeline or procedural concepts
-      if (!concept.hasOrderedSubconcepts) {
-        wrongOptionConcepts = [...wrongOptionConcepts, ...concept.getConceptInformation()];
-      }
-    });
+    // remove concept if in list
+    wrongOptionConcepts = concepts.filter((curCurrent => curCurrent.id !== concept.id));
+
+    // scrumble array to randomize concepts used
+    wrongOptionConcepts = shuffleArray(wrongOptionConcepts);
   }
 
   if (wrongOptionConcepts.length <= 0) {
@@ -130,27 +120,39 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
     });
   }
 
+  // try using the subsconcepts of root adjacent concepts
+  if (wrongOptionConcepts.length < numberOfOptions) {
+    var adjecentConcepts = [];
+    const rootConcept = concept.getRoot();
+    // the number of adjacent concepts to get is 2 to get the 2 left and right adjacent concepts
+    adjecentConcepts = unit.getAdjacentConcepts(rootConcept, 2, conceptTypes.none);
+    adjecentConcepts.forEach((concept: ConceptStateful) => {
+      // only add subconcepts from adjecentConcepts that don't have ordered subconcepts, this way timeline or procedural concepts arew not added
+      if (!concept.hasOrderedSubconcepts) {
+        // for each adjacent concept get their concepts that are of the type needed
+        wrongOptionConcepts = [...wrongOptionConcepts, ...concept.getSubconcepts(numberOfOptions, subconceptsType)];
+      }
+    });
+  }
 
-  // try using the random concepts from unit with type
+  // as a last resort, try using the random concepts from the unit with type
   if (wrongOptionConcepts.length < numberOfOptions) {
     var concepts = [];
-    const rootConcept = concept.getRoot();
     concepts = unit.getConcepts(subconceptsType);
+    // filter concept and subconcepts if in list
+    concepts = concepts.filter((curCurrent => curCurrent.id !== concept.id && !concept.subconcepts.includes(curCurrent) && !wrongOptionConcepts.includes(curCurrent)));
+
+    // scrumble array to randomize concepts used, so it not the same each time unit.getConcepts is used to get wrong option concepts
+    concepts = shuffleArray(concepts);
     wrongOptionConcepts = [...wrongOptionConcepts, ...concepts];
-
-    // remove concept and subconcepts if in list
-    wrongOptionConcepts = wrongOptionConcepts.filter((curCurrent => curCurrent.id !== concept.id && !concept.subconcepts.includes(curCurrent)));
-
-    // scrumble array to randomize concepts used
-    wrongOptionConcepts = shuffleArray(wrongOptionConcepts);
   }
 
 
   // use a random number of wrong option concepts
-  wrongOptionConcepts = wrongOptionConcepts.slice(0, getRandomInt(4));
+  wrongOptionConcepts = wrongOptionConcepts.slice(0, getRandomInt(numberOfOptions));
 
   // remove excess number of subconcept for right options
-  subconcepts = subconcepts.slice(0, 4 - wrongOptionConcepts.length);
+  subconcepts = subconcepts.slice(0, numberOfOptions - wrongOptionConcepts.length);
 
   // create wrong options for wrong concepts
   var wrongOptions = new Array<Option>();

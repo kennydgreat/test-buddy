@@ -4,7 +4,7 @@ import { UnitStateless } from "../ngrx-store/models/unit-stateless";
 import { Store } from "@ngrx/store";
 import { AppState } from "../ngrx-store/app-state";
 import { deleteUnitAction, updateUnit } from "../ngrx-store/reducers/unit.reducer";
-import { ConceptType, conceptTypes } from "../ngrx-store/models/study-session/concept-criteria";
+import { ConceptType, conceptTypes, isOfTypeHasSubconcepts } from "../ngrx-store/models/study-session/concept-criteria";
 import { SSConceptProgressDictionary, UnitStudySession } from "../ngrx-store/unit-study-state";
 import { updateUnitProgress } from "../ngrx-store/reducers/unit-study-session.reducer";
 export class UnitStateful {
@@ -248,7 +248,7 @@ export class UnitStateful {
           }
           break;
         case conceptTypes.hasSubconcepts:
-          if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconceptsWithInformation()) {
+          if (currentConceptIndex !== concept.index && isOfTypeHasSubconcepts(this.concepts[currentConceptIndex])) {
             adjecentConcepts.push(this.concepts[currentConceptIndex]);
             rightSideConceptsNeeded--;
           }
@@ -278,7 +278,7 @@ export class UnitStateful {
           }
           break;
         case conceptTypes.hasSubconcepts:
-          if (currentConceptIndex !== concept.index && this.concepts[currentConceptIndex].hasSubconcepts()) {
+          if (currentConceptIndex !== concept.index && isOfTypeHasSubconcepts(this.concepts[currentConceptIndex])) {
             adjecentConcepts.push(this.concepts[currentConceptIndex]);
           }
           break;
@@ -357,7 +357,7 @@ export class UnitStateful {
     var conceptsProgress = {};
 
     this.concepts.forEach((concept: ConceptStateful) => {
-      if(concept.hasInformation()){
+      if (concept.hasInformation()) {
         this.addConceptProgressObject(conceptsProgress, concept);
       }
     })
@@ -382,10 +382,10 @@ export class UnitStateful {
     // add subconcepts
     for (var i = 0; i < concept.subconcepts.length; i++) {
 
-      if(concept.subconcepts[i].hasInformation()){
+      if (concept.subconcepts[i].hasInformation()) {
         this.addConceptProgressObject(conceptsProgress, concept.subconcepts[i]);
       }
-     
+
     }
   }
 
