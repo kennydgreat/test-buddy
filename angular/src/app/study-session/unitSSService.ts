@@ -350,7 +350,7 @@ export class UnitSS_Service {
         //check if definition was recalled, if there isn't a defintion set it to true
         var definitionRecalled = aspect.concept.hasDefinition() ? this.isConceptDefinitionRecalled(aspect.concept)  : true;
 
-        var subconceptRelationshipRecalled = aspect.concept.hasSubconcepts ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
+        var subconceptRelationshipRecalled = aspect.concept.hasSubconcepts() ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
 
         var subconceptOrderRecalled = aspect.concept.hasOrderedSubconcepts ? this.isSubconceptOrderRecalled(aspect.concept) : true;
 
