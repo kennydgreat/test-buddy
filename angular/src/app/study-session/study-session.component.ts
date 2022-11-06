@@ -19,6 +19,7 @@ export class StudySessionComponent implements OnInit {
   currentNumberOfConceptsBeingLearnt : Observable<number>;
   currentNumberOfLearntConcepts : Observable<number>;
   currentPercentOfLearntConcepts: Observable<number>;
+  unitLearnt: boolean = true;
   constructor(public dialogRef: MatDialogRef<StudySessionComponent>, public store: Store<AppState>) {
 
     // initiate study session service

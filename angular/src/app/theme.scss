@@ -72,8 +72,8 @@ $md-mysecondarypalette: (
     ),
 );
 
-$my-primary: mat.define-palette($md-myprimarypalette, 500, 300, 900);
-$my-accent: mat.define-palette($md-mysecondarypalette, 500, 300, 900);
+$my-primary: mat.define-palette($md-myprimarypalette, 500);
+$my-accent: mat.define-palette($md-mysecondarypalette);
 
 //----------Themes----------------------------
 $my-theme: mat.define-light-theme(
@@ -103,7 +103,7 @@ $primary-grey: #707070;
 //---other varaibles
 $top-bar-height: 35px;
 
-$primary-red: #B12D2D;
+$primary-red: #b12d2d;
 
 $light-gray: #e8e8e8;
 // Emit theme-dependent styles for common features used across multiple components.
@@ -113,4 +113,3 @@ $light-gray: #e8e8e8;
 @include mat.slide-toggle-theme($my-theme);
 
 @include mat.progress-bar-theme($my-theme);
-

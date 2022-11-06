@@ -8,7 +8,8 @@ export interface UnitStudyState {
 
     unitToStudyID: string;
     unitsStudySessions: UnitStudySessionsDictionary;
-    currentConceptToStudyID: string
+    currentConceptToStudyID: string,
+    helperText: string,
 
 }
 
@@ -141,6 +142,8 @@ export const selectCurrentNumberOfConceptsBeingLearnt = createSelector(selectUni
 });
 
 export const selectCurrentPercentOfConceptsCompleted = createSelector(selectCurrentNumberOfConceptsLearnt, selectCurrentNumberOfConceptsBeingLearnt, (currentNumberOfConceptsLearnt: number, currentNumberOfConceptsBeingLearnt) => currentNumberOfConceptsLearnt/currentNumberOfConceptsBeingLearnt * 100);
+
+export const selectHelperText = createSelector((state: AppState) => state.unitStudy, (unitStudy: UnitStudyState) => unitStudy.helperText);
 
 
 export type UIConceptProgress = {

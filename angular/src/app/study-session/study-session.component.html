@@ -15,7 +15,8 @@
 
             <p class="primary-roboto-body">Session progress:</p>
 
-            <p class="primary-roboto-body number-of-concepts">{{currentNumberOfLearntConcepts | async}} of {{currentNumberOfConceptsBeingLearnt | async}} concepts learnt</p>
+            <p class="primary-roboto-body number-of-concepts">{{currentNumberOfLearntConcepts | async}} of
+                {{currentNumberOfConceptsBeingLearnt | async}} concepts learnt</p>
         </div>
 
         <div class="progress-bar">
@@ -24,13 +25,21 @@
         </div>
     </div>
 
-    <div class="concept-question-viewer">
+    <div class="concept-question-viewer" *ngIf="!unitLearnt">
         <app-ss-concept-question-viewer [conceptName]="unitSS_Service.currentConcept"
             [multipleChoiceQuestion]="unitSS_Service.currentQuestion" (userDoneAnswering)="userDoneAnswering()"
             (userReadyForNextQuestion)="userReadyNextQuestion()">
         </app-ss-concept-question-viewer>
     </div>
+    <div class="session-completed-view" *ngIf="unitLearnt">
 
-    <app-testbuddy-helper [text]="unitSS_Service.currentQuestion.questionText"></app-testbuddy-helper>
+        <mat-icon>check_circle</mat-icon>
+
+        <p class="primary-roboto-body">Session Completed!</p>
+
+        <button mat-raised-button color="primary">Go again</button>
+
+    </div>
+    <app-testbuddy-helper></app-testbuddy-helper>
 
 </div>

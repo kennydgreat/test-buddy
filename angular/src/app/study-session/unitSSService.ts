@@ -2,7 +2,7 @@ import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
 import { AppState } from "../ngrx-store/app-state";
-import { updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
+import { setTestBodyHelperText, updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
 import { LearningState, selectUnitStatelessWithProgress } from "../ngrx-store/unit-study-state";
 import { ConceptStateful } from "../concept-viewer/concept-stateful";
 import { UnitStateful } from "../unit-viewer/unit-stateful";
@@ -25,7 +25,8 @@ export class UnitSS_Service {
     // the current question
     currentQuestion: MultipleChoiceQuestion;
 
-    
+
+
 
 
 
@@ -33,10 +34,10 @@ export class UnitSS_Service {
 
 
         //use selector to get unit to study
-       var $unit = this.store.select(selectUnitStatelessWithProgress);
+        var $unit = this.store.select(selectUnitStatelessWithProgress);
 
         // subscribe to the observable to get the unit
-       $unit.pipe(takeUntil(this.unsubscribe)).subscribe(
+        $unit.pipe(takeUntil(this.unsubscribe)).subscribe(
 
             {
                 next: (unitWithProgress) => {
@@ -46,10 +47,10 @@ export class UnitSS_Service {
 
                         this.unit = new UnitStateful(store);
                         this.unit.copyInStatelessData(unitWithProgress.unit);
-                        if(unitWithProgress.unitProgress){
+                        if (unitWithProgress.unitProgress) {
                             //copy in progress data into unit
                             this.unit.copyInProgressData(unitWithProgress.unitProgress);
-                        }else{
+                        } else {
                             // this is the first time the unit is being studied update the progress from the unit as is
                             this.unit.updateUnitProgress();
                         }
@@ -57,7 +58,7 @@ export class UnitSS_Service {
                         this.unitID = this.unit.id;
                         this.setSSQueueFromUnit();
                         this.setNextQuestion();
-                       
+
 
                     }
                 }
@@ -67,10 +68,10 @@ export class UnitSS_Service {
 
             }
 
-            
+
         );
 
-        
+
 
     }
 
@@ -158,7 +159,7 @@ export class UnitSS_Service {
         var aspect = this.sessionQueue[0];
         if (aspect) {
             this.currentConcept = aspect.concept.name;
-            
+
 
             // update the current progress
             this.store.dispatch(updateCurrentConcept(aspect.concept.id));
@@ -175,7 +176,7 @@ export class UnitSS_Service {
                     // removes recalled subconcepts so they won't be used again to make questions
                     var subconcepts = [...aspect.concept.subconcepts];
                     this.removeReclledSubconcepts(aspect.concept);
-                    
+
                     this.currentQuestion = SSQuestionBuilder.makeMultipleSubsconceptQuestion(aspect.concept, this.unit);
                     // return subconcepts back
                     aspect.concept.subconcepts = subconcepts;
@@ -189,6 +190,9 @@ export class UnitSS_Service {
             }
             // update unit progress as progress has changed
             this.unit.updateUnitProgress();
+
+            //update helper text to show question text
+            this.store.dispatch(setTestBodyHelperText(this.currentQuestion.questionText));
         }
     }
 
@@ -205,8 +209,8 @@ export class UnitSS_Service {
         // update concept aspect progress based on question result
         this.updateProgressOfAspect(aspect);
         if (this.currentQuestion.right) {
-            // update question instruction with positive response
-            this.currentQuestion.questionText = "That’s right, great job!";
+            // update helper text with positive response
+            this.store.dispatch(setTestBodyHelperText("That’s right, great job!"))
 
             // for subconcept relationship question only move forward if the all subconcepts have been recalled
             if (aspect.aspect === "subconcepts" && aspect.concept.subconceptsLearningProgress === LearningState.recalled) {
@@ -222,7 +226,7 @@ export class UnitSS_Service {
 
         } else {
             // update question instruction with supportive response
-            this.currentQuestion.questionText = "Here's how you did. Don't worry you'll get another chance to get it right later in the session.";
+            this.store.dispatch(setTestBodyHelperText("Here's how you did. Don't worry you'll get another chance to get it right later in the session."));
 
             //move forward
             this.sessionQueue.shift();
@@ -231,7 +235,7 @@ export class UnitSS_Service {
 
         }
 
-        
+
     }
 
 
@@ -274,7 +278,7 @@ export class UnitSS_Service {
      * @returns boolean
      */
     isSubconceptLearnt(subconcept: ConceptStateful): boolean {
-       
+
         return subconcept.parentRelationshipRecalled;
     }
 
@@ -285,7 +289,7 @@ export class UnitSS_Service {
      * @returns boolean
      */
     isSubconceptOrderRecalled(concept: ConceptStateful): boolean {
-        
+
 
         return concept.subconceptOrderLearningProgress === LearningState.recalled;
     }
@@ -308,7 +312,7 @@ export class UnitSS_Service {
         switch (aspect.aspect) {
             case "definition":
                 // set progress, the object refers to the concepts in the unit object so it will be update
-                
+
                 aspect.concept.definitionLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled
 
                 //create a new progress object with new definition progress
@@ -322,33 +326,33 @@ export class UnitSS_Service {
                     this.currentQuestion.options.forEach((option: Option) => {
 
                         // for each subconcept relationship set recalled flag to whether the corresponding option in the question is correct
-                        
+
                         var subconcept = aspect.concept.subconcepts.find((subconcept: ConceptStateful) => subconcept.id === option.conceptID);
-                       if(subconcept){
-                        subconcept.parentRelationshipRecalled = option.state === "correct";
-                       }
+                        if (subconcept) {
+                            subconcept.parentRelationshipRecalled = option.state === "correct";
+                        }
 
                     });
 
                     // // set subconcept recalled flag depending on whether all subconcepts are succefully recalled else set to still doing
-                   
+
                     aspect.concept.subconceptsLearningProgress = aspect.concept.subconcepts.every((subconcept: ConceptStateful) => subconcept.parentRelationshipRecalled) ? LearningState.recalled : LearningState.doing;
-                }else{
+                } else {
                     aspect.concept.subconceptsLearningProgress = LearningState.notRecalled;
                 }
 
                 break;
 
             case "subconcept order":
-                
-                aspect.concept.subconceptOrderLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled; 
+
+                aspect.concept.subconceptOrderLearningProgress = this.currentQuestion.right ? LearningState.recalled : LearningState.notRecalled;
 
         }
 
         //set learnt flag based on progress of aspect progress.
 
         //check if definition was recalled, if there isn't a defintion set it to true
-        var definitionRecalled = aspect.concept.hasDefinition() ? this.isConceptDefinitionRecalled(aspect.concept)  : true;
+        var definitionRecalled = aspect.concept.hasDefinition() ? this.isConceptDefinitionRecalled(aspect.concept) : true;
 
         var subconceptRelationshipRecalled = aspect.concept.hasSubconcepts() ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
 
@@ -360,48 +364,48 @@ export class UnitSS_Service {
         this.unit.updateUnitProgress();
     }
 
-    
+
     /**
      * Unsubscribes from all observables to prevent memory leaks
      */
-    unsubscribeFromAllObservables(){
+    unsubscribeFromAllObservables() {
         this.unsubscribe.next();
         this.unsubscribe.complete();
     }
 
-    
+
     /**
      * Places the aspect after the next concept aspects so it's redone after the next concept
      * @param  {QuestionQueueElement} queueElementToRedo
      */
-    addAspectToBeRedone(queueElementToRedo: QuestionQueueElement){
+    addAspectToBeRedone(queueElementToRedo: QuestionQueueElement) {
 
-       if (this.sessionQueue.length <= 3){
-        // the session is almost empty so simply add the element at the end
+        if (this.sessionQueue.length <= 3) {
+            // the session is almost empty so simply add the element at the end
             this.sessionQueue.push(queueElementToRedo);
             return;
-       }
+        }
 
-       // get the top element
-       var topElement = this.sessionQueue[0];
+        // get the top element
+        var topElement = this.sessionQueue[0];
 
-       if (topElement.concept.id === this.sessionQueue[this.sessionQueue.length-1].concept.id){
-        // the last aspect is from the same concept as the top aspect, place the element at the end
-        this.sessionQueue.push(queueElementToRedo);
+        if (topElement.concept.id === this.sessionQueue[this.sessionQueue.length - 1].concept.id) {
+            // the last aspect is from the same concept as the top aspect, place the element at the end
+            this.sessionQueue.push(queueElementToRedo);
             return;
-       }
+        }
 
-       //look for the index of the concept's aspects that's after the current concept
-       var index = 0;
-       while(topElement.concept.id === this.sessionQueue[index].concept.id && index < this.sessionQueue.length){
-        index++;
-       }
-       
-       // split array at the index of that concept aspects
-       var start = this.sessionQueue.slice(0,index);
-       var end = this.sessionQueue.slice(index, undefined);
-       // place element before the concept aspect
-       this.sessionQueue = [...start, queueElementToRedo, ...end];
+        //look for the index of the concept's aspects that's after the current concept
+        var index = 0;
+        while (topElement.concept.id === this.sessionQueue[index].concept.id && index < this.sessionQueue.length) {
+            index++;
+        }
+
+        // split array at the index of that concept aspects
+        var start = this.sessionQueue.slice(0, index);
+        var end = this.sessionQueue.slice(index, undefined);
+        // place element before the concept aspect
+        this.sessionQueue = [...start, queueElementToRedo, ...end];
 
     }
 
