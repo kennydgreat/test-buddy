@@ -3,7 +3,7 @@ import { Subject } from "rxjs";
 import { SSQuestionBuilder } from "src/app/study-session/ss-question-builder";
 import { AppState } from "../ngrx-store/app-state";
 import { setTestBodyHelperText, updateCurrentConcept } from "../ngrx-store/reducers/unit-study-session.reducer";
-import { LearningState, selectUnitStatelessWithProgress } from "../ngrx-store/unit-study-state";
+import { LearningState, selectCurrentUnitLearnt, selectUnitStatelessWithProgress } from "../ngrx-store/unit-study-state";
 import { ConceptStateful } from "../concept-viewer/concept-stateful";
 import { UnitStateful } from "../unit-viewer/unit-stateful";
 import { Option } from "../ngrx-store/models/study-session/multiple-choice-option";
@@ -70,6 +70,16 @@ export class UnitSS_Service {
 
 
         );
+
+        //subscribe to unitLearnt selector
+        this.store.select(selectCurrentUnitLearnt).pipe(takeUntil(this.unsubscribe)).subscribe({
+            next: (unitLearnt: boolean) => {
+                // if the unit is successfully learnt let user know
+                if(unitLearnt){
+                    this.store.dispatch(setTestBodyHelperText("You’ve correctly recalled all aspects of every concept. Well done!  To enchance your knowlede you can “go again” and complete another session. To test your knowledge try “take a Test” for this unit."));
+                }
+            }
+        });
 
 
 
@@ -354,7 +364,7 @@ export class UnitSS_Service {
         //check if definition was recalled, if there isn't a defintion set it to true
         var definitionRecalled = aspect.concept.hasDefinition() ? this.isConceptDefinitionRecalled(aspect.concept) : true;
 
-        var subconceptRelationshipRecalled = aspect.concept.hasSubconcepts() ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
+        var subconceptRelationshipRecalled = aspect.concept.hasSubconceptsWithInformation() ? this.isConceptSubconceptsRecalled(aspect.concept) : true;
 
         var subconceptOrderRecalled = aspect.concept.hasOrderedSubconcepts ? this.isSubconceptOrderRecalled(aspect.concept) : true;
 

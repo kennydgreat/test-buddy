@@ -25,13 +25,13 @@
         </div>
     </div>
 
-    <div class="concept-question-viewer" *ngIf="!unitLearnt">
+    <div class="concept-question-viewer" *ngIf="!(unitLearnt | async)">
         <app-ss-concept-question-viewer [conceptName]="unitSS_Service.currentConcept"
             [multipleChoiceQuestion]="unitSS_Service.currentQuestion" (userDoneAnswering)="userDoneAnswering()"
             (userReadyForNextQuestion)="userReadyNextQuestion()">
         </app-ss-concept-question-viewer>
     </div>
-    <div class="session-completed-view" *ngIf="unitLearnt">
+    <div class="session-completed-view" *ngIf="unitLearnt | async">
 
         <mat-icon>check_circle</mat-icon>
 

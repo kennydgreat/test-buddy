@@ -141,9 +141,15 @@ export const selectCurrentNumberOfConceptsBeingLearnt = createSelector(selectUni
     return conceptsProgressArray.length;
 });
 
-export const selectCurrentPercentOfConceptsCompleted = createSelector(selectCurrentNumberOfConceptsLearnt, selectCurrentNumberOfConceptsBeingLearnt, (currentNumberOfConceptsLearnt: number, currentNumberOfConceptsBeingLearnt) => currentNumberOfConceptsLearnt/currentNumberOfConceptsBeingLearnt * 100);
+export const selectCurrentPercentOfConceptsCompleted = createSelector(selectCurrentNumberOfConceptsLearnt, selectCurrentNumberOfConceptsBeingLearnt, (currentNumberOfConceptsLearnt: number, currentNumberOfConceptsBeingLearnt) => currentNumberOfConceptsLearnt / currentNumberOfConceptsBeingLearnt * 100);
+
+export const selectCurrentUnitLearnt = createSelector(selectCurrentPercentOfConceptsCompleted, (currentPercentOFConceptsCompleted: number) => {
+    return currentPercentOFConceptsCompleted === 100;
+});
+
 
 export const selectHelperText = createSelector((state: AppState) => state.unitStudy, (unitStudy: UnitStudyState) => unitStudy.helperText);
+
 
 
 export type UIConceptProgress = {

@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../ngrx-store/app-state';
-import { selectCurrentNumberOfConceptsBeingLearnt, selectCurrentNumberOfConceptsLearnt, selectCurrentPercentOfConceptsCompleted } from '../ngrx-store/unit-study-state';
+import { selectCurrentNumberOfConceptsBeingLearnt, selectCurrentNumberOfConceptsLearnt, selectCurrentPercentOfConceptsCompleted, selectCurrentUnitLearnt } from '../ngrx-store/unit-study-state';
 import { UnitSS_Service } from './unitSSService';
 
 
@@ -16,10 +16,10 @@ export class StudySessionComponent implements OnInit {
 
 
   unitSS_Service: UnitSS_Service;
-  currentNumberOfConceptsBeingLearnt : Observable<number>;
-  currentNumberOfLearntConcepts : Observable<number>;
+  currentNumberOfConceptsBeingLearnt: Observable<number>;
+  currentNumberOfLearntConcepts: Observable<number>;
   currentPercentOfLearntConcepts: Observable<number>;
-  unitLearnt: boolean = true;
+  unitLearnt: Observable<boolean>;
   constructor(public dialogRef: MatDialogRef<StudySessionComponent>, public store: Store<AppState>) {
 
     // initiate study session service
@@ -31,6 +31,9 @@ export class StudySessionComponent implements OnInit {
     this.currentNumberOfConceptsBeingLearnt = this.store.select(selectCurrentNumberOfConceptsBeingLearnt);
 
     this.currentPercentOfLearntConcepts = this.store.select(selectCurrentPercentOfConceptsCompleted);
+
+    //initiate study session completion store observables
+    this.unitLearnt = this.store.select(selectCurrentUnitLearnt);
   }
 
   ngOnInit(): void {
