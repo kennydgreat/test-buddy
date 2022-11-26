@@ -102,6 +102,10 @@ export class UnitSS_Service {
      */
     addConceptTreeToQueue(concept: ConceptStateful) {
 
+        // skip concept it is learnt
+        if (concept.learnt) {
+            return;
+        }
         if (this.canMakeQuestion(concept)) {
             if (SSQuestionBuilder.isCandiateForMultiChoiceDefinitionQuestion(concept, this.unit) && !this.isConceptDefinitionRecalled(concept)) {
                 this.sessionQueue.push({

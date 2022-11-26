@@ -300,7 +300,7 @@ export class ConceptStateful {
                     break;
 
                 case conceptTypes.hasSubconcepts:
-                    if(isOfTypeHasSubconcepts(this.parent.subconcepts[i]) && this.parent.subconcepts[i].id !== this.id){
+                    if (isOfTypeHasSubconcepts(this.parent.subconcepts[i]) && this.parent.subconcepts[i].id !== this.id) {
                         slibings.push(this.parent.subconcepts[i]);
                     }
                     break;
@@ -378,7 +378,7 @@ export class ConceptStateful {
                     break;
 
                 case conceptTypes.hasSubconcepts:
-                    if(isOfTypeHasSubconcepts(this.subconcepts[i])){
+                    if (isOfTypeHasSubconcepts(this.subconcepts[i])) {
                         children.push(this.subconcepts[i]);
                         conceptsAdded++;
                     }
@@ -595,6 +595,11 @@ export class ConceptStateful {
                     if (currentConcept.isInformation()) {
                         concepts.push(currentConcept);
                     }
+                    break;
+
+                case conceptTypes.none:
+                    concepts.push(currentConcept);
+                    break;
             }
 
             currentConcept.subconcepts.forEach(subconcept => {

@@ -139,6 +139,11 @@ function makeMultipleSubsconceptQuestion(concept: ConceptStateful, unit: UnitSta
   if (wrongOptionConcepts.length < numberOfOptions) {
     var concepts = [];
     concepts = unit.getConcepts(subconceptsType);
+
+    // there are no concepts of the subconcept type try getting any subconcept type
+    if (concepts.length === 0) {
+      concepts = unit.getConcepts(conceptTypes.none);
+    }
     // filter concept and subconcepts if in list
     concepts = concepts.filter((curCurrent => curCurrent.id !== concept.id && !concept.subconcepts.includes(curCurrent) && !wrongOptionConcepts.includes(curCurrent)));
 
@@ -233,18 +238,9 @@ export function isCandiateForMultipleSubconceptQuestion(concept: ConceptStateful
   if (concept.hasOrderedSubconcepts) {
     return false;
   }
-  // the concepts has to have subconcepts
-  if (concept.hasSubconceptsWithInformation()) {
-    // with at least 2 slibings there is a enough to make a question
-    if (concept.getNumberOfSlibings(conceptTypes.hasSubconcepts) > 1) {
-      return true;
-    }
-    // with at least 2 root concepts there is enough to make a queston
-    if (unit.numOfRootConceptsWithSubconcepts > 1) {
-      return true;
-    }
-
-    return concept.getNumberOfSlibings(conceptTypes.hasSubconcepts) > 0 && unit.numOfRootConceptsWithSubconcepts > 0;
+  // the concepts has to have subconcepts with actual information and there needs to be at least one other concept in the unit
+  if (concept.hasSubconceptsWithInformation() && unit.numOfConcepts > 1) {
+    return true;
   }
   return false;
 }
