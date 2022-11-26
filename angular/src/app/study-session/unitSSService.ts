@@ -75,7 +75,7 @@ export class UnitSS_Service {
         this.store.select(selectCurrentUnitLearnt).pipe(takeUntil(this.unsubscribe)).subscribe({
             next: (unitLearnt: boolean) => {
                 // if the unit is successfully learnt let user know
-                if(unitLearnt){
+                if (unitLearnt) {
                     this.store.dispatch(setTestBodyHelperText("You’ve correctly recalled all aspects of every concept. Well done!  To enchance your knowlede you can “go again” and complete another session. To test your knowledge try “take a Test” for this unit."));
                 }
             }
@@ -219,8 +219,11 @@ export class UnitSS_Service {
         // update concept aspect progress based on question result
         this.updateProgressOfAspect(aspect);
         if (this.currentQuestion.right) {
-            // update helper text with positive response
-            this.store.dispatch(setTestBodyHelperText("That’s right, great job!"))
+            if (this.sessionQueue.length > 1) {
+                // only update helper text if the session isn't done
+                // update helper text with positive response
+                this.store.dispatch(setTestBodyHelperText("That’s right, great job!"))
+            }
 
             // for subconcept relationship question only move forward if the all subconcepts have been recalled
             if (aspect.aspect === "subconcepts" && aspect.concept.subconceptsLearningProgress === LearningState.recalled) {
