@@ -14,7 +14,7 @@
     display: flex;
     /* so the menu items will wrap on smaller screen*/
     flex-wrap: wrap;
-    column-gap: 100px;
+    column-gap: 10px;
     overflow: hidden;
     padding: 10px 20px 10px 20px; /*top right bottom left*/
     background-color: $primary-purple;
